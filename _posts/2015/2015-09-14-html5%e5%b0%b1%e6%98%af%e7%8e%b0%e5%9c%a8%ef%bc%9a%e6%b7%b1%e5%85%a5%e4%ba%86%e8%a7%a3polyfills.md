@@ -1,0 +1,286 @@
+---
+layout: post
+title: HTML5就是现在：深入了解Polyfills
+date: 2015-09-14 14:21
+author: admin
+comments: true
+categories: []
+---
+利用 HTML5 来搭建网站和应用可能是一项艰巨的任务。尽管现在越来越多的现代浏览器正在更多的支持Html5新特性，但实际上只有很少部分人能够幸运的只需要为这些最新的浏览器编写代码。作为一个专业的开发者，你必须要花很多精力来调整不自由的空间排版和实现承诺过的特性以及面对现在的现实情况，这些都是因为浏览器的碎片化。好消息是 IE 9 和 10 都已经支持HTML5 了，用户可以抛弃旧版的 Internet Explorer 浏览器了，不过对于开发者而言他们还需要考虑支持旧版的浏览器。
+
+不管怎样，这并不是说你必须要在接下来的时间里放弃使用 HTML5，好在网站可以使用很多技术来优雅的支持多种不同的情况，如多种屏幕尺寸和不同的 CSS 功能，这些科技也可以达到让人惊讶的完善的跨浏览器的 HTML5 支持。尽管旧浏览器缺少很多 HTML5 新 API ，不过JavaScript 是一个不可思议的修复语言，可以追加很多浏览器原生不支持的特性
+
+&nbsp;
+<h1><a name="t0"></a>跨浏览器支持</h1>
+大量使用 HTML5 最棘手的问题是我们别无他选的要支持旧的浏览器，而他们对新的 API 有的支持很少甚至有些根本不支持。适应新的网页技术让我们对跨浏览器差异不寒而栗，还有难以维护的分支代码、浏览器探测和其他一堆问题。尽管如此我们还有一个低调的技术，它可以将这些问题缓解一些，虽然说不定你的用户过了一晚就已经把他们的浏览器升级成最新的了，这个功能就是：polyfills。
+
+&nbsp;
+
+Polyfilling 是由 RemySharp 提出的一个术语，它是用来描述复制缺少的 API 和API 功能的行为。你可以使用它编写单独应用的代码而不用担心其他浏览器原生是不是支持。实际上，polyfills并不是新技术也不是和 HTML5 捆绑到一起的。我们已经在如json2.js，ie7-js 和为 IE 浏览器提供透明 PNG 支持的 JS 中使用过了。而和现在 polyfills 的区别就是去年增加的 HTML5 polyfills。
+
+&nbsp;
+<h1><a name="t1"></a>Polyfill 是什么？</h1>
+为了具体说明我想要说的，我们来看一下 json2.js。特别注意第一行的 JSON.parse :
+
+1     <strong>if</strong> (<strong>typeof</strong> JSON.parse !=='function') <strong>{</strong>
+
+2       // Crockford’s JavaScript implementation of JSON.parse
+
+3     <strong>}</strong>
+
+使用 typeof 测试这段代码，如果浏览器有原生的执行 JSON.parse，那么 json2.js 就不会去干扰或者重定义它。如果原生的 API 不可用，json2.js 就会执行一段 JavaScript 脚本来实现，它和原生的 JSON API 是完全兼容的。最后你可以在网页上使用 json2.js 而且不用考虑浏览器运行的是哪种代码。
+
+&nbsp;
+
+这显示出了 polyfilling 的优势 - 不仅是兼容方面，更是提供了一种接近标准 API 的执行方式。除此之外，不需要再知道那些站点的特有代码或者考虑兼容层的存在。最后，我们会看到一个干净，简单，而且有站点特有代码的结果，其他旧的浏览器也可以使用新 API。
+
+&nbsp;
+<h1><a name="t2"></a>HTML5 的新语义元素</h1>
+HTML5 中对于polyfil来说最简单的特性就是设置已经增加了的语义元素，如&lt;article&gt;，&lt;aside&gt;，&lt;header&gt;和&lt;time&gt;。他们中的大多数和&lt;div&gt;，&lt;span&gt;的表现没有区别，但是它们有自己语义化的意义。因为这些元素是标准通用内置语言(SGML)，所以好处就是像 IE6 这样的旧浏览器也能够显示他们。不过 IE浏览器的奇怪之处就是它只应用那些它承认的 CSS 样式。因此，即使旧的 IE浏览器显示了 HTML5 的新语义元素，但是它仍会忽视那些用户自定义的样式。
+
+幸运的是，Sjoerd Visscher 为 IE 找到了一个简单的解决方法，John Resig 又让它发扬光大。在使用任意元素形式的时候调用 document.createElement()，这样就可以让 IE 浏览器运用 CSS 中所有的样式了。
+
+&nbsp;
+
+例如，在 &lt;head&gt; 中单独调用 document.createElement(‘article’)就可以让 IE 浏览器强制运用CSS中的 &lt;article&gt; 元素。
+
+1     <strong>&lt;html&gt;</strong>
+
+2       <strong>&lt;head&gt;</strong>
+
+3         <strong>&lt;title&gt;</strong>HTML5 Now?&lt;/title&gt;
+
+4         <strong>&lt;style&gt;</strong>
+
+5           article { margin: 0 auto; width: 960px; }
+
+6         &lt;/style&gt;
+
+7         <strong>&lt;script&gt;</strong>
+
+8           document.createElement('article');
+
+9         &lt;/script&gt;
+
+10    &lt;/head&gt;
+
+11    <strong>&lt;body&gt;</strong>
+
+12      <strong>&lt;article&gt;</strong>
+
+13        &lt;!-- TODO: Write article… --&gt;
+
+14      &lt;/article&gt;
+
+15    &lt;/body&gt;
+
+16   &lt;/html&gt;
+
+示例1：调用document.createElement 改变了 IE 浏览器应用的 CSS 样式
+
+&nbsp;
+
+不过，没人愿意每次都为 HTML5中那么多新增的语义元素手动添加 createElement 声明。而这就是 polyfill 最擅长的。有一个叫做 html5shim（也就是 html5shiv） 自动完成了设置 IE 浏览器和新语义元素的兼容性。
+
+&nbsp;
+
+举例说明，示例1中的代码可以用html5shim 来重构，见示例2.
+
+&nbsp;
+
+1     <strong>&lt;html&gt;</strong>
+
+2       <strong>&lt;head&gt;</strong>
+
+3         <strong>&lt;title&gt;</strong>HTML5 Now!&lt;/title&gt;
+
+4         <strong>&lt;style&gt;</strong>
+
+5           article { margin: 0 auto; width: 960px; }
+
+6         &lt;/style&gt;
+
+7         <strong>&lt;!--[if ltIE 9]&gt;</strong>
+
+8         &lt;script src="http://html5shim.googlecode.com/svn/trunk/html5.js"&gt;&lt;/script&gt;
+
+9         <strong>&lt;![endif]--&gt;</strong>
+
+10    &lt;/head&gt;
+
+11    <strong>&lt;body&gt;</strong>
+
+12      <strong>&lt;article&gt;</strong>
+
+13        &lt;!-- TODO: Write article… --&gt;
+
+14      &lt;/article&gt;
+
+15    &lt;/body&gt;
+
+16   &lt;/html&gt;
+
+示例2 使用 html5shim polyfill
+
+注意脚本周围的描述是参考 html5shim的。这保证了这个 polyfill 只会在比 IE9 更旧的 IE浏览器上加载。而其他已经支持新语义元素的浏览器则不需要浪费时间下载，暂停或者执行。
+<h1><a name="t3"></a></h1>
+<h1><a name="t4"></a>另外一个可考虑的选择</h1>
+如果你对 HTML5 非常感兴趣而在读这篇文章，相信你可能已经了解使用 Modernizr 了。不过你可能还不知道 Modernizr 其实已经内建了 html5shim 功能。如果你是为了探测特性而使用 Modernizr，那么你已经落后于 HTML5 新特性的兼容性了。
+
+<strong> </strong>
+
+<strong>持续的客户端存储</strong>
+
+很多年来，我们除了一起解决厂商专有的 DOM 扩展和自有的插件来保持浏览器的长期状态的问题别无他选。这些解决方案中就包括火狐的 globalStorage，IE 的userData,cookie 和 像 Flash 或者Google Gears。虽然这些方案是可行的，不过这些解决方法都很过时，乏味，难以维护而且易出错。
+
+&nbsp;
+
+为了弥补这些问题，HTML 中最受欢迎的扩展之一就是浏览器数据长期存储的标准 API：localStorage。这个API 提供了一个持续的客户端/服务器端的 key/值存储,它可以为每个用户访问的每个网站存储最多5 MB 的独立数据。你可以把 localStorage 当做一个易用的庞大 cookie而且不需要每次都不需要浏览器和服务器进行 HTTP 请求。localStorage 特性是那些需要浏览器专有数据项目最完美的搭档，就像记住偏好和本地缓存的远程数据。
+
+&nbsp;
+
+现在所有高级的浏览器都已经支持 localStorage 特性了， IE8 也包括在其中，不过在比 IE8 旧一些的版本中就不支持了，同时，还是有 polyfill 的跨浏览器存储可以让旧版的浏览器也支持这样的特性。从简朴的 RemySharp 的 Storage polyfiller 到可以向下兼容的 store.js 和 PersistJS，还有 LawnChair 的全功能 API 和 AmplifyJS 存储模块。
+
+&nbsp;
+
+例如，下面你可能是使用 AmplifyJS 存储模块来将数据保存在用户浏览器中而且不借助 cookies -  就算那位用户使用的是 IE6:
+
+1     // Sets a localStorage variable 'Name'with my name in it.
+
+2     amplify.store('name','Dave Ward');
+
+3     <strong>var</strong> website =<strong>{</strong>
+
+4         name:'Encosia',
+
+5         url:'http://encosia.com'
+
+6     <strong>}</strong>
+
+7     // The library takes care of serializingobjects automatically.
+
+8     amplify.store('website', website);
+
+Pulling that dataout at a later date becomes extremely easy:
+
+1     // The values we stored before could thenbe used at a later time, even
+
+2     // during a different session.
+
+3     <strong>var</strong> $personLink = $('&lt;a&gt;',<strong>{</strong>
+
+4         text: amplify.store('name'),
+
+5         href: amplify.store('website').url
+
+6     <strong>}</strong>);
+
+7     $personLink.appendTo('body');
+
+需要再说一次的是使用 localStorage 或者是基于 localStorage 的 API 的优势是数据不需要经过每次 HTTP 请求，也不需要调用像 Flash 这样的重量级的插件来存储数据。数据被保存在一个真实的，独立的本地存储机制中，这让缓存数据到本地和开发需要良好支持离线使用的网站变得很顺手。
+
+&nbsp;
+<h1><a name="t5"></a>使用什么</h1>
+Remy Sharp 的Storage Polyfiller 是唯一一个可以有资格作为 polyfill 使用的，因为其他的都不能完美的模仿 HTML5 localStorage API。不过不管怎样，store.js 和 AmplifyJS 存储模块提供了很大范围的旧浏览器兼容支持，这点很难被忽视。
+
+&nbsp;
+<h1><a name="t6"></a>地理位置</h1>
+地理位置是另一个成熟的 polyfill HTML5 特性。如果浏览器都和操作系统都支持地理位置而且它们的设备上都配有 GPS 传感器，HTML5 提供了地理位置 API 的功能可以允许 JavaScript 代码判断你的页面是从何处访问的。
+
+&nbsp;
+
+移动设备是最让人惊讶的基于浏览器的地理位置使用示例。将内置的 GPS 硬件模块和现代浏览器整合起来很好的支持了 HTML5 的地理位置 API，Android 和 iOS 设备都支持 HTML5 地理位置，而且和原生应用一样准确。
+
+&nbsp;
+
+JavaScript 在那些条件好的环境下需要访问地理位置，就像下面这么简单：
+
+1     navigator.geolocation.getCurrentPosition(<strong>function</strong>(position)<strong>{</strong>
+
+2       <strong>var</strong> lat =position.coords.latitude;
+
+3       <strong>var</strong> long =position.coords.longitude;
+
+4       console.log('Current location: ', lat, log);
+
+5     <strong>}</strong>);
+
+对于移动应用来说这点很棒，但是桌面设备通常不会配备 GPS 传感器，我们也都习惯了。不过那些在我们身边很常见的基于位置的广告们他们已经比地理位置 API 存在的时候长多了。因此在缺乏硬件支持的桌面浏览环境下获取地理位置也是可以的。
+
+&nbsp;
+
+JavaScript 目前的做法是在已知的 IP 位置库中寻找访问者的 IP 地址。这种做法显然没有使用 GPS 设备精确，不过这些数据库通常能够准确定位区域位置，这对于很多应用来说已经足够了。
+
+&nbsp;
+
+你或许已经知道无GPS 的更精确的地理位置定位不仅仅依赖查找 IP 地址。 通常来说这些增强定位准确性的方法都是借助 Wi-Fi 热点的位置库来协助完成的。不幸的是，目前浏览器中运行的 JavaScript代码不能够从系统底层调用信息。所以， polyfill 目前不可以使用基于 Wi-Fi 的技术，我们只可以使用 IP查找来代替。
+
+Paul Irish 写了一个可以为旧浏览器和缺少 GPS 传感器的硬件提供定位的简单的地理位置 polyfill。它使用了谷歌的地理位置 API 来将用户的 IP 地址转换成相近的物理地理位置。它是一个真实的 polyfill，它将地理位置功能加入到了 navigator.geolocation对象中，不过只是在浏览器原生没有提供地理位置 API 的情况下使用。
+
+&nbsp;
+<h1><a name="t7"></a>浏览历史和导航</h1>
+简单的DHTML效果提供了更加结构化的客户端特性，例如基于 AJAX 的分页和单页界面，这些结构变化放弃了和浏览器内置的导航和历史功能同步。当用户很自然的尝试用他们的返回按钮回到上一页页面或者应用的状态的时候，事情就不那么好了。我们搜索“禁用返回按钮”就会发现这个问题对现代网页开发的坏影响有多少了。
+
+&nbsp;
+
+操作浏览器地址的“Hash”部分可以帮助我们解决部分问题。因为Hash原本就是用来在同一个页面中在不同的导航点之间跳转，更改链接的Hash值不会让页面像更改到相关的链接前缀那样刷新。利用Hash值允许客户端和JavaScript驱动的改变同步来保持浏览器显示的地址，这样就不需要使用传统的导航事件了。
+<h1><a name="t8"></a>Onhashchange 事件</h1>
+当操作浏览器Hash部分被很好的支持了，甚至连在 IE6 上都是，直到最近一个标准的监控Hash变化的方法才变得难以捉摸。最近的新浏览器支持了 onhashchange 事件，当地址的Hash部分改变的时候它就被触发了 -  可以完美的检测用户想通过浏览器的导航控制改变客户端状态的情况。可惜的是，onhashchange 事件只有相对较新的浏览器才支持，从 IE8 和 Firefox 3.6 之后都支持。
+
+虽然 onhashchange 事件并不支持旧的浏览器，不过有可以为旧浏览器提供一个抽象的层的库文件。这些兼容的层使用浏览器特有的属性来复制标准的 onhashchangge 事件，甚至可以每一秒监控 location.hash 好多次，并且当地址Hash值在浏览器中改变的时候作出响应。
+
+一个不错的选择是 Ben Alman 的 jQuery Hashchange 插件，这是他从自己开发的很流行的 jQueryBBQ 插件中提取出来的。 Alman 的 jQueryHashchange 提供了一个非常深层的跨浏览器的 hashchange 事件兼容性。我有点犹豫要不要把它称为 polyfill，因为这需要 jQuery 而且不能够准确的复制出原生 API ，不过当你的页面已经使用了 jQuery 的时候它真的很棒！
+<h1><a name="t9"></a></h1>
+<h1><a name="t10"></a>超越 HashState</h1>
+操作Hash值是一个解决客户端状态管理问题的好方法，不过它还是有缺点的。自从基于Hash值的链接会让用户迷糊并且和页面上已有的导航冲突，控制浏览器导航特性就不是最好的方法了。
+
+一个更根本的问题是浏览器并没有将Hash部分的浏览器请求加入到 HTTP 请求中。没有访问链接中的Hash位置，所以没可能立即返回到用户给页面加书签、通过邮件接收或者通过社交网络分享后相同的状态。这导致了网站只可以显示它们的默认页面，初始状态接着再通过一个别扭的转换跳转到期望的位置。为了证明这点在使用性上的影响，你只要看一下 Twitter 和 Gawker Media 的 “hash bang”重设计。
+<h1><a name="t11"></a>输入 pushState</h1>
+幸运的是，HTML5 引入了一对明显提高了客户端历史管理方案的更先进的 API。通常被称为 pushState，它和 windows.history.pushState 方法和window.onopstate 事件结合起来的，它提供了异步处理整个浏览器地址路径部分和在对Hash之外的导航事件响应的方法。
+
+在 Github 上查看项目的代码是现实中正在使用 pushState 最佳的示例。因为通过 pushState 处理浏览器的地址不会像传统地址改变那样刷新整个页面，Github 可以在每个代码页面切换之间提供过渡动画，链接还是用户友好的，而不是Hash标签或者查询字符串。
+
+更好的是，如果你将其中一个链接保存为书签，之后再访问这个链接的时候，Github 会在你第一次请求的时候就立刻给你正确的内容，因为客户端中的链接就和服务器端的链接结构是一样的。就像我前面提到的那样，使用基于Hash的链接是不可能实现这些的，因为服务器和Hash部分的请求是无关的。
+<h1><a name="t12"></a>在你的代码中使用 onhashchange 和 pushState</h1>
+可惜的是，要想将浏览器不支持的 pushState 特性通过真正的 polyfill pushState 加入进去是不可能的。没有抽象层可以改变在旧浏览器中改变链接会让浏览器跳转和加载页面的事实。不过你可以在支持 pushState 的浏览器中使用它而在不支持的旧浏览器中使用基于Hash部分的链接。
+
+&nbsp;
+
+Benjamin Lupton 组建了一个很棒的跨浏览器库，可以有效的解决在管理客户端历史时候遇到的大范围的诡异和不一致的现象。这个库可以用在从 IE6 到最新版的 Chrome 上。使用方法也非常简单。它有一个和 HTML5 自有的 pushState  语法很接近的语法：
+
+1        // This changes the URL to /state1 in HTML5 browsers, and changes it to
+
+2     // /#/state1 in older browsers.
+
+3     History.pushState(null, 'State 1','state1');
+
+4     // Same as before, but /state2 and/#/state2.
+
+5     History.pushState(null, 'State 2','state2');
+
+相比准确复制 HTML5 popstate 事件，history.js 包含了许多种类的适配器可以和那些库里的事件系统协调运行。例如，使用jQuery 适配器，你可以 一个事件处理程序和 history.js 的 statechange 事件绑定起来，就像这样：
+
+1     History.Adapter.bind(window,'statechange',<strong>function</strong>()<strong>{</strong>
+
+2       // Get the newhistory state from history.js.
+
+3       <strong>var</strong> state =History.getState();
+
+4       // Write the URLwe’ve navigated to on the console.
+
+5       console.log(state.url);
+
+6     <strong>}</strong>);
+
+通过 history.js 的pushState 方法，statechange 事件处理程序会在每次浏览器导航到通过 history.js 的 pushState 方法维持的历史节点的时候触发。不论是原生就支持 pushState 的 HTML5浏览器 还是仅支持基于链接Hash部分改变的旧浏览器都会监控这个事件，捕获每次活动。
+
+&nbsp;
+
+将这个运用到现实应用中非常简单。你可以想象到将它用在和 AJAX 提供的表格分页和排序中，或者甚至是整站的导航（例如 Gmail 和 Twitter），它们不需要依靠那些大家都很厌恶的Hash链接和重定向。
+<h1><a name="t13"></a></h1>
+<h1><a name="t14"></a>使用 pushScissors 运行</h1>
+使用 pushState 有一件需要注意的事，那就是你必须保证服务器端可以正确的你在客户端适应的每个链接。因为很容易你建立一个客户端的链接你的服务器用一个 404 或者 500 错误响应（举例,/未定义），这样很好的保证了你的服务器端在发送或者进行URL重写的时候尽可能优雅的处理意想不到的链接。例如，如果你有一个多页的报告在 /报告下，使用了 pushState 分成了 /报告/1，/报告/2，/报告/3 等等这么多页，你就要保证服务器端的代码可以优雅的对 /报告/未定义 这样的链接响应。
+
+另外一个稍次一点的可选方案是在你的 pushState 地址中使用查询字符串的链接片段，就像 /报告?页码=2 和 /报告?页码=3。这样最终的链接看起来可能不太好看，不过最起码它们不会导致404错误。
+<h1><a name="t15"></a>接下来去哪里</h1>
+这篇文章只讲到了 HTML5 polyfill 的一些皮毛。有不少提供了跨浏览器支持如 SVG 和 Canvas 图像，HTML5视频，ECMAScript 5 甚至 WebWorkers 特性的项目。如果你很有学习更多关于这些项目的兴趣，查看下面提供的奇妙的资源吧：<a href="https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-browser-Polyfills">https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-browser-Polyfills</a>
