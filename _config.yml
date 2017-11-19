@@ -1,3 +1,2 @@
-theme: jekyll-theme-slate
 permalink: /:year/:month/:day/:title/
 paginate: 10
