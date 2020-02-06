@@ -2,21 +2,22 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[shengsheng的博客]]></title>
-  <link href="shengsheng.net/atom.xml" rel="self"/>
-  <link href="shengsheng.net/"/>
-  <updated>2020-02-06T11:12:51+08:00</updated>
-  <id>shengsheng.net/</id>
+  <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
+  <link href="http://www.shengsheng.net/"/>
+  <updated>2020-02-06T16:13:19+08:00</updated>
+  <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
-  <generator uri="http://www.mweb.im/">MWeb</generator>
+  <generator uri="http://www.coderforart.com/">CoderForArt</generator>
+
   
   <entry>
     <title type="html"><![CDATA[gradle读书笔记]]></title>
-    <link href="shengsheng.net/15809578628586.html"/>
+    <link href="http://www.shengsheng.net/15809578628586.html"/>
     <updated>2020-02-06T10:57:42+08:00</updated>
-    <id>shengsheng.net/15809578628586.html</id>
+    <id>http://www.shengsheng.net/15809578628586.html</id>
     <content type="html"><![CDATA[
 <p>date: 2019-09-03 19:46</p>
 
@@ -60,9 +61,9 @@ android{signingConfigs{staging.initWith(signingConfigs.debug)release{storeFilefi
   
   <entry>
     <title type="html"><![CDATA[钟总公开课笔记。]]></title>
-    <link href="shengsheng.net/15809578629104.html"/>
+    <link href="http://www.shengsheng.net/15809578629104.html"/>
     <updated>2020-02-06T10:57:42+08:00</updated>
-    <id>shengsheng.net/15809578629104.html</id>
+    <id>http://www.shengsheng.net/15809578629104.html</id>
     <content type="html"><![CDATA[
 <p>date: 2017-08-28 03:26</p>
 
@@ -136,9 +137,9 @@ android{signingConfigs{staging.initWith(signingConfigs.debug)release{storeFilefi
   
   <entry>
     <title type="html"><![CDATA[mysql PARTITION表分区要注意事项]]></title>
-    <link href="shengsheng.net/15809578629394.html"/>
+    <link href="http://www.shengsheng.net/15809578629394.html"/>
     <updated>2020-02-06T10:57:42+08:00</updated>
-    <id>shengsheng.net/15809578629394.html</id>
+    <id>http://www.shengsheng.net/15809578629394.html</id>
     <content type="html"><![CDATA[
 <p>date: 2017-04-18 16:33</p>
 
@@ -165,9 +166,9 @@ PARTITION day_2017_04 VALUES less than MAXVALUE<br/>
   
   <entry>
     <title type="html"><![CDATA[数据库区分大小写问题]]></title>
-    <link href="shengsheng.net/15809578629442.html"/>
+    <link href="http://www.shengsheng.net/15809578629442.html"/>
     <updated>2020-02-06T10:57:42+08:00</updated>
-    <id>shengsheng.net/15809578629442.html</id>
+    <id>http://www.shengsheng.net/15809578629442.html</id>
     <content type="html"><![CDATA[
 <p>date: 2017-04-12 02:10</p>
 
@@ -204,9 +205,9 @@ PARTITION day_2017_04 VALUES less than MAXVALUE<br/>
   
   <entry>
     <title type="html"><![CDATA[小玩微信小程序]]></title>
-    <link href="shengsheng.net/15809578629495.html"/>
+    <link href="http://www.shengsheng.net/15809578629495.html"/>
     <updated>2020-02-06T10:57:42+08:00</updated>
-    <id>shengsheng.net/15809578629495.html</id>
+    <id>http://www.shengsheng.net/15809578629495.html</id>
     <content type="html"><![CDATA[
 <p>date: 2017-04-05 14:54</p>
 
@@ -265,9 +266,9 @@ ssl_prefer_server_ciphers on;</p>
   
   <entry>
     <title type="html"><![CDATA[博客暂停访问原因]]></title>
-    <link href="shengsheng.net/15809578629750.html"/>
+    <link href="http://www.shengsheng.net/15809578629750.html"/>
     <updated>2020-02-06T10:57:42+08:00</updated>
-    <id>shengsheng.net/15809578629750.html</id>
+    <id>http://www.shengsheng.net/15809578629750.html</id>
     <content type="html"><![CDATA[
 <p>date: 2017-01-21 02:20</p>
 
@@ -297,9 +298,9 @@ script_filename = /data/wwwroot/default/xmlrpc.php<br/>
   
   <entry>
     <title type="html"><![CDATA[mac下设置内置键盘失效]]></title>
-    <link href="shengsheng.net/15809578630162.html"/>
+    <link href="http://www.shengsheng.net/15809578630162.html"/>
     <updated>2020-02-06T10:57:43+08:00</updated>
-    <id>shengsheng.net/15809578630162.html</id>
+    <id>http://www.shengsheng.net/15809578630162.html</id>
     <content type="html"><![CDATA[
 <p>date: 2016-01-21 08:54</p>
 
@@ -314,9 +315,9 @@ script_filename = /data/wwwroot/default/xmlrpc.php<br/>
   
   <entry>
     <title type="html"><![CDATA[今天工作遇到的小问题总结]]></title>
-    <link href="shengsheng.net/15809578630724.html"/>
+    <link href="http://www.shengsheng.net/15809578630724.html"/>
     <updated>2020-02-06T10:57:43+08:00</updated>
-    <id>shengsheng.net/15809578630724.html</id>
+    <id>http://www.shengsheng.net/15809578630724.html</id>
     <content type="html"><![CDATA[
 <p>date: 2015-11-18 19:21</p>
 
@@ -333,9 +334,9 @@ InnoDB: using the same InnoDB data or log files.<br/>
   
   <entry>
     <title type="html"><![CDATA[hhkb体验]]></title>
-    <link href="shengsheng.net/15809578630972.html"/>
+    <link href="http://www.shengsheng.net/15809578630972.html"/>
     <updated>2020-02-06T10:57:43+08:00</updated>
-    <id>shengsheng.net/15809578630972.html</id>
+    <id>http://www.shengsheng.net/15809578630972.html</id>
     <content type="html"><![CDATA[
 <p>date: 2015-11-06 09:58</p>
 
@@ -352,9 +353,9 @@ fn + ctrl + shift + esc</p>
   
   <entry>
     <title type="html"><![CDATA[mysql update不了原因]]></title>
-    <link href="shengsheng.net/15809578631013.html"/>
+    <link href="http://www.shengsheng.net/15809578631013.html"/>
     <updated>2020-02-06T10:57:43+08:00</updated>
-    <id>shengsheng.net/15809578631013.html</id>
+    <id>http://www.shengsheng.net/15809578631013.html</id>
     <content type="html"><![CDATA[
 <p>date: 2015-11-05 11:25</p>
 
@@ -367,9 +368,9 @@ fn + ctrl + shift + esc</p>
   
   <entry>
     <title type="html"><![CDATA[if empty打错字的后果。]]></title>
-    <link href="shengsheng.net/15809578631093.html"/>
+    <link href="http://www.shengsheng.net/15809578631093.html"/>
     <updated>2020-02-06T10:57:43+08:00</updated>
-    <id>shengsheng.net/15809578631093.html</id>
+    <id>http://www.shengsheng.net/15809578631093.html</id>
     <content type="html"><![CDATA[
 <p>date: 2015-11-03 14:04</p>
 
@@ -402,9 +403,9 @@ if(empty(\(a) &amp;&amp; empty(\)b))<br/>
   
   <entry>
     <title type="html"><![CDATA[mysql的一些小问题]]></title>
-    <link href="shengsheng.net/15809578631182.html"/>
+    <link href="http://www.shengsheng.net/15809578631182.html"/>
     <updated>2020-02-06T10:57:43+08:00</updated>
-    <id>shengsheng.net/15809578631182.html</id>
+    <id>http://www.shengsheng.net/15809578631182.html</id>
     <content type="html"><![CDATA[
 <p>date: 2015-10-31 09:29</p>
 
@@ -416,9 +417,9 @@ if(empty(\(a) &amp;&amp; empty(\)b))<br/>
   
   <entry>
     <title type="html"><![CDATA[淘宝客链接转换]]></title>
-    <link href="shengsheng.net/15809578631365.html"/>
+    <link href="http://www.shengsheng.net/15809578631365.html"/>
     <updated>2020-02-06T10:57:43+08:00</updated>
-    <id>shengsheng.net/15809578631365.html</id>
+    <id>http://www.shengsheng.net/15809578631365.html</id>
     <content type="html"><![CDATA[
 <p>date: 2015-10-23 15:43</p>
 
@@ -452,9 +453,9 @@ echo $h; //淘宝链接
   
   <entry>
     <title type="html"><![CDATA[php static extends]]></title>
-    <link href="shengsheng.net/15809578632176.html"/>
+    <link href="http://www.shengsheng.net/15809578632176.html"/>
     <updated>2020-02-06T10:57:43+08:00</updated>
-    <id>shengsheng.net/15809578632176.html</id>
+    <id>http://www.shengsheng.net/15809578632176.html</id>
     <content type="html"><![CDATA[
 <p>date: 2015-09-09 11:06</p>
 
@@ -472,9 +473,9 @@ class b exntends a{public static $a=&#39;2&#39;}</p>
   
   <entry>
     <title type="html"><![CDATA[mac dash]]></title>
-    <link href="shengsheng.net/15809578632450.html"/>
+    <link href="http://www.shengsheng.net/15809578632450.html"/>
     <updated>2020-02-06T10:57:43+08:00</updated>
-    <id>shengsheng.net/15809578632450.html</id>
+    <id>http://www.shengsheng.net/15809578632450.html</id>
     <content type="html"><![CDATA[
 <p>date: 2015-09-01 08:34</p>
 
@@ -489,9 +490,9 @@ class b exntends a{public static $a=&#39;2&#39;}</p>
   
   <entry>
     <title type="html"><![CDATA[tabs切换]]></title>
-    <link href="shengsheng.net/15809578632578.html"/>
+    <link href="http://www.shengsheng.net/15809578632578.html"/>
     <updated>2020-02-06T10:57:43+08:00</updated>
-    <id>shengsheng.net/15809578632578.html</id>
+    <id>http://www.shengsheng.net/15809578632578.html</id>
     <content type="html"><![CDATA[
 <p>date: 2015-08-24 08:39</p>
 
@@ -507,9 +508,9 @@ class b exntends a{public static $a=&#39;2&#39;}</p>
   
   <entry>
     <title type="html"><![CDATA[python中的*]]></title>
-    <link href="shengsheng.net/15809578633253.html"/>
+    <link href="http://www.shengsheng.net/15809578633253.html"/>
     <updated>2020-02-06T10:57:43+08:00</updated>
-    <id>shengsheng.net/15809578633253.html</id>
+    <id>http://www.shengsheng.net/15809578633253.html</id>
     <content type="html"><![CDATA[
 <p>date: 2015-08-21 09:09</p>
 
@@ -521,9 +522,9 @@ class b exntends a{public static $a=&#39;2&#39;}</p>
   
   <entry>
     <title type="html"><![CDATA[js在线格式化]]></title>
-    <link href="shengsheng.net/15809578633339.html"/>
+    <link href="http://www.shengsheng.net/15809578633339.html"/>
     <updated>2020-02-06T10:57:43+08:00</updated>
-    <id>shengsheng.net/15809578633339.html</id>
+    <id>http://www.shengsheng.net/15809578633339.html</id>
     <content type="html"><![CDATA[
 <p>date: 2015-08-21 14:21</p>
 
@@ -540,9 +541,9 @@ class b exntends a{public static $a=&#39;2&#39;}</p>
   
   <entry>
     <title type="html"><![CDATA[NetCat笔记]]></title>
-    <link href="shengsheng.net/15809578634347.html"/>
+    <link href="http://www.shengsheng.net/15809578634347.html"/>
     <updated>2020-02-06T10:57:43+08:00</updated>
-    <id>shengsheng.net/15809578634347.html</id>
+    <id>http://www.shengsheng.net/15809578634347.html</id>
     <content type="html"><![CDATA[
 <p>date: 2015-08-18 21:38</p>
 
@@ -577,9 +578,9 @@ class b exntends a{public static $a=&#39;2&#39;}</p>
   
   <entry>
     <title type="html"><![CDATA[docker vagrant页面错误解决]]></title>
-    <link href="shengsheng.net/15809578635146.html"/>
+    <link href="http://www.shengsheng.net/15809578635146.html"/>
     <updated>2020-02-06T10:57:43+08:00</updated>
-    <id>shengsheng.net/15809578635146.html</id>
+    <id>http://www.shengsheng.net/15809578635146.html</id>
     <content type="html"><![CDATA[
 <p>date: 2015-08-17 21:27</p>
 

@@ -1,0 +1,2122 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>  
+	  
+  	shengsheng的博客
+  	
+	</title>
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="atom.xml" rel="alternate" title="shengsheng的博客" type="application/atom+xml">
+
+	<link href="asset/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link href="asset/stylesheets/font-awesome.min.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<script src="asset/javascripts/jquery.min.js"></script>
+	
+
+	<!--[if lt IE 9]><script src="asset/javascripts/html5.js"></script><![endif]-->
+	<!-- <link href='http://fonts.googleapis.com/css?family=Nunito:400,300,700' rel='stylesheet' type='text/css'> -->
+	<style type="text/css">
+/* latin */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Nunito-Light'), url(asset/font/1TiHc9yag0wq3lDO9cw0voX0hVgzZQUfRDuZrPvH3D8.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+/* latin */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Nunito-Regular'), url(asset/font/6TbRXKWJjpj6V2v_WyRbMX-_kf6ByYO6CLYdB4HQE-Y.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+/* latin */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Nunito-Bold'), url(asset/font/TttUCfJ272GBgSKaOaD7KoX0hVgzZQUfRDuZrPvH3D8.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+	</style>
+	
+	<style type="text/css">
+	.container .left-col{ opacity: 1;}
+	#pagenavi a{ font-size: 1.3em;}
+	#pagenavi .next:before{ top: 3px;}
+	#pagenavi .prev:before{ top: 3px;}
+	.container .mid-col .mid-col-container #content .archives .title{ font-size: 1.5em;}
+	.container .mid-col .mid-col-container #content article{ padding: 15px 0px;}
+	#header .subtitle {
+		line-height: 1.2em;
+		padding-top: 8px;
+	}
+	article pre{ background: none; border: none; padding: 0;}
+	article .entry-content{text-align: left;}
+	.share-comment{ padding: 25px 0px; clear: both;}
+	hr{ margin: 20px 0px;border: 0; border-top:solid 1px #ddd;}
+	</style>
+  
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+				<header id="header" class="inner">
+				 
+					
+					<h1><a href="index.html">shengsheng的博客</a></h1>
+					<p class="subtitle">脚本技术员博客</p>
+					<nav id="main-nav">
+						<ul class="main">
+						
+						  <li id=""><a target="self" href="index.html">Home</a></li>
+						
+						  <li id=""><a target="_self" href="archives.html">Archives</a></li>
+						
+						</ul>
+					</nav>
+
+					<nav id="sub-nav">
+						<div class="social">
+
+
+
+
+
+
+
+
+
+
+<a target="_blank" class="github" target="_blank" href="https://github.com/showx" title="GitHub">GitHub</a>
+
+
+								
+
+								<a class="rss" href="atom.xml" title="RSS">RSS</a>
+							
+						</div>
+					</nav>
+				</header>				
+			</div>
+		</div>	
+		<div class="mid-col">
+			<div class="mid-col-container"> <div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
+
+
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2014-09-04T10:57:45+08:00" itemprop="datePublished">2014/09/04</time>
+			</div>
+			
+			 
+			
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578656683.html" itemprop="url">
+		Nginx ssi 设置</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2014-09-04 16:46</p>
+
+<p>一：为什么用ssi?</p>
+
+<p>一个登录用户在页面访问的时候如何充分利用 cache?</p>
+
+<p>页面静态化的一个大问题是登录用户访问页面如何静态化。例如首页，大部分的页面内容需要缓存但是用户登录后的个人信息是动态信息，不能缓存。那么如何解决这个&quot;页面部分缓存&quot;问题？</p>
+
+<p>现有的方案是利用 SSI - Server Side include.</p>
+
+<p>Nginx SSI 实现是 <a href="http://wiki.nginx.org/NginxHttpSsiModule">http://wiki.nginx.org/NginxHttpSsiModule</a></p>
+
+<p>这里最关键的就是静态文件可以包含一个动态的网页的 URL.</p>
+
+<p>二：配置ssi</p>
+
+<p>主要是三个参数，ssi，ssi_silent_errors和ssi_types，均可以放在http,server和location的作用域下。</p>
+
+<p>ssi on<br/>
+开启ssi支持，默认是off</p>
+
+<p>ssi_silent_errors on<br/>
+默认值是off，开启后在处理SSI文件出错时不输出错误提示:&quot;[an error occurred while processing the directive] &quot;</p>
+
+<p>ssi_types <br/>
+默认是ssi_types text/html，所以如果需要htm和html支持，则不需要设置这句，如果需要shtml支持，则需要设置：ssi_types text/shtml</p>
+
+<p>SSI的格式：<br/>
+&lt; !--#include file=&quot;bottom.htm&quot;--&gt;<br/>
+或<br/>
+&lt; !--#include virtual=&quot;/hx/bottom.htm&quot;--&gt;<br/>
+路径是相对server中root根目录。</p>
+
+<p>更多请参见官方文档：<a href="http://wiki.nginx.org/NginxChsHttpSsiModule">http://wiki.nginx.org/NginxChsHttpSsiModule</a></p>
+
+<p>示例：</p>
+
+<p>1.开启shtml后缀的文件名支持ssi<br/>
+server{<br/>
+    ......<br/>
+    ssi on;<br/>
+    ssi_silent_errors on;<br/>
+    ssi_types text/shtml;<br/>
+}</p>
+
+<p>2.开启html后缀的文件名支持ssi<br/>
+server{<br/>
+    ......<br/>
+    ssi on;<br/>
+    ssi_silent_errors on;<br/>
+}</p>
+
+<p>3.在zt目录下开启html后缀的文件名支持ssi<br/>
+server{<br/>
+    ......<br/>
+    location /hx/{<br/>
+        ssi on;<br/>
+        ssi_silent_errors on;<br/>
+    }<br/>
+}</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2014-08-16T10:57:45+08:00" itemprop="datePublished">2014/08/16</time>
+			</div>
+			
+			 
+			
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578657494.html" itemprop="url">
+		关于博客时快时慢</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2014-08-16 11:27</p>
+
+<p>自我感觉博客也是很慢的， 用免费的东西就是这样的鸟，没备案嘛〜 域名是转去国外代理再转回国内的！〜！〜!<br/>
+  本博客第五次搬家了，之前的相册等都木有鸟，有快速备案或更好空间介绍可以联系本博主。。<br/>
+  最近在研究Swoole,,php fans可以一起研究一下。<br/>
+Swoole:<br/>
+PHP语言的高性能网络通信框架，提供了PHP语言的异步多线程服务器，异步TCP/UDP网络客户端，异步MySQL，数据库连接池，AsyncTask，消息队列，毫秒定时器，异步文件读写，异步DNS查询。<br/>
+Swoole可以广泛应用于互联网、移动通信、企业软件、网络游戏、物联网、车联网、智能家庭等领域。 使用PHP+Swoole作为网络通信框架，可以使企业IT研发团队的效率大大提升，更加专注于开发创新产品。</p>
+
+<p>\(serv = new swoole_server(&quot;127.0.0.1&quot;, 9501);<br/>
+\)serv-&gt;set(array(<br/>
+    &#39;worker_num&#39; =&gt; 8,   //工作进程数量<br/>
+    &#39;daemonize&#39; =&gt; true, //是否作为守护进程<br/>
+));<br/>
+\(serv-&gt;on(&#39;connect&#39;, function (\)serv, \(fd){<br/>
+    echo &quot;Client:Connect.\n&quot;;<br/>
+});<br/>
+\)serv-&gt;on(&#39;receive&#39;, function (\(serv, \)fd, \(from_id, \)data) {<br/>
+    \(serv-&gt;send(\)fd, &#39;Swoole: &#39;.\(data);<br/>
+    \)serv-&gt;close(\(fd);<br/>
+});<br/>
+\)serv-&gt;on(&#39;close&#39;, function (\(serv, \)fd) {<br/>
+    echo &quot;Client: Close.\n&quot;;<br/>
+});<br/>
+$serv-&gt;start();</p>
+
+<p>\(client = new swoole_client(SWOOLE_SOCK_TCP, SWOOLE_SOCK_ASYNC);<br/>
+//设置事件回调函数<br/>
+\)client-&gt;on(&quot;connect&quot;, function(\(cli) {<br/>
+    \)cli-&gt;send(&quot;hello world\n&quot;);<br/>
+});<br/>
+\(client-&gt;on(&quot;receive&quot;, function(\)cli, \(data){<br/>
+    echo &quot;Received: &quot;.\)data.&quot;\n&quot;;<br/>
+});<br/>
+\(client-&gt;on(&quot;error&quot;, function(\)cli){<br/>
+    echo &quot;Connect failed\n&quot;;<br/>
+});<br/>
+\(client-&gt;on(&quot;close&quot;, function(\)cli){<br/>
+    echo &quot;Connection close\n&quot;;<br/>
+});<br/>
+//发起网络连接<br/>
+$client-&gt;connect(&#39;127.0.0.1&#39;, 9501, 0.5);</p>
+
+<p>\(fp = stream_socket_client(&quot;tcp://127.0.0.1:80&quot;, \)code, \(msg, 3);<br/>
+if (!\)fp) {<br/>
+    exit(&quot;\(errstr (\)errno)\n&quot;);<br/>
+}<br/>
+\(http_request = &quot;GET /index.html HTTP/1.1\r\n&quot;;<br/>
+\)http_request .= &quot;Host: localhost\r\n\r\n&quot;;<br/>
+fwrite(\(fp, \)http_request);<br/>
+swoole_event_add(\(fp, function(\)fp){<br/>
+    echo fread(\(fp, 8192);<br/>
+    swoole_event_del(\)fp);<br/>
+    fclose($fp);<br/>
+});<br/>
+echo &quot;http response:\n&quot;;<br/>
+//swoole_event_wait(); //低于PHP5.4需要加swoole_event_wait</p>
+
+<p>\(serv = new swoole_server(&quot;127.0.0.1&quot;, 9502);<br/>
+\)serv-&gt;set(array(&#39;task_worker_num&#39; =&gt; 4));<br/>
+\(serv-&gt;on(&#39;Receive&#39;, function(\)serv, \(fd, \)from_id, \(data) {<br/>
+    \)task_id = \(serv-&gt;task(&quot;Async&quot;);<br/>
+    echo &quot;Dispath AsyncTask: id=\)task_id\n&quot;;<br/>
+});<br/>
+\(serv-&gt;on(&#39;Task&#39;, function (\)serv, \(task_id, \)from_id, \(data) {<br/>
+    echo &quot;New AsyncTask[id=\)task_id]&quot;.PHP_EOL;<br/>
+    \(serv-&gt;finish(&quot;\)data -&gt; OK&quot;);<br/>
+});<br/>
+\(serv-&gt;on(&#39;Finish&#39;, function (\)serv, \(task_id, \)data) {<br/>
+    echo &quot;AsyncTask[\(task_id] Finish: \)data&quot;.PHP_EOL;<br/>
+});<br/>
+$serv-&gt;start();</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2014-07-22T10:57:45+08:00" itemprop="datePublished">2014/07/22</time>
+			</div>
+			
+			 
+			
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578657672.html" itemprop="url">
+		php缩小png图片不损失透明色的解决方法</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2014-07-22 14:57</p>
+
+<p>png图片如果带了透明色按照jpg的方式来缩小，就会造成透明色损失。那么如何处理才能保存透明色呢？下面的代码就可以解决这个问题</p>
+
+<p>主要是利用gd库的两个方法：<br/>
+复制代码 代码如下:</p>
+
+<p>imagecolorallocatealpha //分配颜色 + alpha<br/>
+imagesavealpha //设置在保存 png 图像时保存完整的 alpha 通道信息<br/>
+代码示例：<br/>
+复制代码 代码如下:</p>
+
+<p>//获取源图gd图像标识符<br/>
+\(srcImg = imagecreatefrompng(&#39;./src.png&#39;);<br/>
+\)srcWidth = imagesx(\(srcImg);<br/>
+\)srcHeight = imagesy(\(srcImg);<br/>
+//创建新图<br/>
+\)newWidth = round(\(srcWidth / 2);<br/>
+\)newHeight = round(\(srcHeight / 2);<br/>
+\)newImg = imagecreatetruecolor(\(newWidth, \)newHeight);<br/>
+//分配颜色 + alpha，将颜色填充到新图上<br/>
+\(alpha = imagecolorallocatealpha(\)newImg, 0, 0, 0, 127);<br/>
+imagefill(\(newImg, 0, 0, \)alpha);<br/>
+//将源图拷贝到新图上，并设置在保存 PNG 图像时保存完整的 alpha 通道信息<br/>
+imagecopyresampled(\(newImg, \)srcImg, 0, 0, 0, 0, \(newWidth, \)newHeight, \(srcWidth, \)srcHeight);<br/>
+imagesavealpha(\(newImg, true);<br/>
+imagepng(\)newImg, &#39;./dst.png&#39;);</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2013-12-25T02:20:49+08:00" itemprop="datePublished">2013/12/25</time>
+			</div>
+			
+			 
+			
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578660018.html" itemprop="url">
+		Git中从远程的分支获取最新的版本到本地有这样2个命令：</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<ol>
+<li>git fetch：相当于是从远程获取最新版本到本地，不会自动merge</li>
+</ol>
+
+<p>git fetch origin master<br/>
+git log -p master..origin/master<br/>
+git merge origin/master</p>
+
+<pre><code class="language-text">以上命令的含义：
+</code></pre>
+
+<p>首先从远程的origin的master主分支下载最新的版本到origin/master分支上<br/>
+   然后比较本地的master分支和origin/master分支的差别<br/>
+   最后进行合并<br/>
+   上述过程其实可以用以下更清晰的方式来进行：<br/>
+ git fetch origin master:tmp<br/>
+git diff tmp <br/>
+git merge tmp</p>
+
+<pre><code class="language-text">从远程获取最新的版本到本地的test分支上
+</code></pre>
+
+<p>之后再进行比较合并</p>
+
+<ol>
+<li>git pull：相当于是从远程获取最新版本并merge到本地<br/>
+git pull origin master</li>
+</ol>
+
+<p>上述命令其实相当于git fetch 和 git merge<br/>
+在实际使用中，git fetch更安全一些<br/>
+因为在merge前，我们可以查看更新情况，然后再决定是否合并<br/>
+结束</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2013-12-08T10:57:46+08:00" itemprop="datePublished">2013/12/08</time>
+			</div>
+			
+			 
+			
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578660682.html" itemprop="url">
+		科目二</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2013-12-08 18:52</p>
+
+<p>侧倒看车身，弯路直角看车轮。上坡看车头。</p>
+
+<p>侧方位停车：</p>
+
+<p>车手柄和开始线平行，向右打死。</p>
+
+<p>后退时修，左镜看到框的对角，打平。</p>
+
+<p>从左镜看车轮压线，向左打死。</p>
+
+<p>&nbsp;</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2013-10-28T10:57:46+08:00" itemprop="datePublished">2013/10/28</time>
+			</div>
+			
+			 
+			
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578663062.html" itemprop="url">
+		标记</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2013-10-28 10:22</p>
+
+<p>一般用来原样输出HTML代码都是用的：<br/>
+<pre><textarea>。。。</textarea></pre><br/>
+其实还有另一对可原样输出代码的标记：<br/>
+<xmp>。。。</xmp><br/>
+在网页上显示html代码标记<xmp></xmp>有时我们会将html代码显示在网页上,直接写会有问题,如果我们将要显示的html代码放在<xmp></xmp>中就可以实现</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2013-10-09T10:57:46+08:00" itemprop="datePublished">2013/10/09</time>
+			</div>
+			
+			 
+			
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578663859.html" itemprop="url">
+		Mysql的varchar排序按照数字顺序</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2013-10-09 14:41</p>
+
+<p>自己建表的时候，把一个字段类型创建为varchar(2) ，其实应该建为int(2)的。因为我只允许输出数字。这本来也没什么，无非就是占点空间，懒得改了。但是今天在后台发现排序有问题。于是，没办法，改之。下面简单说一下MySQL的varchar排序问题，引以为戒。<br/>
+下面，我从数据库里面以server_id排一下序，大家来看一下排序后的结果：<br/>
+select server_id from cardserver where game_id = 1 order by server_id desc limit 10;<br/>
++-----------+<br/>
+| server_id |<br/>
++-----------+<br/>
+| 8         | <br/>
+| 7         | <br/>
+| 6         | <br/>
+| 5         | <br/>
+| 4         | <br/>
+| 3         | <br/>
+| 2         | <br/>
+| 10        | <br/>
+| 1         | <br/>
++-----------+</p>
+
+<p>很明显，我想要的结果应该是 10,8,7,6,5 这样的。但是这个10排在了2的后面。按照字符串来排的。其实我是想把它当做数值来排。<br/>
+手动转换类型：<br/>
+用下面的方法就可以了，使server_id+0之后再排序，问题解决了。<br/>
+select server_id from cardserver where game_id = 1 order by server_id+0 desc limit 10;<br/>
++-----------+<br/>
+| server_id |<br/>
++-----------+<br/>
+| 10        | <br/>
+| 8         | <br/>
+| 7         | <br/>
+| 6         | <br/>
+| 5         | <br/>
+| 4         | <br/>
+| 3         | <br/>
+| 2         | <br/>
+| 1         | <br/>
++-----------+</p>
+
+<p>使用MySQL函数CAST/CONVERT：<br/>
+mysql为我们提供了两个类型转换函数：CAST和CONVERT，现成的东西我们怎能放过？<br/>
+CAST() 和CONVERT() 函数可用来获取一个类型的值，并产生另一个类型的值。<br/>
+这个类型 可以是以下值其中的 一个：<br/>
+BINARY[(N)]<br/>
+CHAR[(N)]<br/>
+DATE<br/>
+DATETIME<br/>
+DECIMAL<br/>
+SIGNED [INTEGER]<br/>
+TIME<br/>
+UNSIGNED [INTEGER]<br/>
+所以我们也可以用CAST解决问题：<br/>
+select server_id from cardserver where game_id = 1 order by CAST(server_id as SIGNED) desc limit 10;<br/>
+也可以使用CONVERT来搞定此问题：<br/>
+select server_id from cardserver where game_id = 1 order by CONVERT(server_id,SIGNED) desc limit 10;</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2013-09-26T10:57:46+08:00" itemprop="datePublished">2013/09/26</time>
+			</div>
+			
+			 
+			
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578664030.html" itemprop="url">
+		我对阿厘客服的看法</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2013-09-26 20:07</p>
+
+<p>先前，遇到问题我先是发邮件处理，邮件实在说不清，最近弄了个阿厘云客服。</p>
+
+<p>第一次交给客服处理，勉强可以接受。 第二次继续问个个都不懂回答，从客服2转到客服5。</p>
+
+<p>这个都算了，解答一个问题长达4天之久。而且我见他们听不清楚的时候，提出需要技术客服解答。说是帮我问技术，但问技术却回答不了可以多久之内回复。＝ ＝，如果项目很赶，或尽快修bug，这不是给你玩死么。＝ ＝ 。</p>
+
+<p>最离谱的廉洁，说我网站没有备案。我擦，我做了这么久还不知道要备案才能做淘宝客么。</p>
+
+<p>对于阿厘的评分，10分，我最多只能给1分，太多忽悠。太多乱说。更多推开。</p>
+
+<p>有兴趣的朋友可以去体验一下。</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2013-02-25T10:57:46+08:00" itemprop="datePublished">2013/02/25</time>
+			</div>
+			
+			 
+			
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578665794.html" itemprop="url">
+		js编码引发的问题</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2013-02-25 22:15</p>
+
+<p>有时候加载js运行不了，因为js文件编码与页面的不一样，在有些浏览器不支持，犹其是IE6了。</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2013-01-24T05:55:46+08:00" itemprop="datePublished">2013/01/24</time>
+			</div>
+			
+			 
+			
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578665837.html" itemprop="url">
+		title: 自己写的验证码JQUERY插件</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2013-01-24 17:55</p>
+
+<p>调用方式：</p>
+
+<pre><code class="language-$(&quot;#myform&quot;).captchashow({">            label:&#39;.yanzheng&#39;, //显示验证码的东西
+            inputtext:&#39;.yz&#39;,  //验证输入的input
+ });
+</code></pre>
+
+<p>具体体码：</p>
+
+<pre><code class="language-/*">* Author: show  showshou@126.com
+* DATE:2013.1.24
+*/
+(function($) {
+$.fn.captchashow = function(options) {    
+var opts = $.extend({}, $.fn.captchashow.defaults, options);
+var code,tmp;
+$form = $(this),
+tmp = createCode();
+$(opts.label).html(tmp);
+$(opts.label).attr(&quot;ss&quot;,tmp);
+this.find(&quot;input[type=submit]&quot;).attr(&#39;disabled&#39;,&#39;true&#39;);
+$yz = $(&#39;#yz&#39;);
+$yz[0].addEventListener(&#39;keyup&#39;, yzs, false);
+
+function yzs(){
+    if(this.value == $(opts.label).attr(&#39;ss&#39;)){
+        opts.onSuccess();
+    }else{
+        $form.find(&quot;input[type=submit]&quot;).attr(&#39;disabled&#39;,&#39;true&#39;);
+    }
+}
+}
+$.fn.captchashow.defaults = {
+    label:&#39;.yanzheng&#39;,
+    inputtext:&#39;.yz&#39;,
+    onSuccess: function() {
+               // Enable the submit button:
+               $form.find(&quot;input[type=submit]&quot;).removeAttr(&#39;disabled&#39;);
+               return;
+    }
+}
+function createCode(){ 
+    code = new Array();
+    var codeLength = 4;
+    var selectChar = new Array(2,3,4,5,6,7,8,9,&#39;A&#39;,&#39;B&#39;,&#39;C&#39;,&#39;D&#39;,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;J&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;U&#39;,&#39;V&#39;,&#39;W&#39;,&#39;X&#39;,&#39;Y&#39;,&#39;Z&#39;);
+    for(var i=0;i&lt;codeLength;i++) {
+       var charIndex = Math.floor(Math.random()*32);
+       code +=selectChar[charIndex];
+    }
+    return code;
+};
+})(jQuery);
+
+</code></pre>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2011-12-07T10:57:46+08:00" itemprop="datePublished">2011/12/07</time>
+			</div>
+			
+			 
+			
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578666206.html" itemprop="url">
+		我的助理辞职了！——给不听话的下属看看(转)</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2011-12-07 14:08</p>
+
+<pre><code class="language-text"> 1，当时公司招了大批应届本科和研究生毕业的新新人类。平均年龄25岁。那个新的助理，是经过多次面试后，我亲自招回来的一个女孩。名牌大学本科毕业，聪明，性格活泼。私下里我得承认，我招她的一个很重要的原因，除了她在大学里优秀的表现之外，还因为她写了一手漂亮的字。女孩能写一手好字的不多，尤其像她，看起来长发飘飘，多么女性化的一个姑娘，一手字却写的铿锵倜傥，让我对她不由多了很多好感。 -　　 -
+</code></pre>
+
+<p>　　手把手的教。从工作流程到待人接物。她也学的快。很多工作一教就上手。一上手就熟练。跟各位同事也相处的颇融洽。我开始慢慢的给她一些协调的工作，各部门之间以及各分公司之间的业务联系和沟通让她尝试着去处理。 -<br/>
+　　 -<br/>
+　　开始经常出错。她很紧张，来找我谈。我告诉她：错了没关系，你且放心按照你的想法去做。遇到问题了，来问我，我会告诉你该怎么办。仍然错。又来找我，这次谈的比较深入，她的困惑是，为什么总是让她做这些琐碎的事情？我当时问她：什么叫做不琐碎的工作呢？ -<br/>
+　　她答不上来，想了半天，跟我说：我总觉得，我的能力不仅仅能做这些，我还能做一些更加重要的事情。那次谈话，进行了1小时。我知道，我说的话，她没听进去多少。后来我说，先把手头的工作做好，先避免常识性错误的发生。然后循序渐进罢。 -<br/>
+　　 -<br/>
+　　2，半年以后，她来找我，第一次提出辞职。我推掉了约会，跟她谈辞职的问题。问起辞职的原因，她跟我直言：本科四年，功课优秀，没想到毕业后找到了工作，却每天处理的都是些琐碎的事情。没有成就感。我又问她：你觉得，在你现在所有的工作中，最没有意义的最浪费你的时间精力的工作，是什么？她马上答我：帮您贴发票，然后报销，然后到财务去走流程，然后把现金拿回来给您。 -<br/>
+　　 -<br/>
+　　我笑着问她：你帮我贴发票报销有半年了吧？通过这件事儿，你总结出了一些什么信息？ -<br/>
+　　 -<br/>
+　　她呆了半天，答我：贴发票就是贴发票，只要财务上不出错，不就行了呗，能有什么信息？ -<br/>
+　　 -<br/>
+　　我说，我来跟你讲讲，当年我的做法吧：９８年的时候，我从财务被调到了总经理办公室，担任总经理助理的工作。其中有一项工作，就是跟你现在做的一样，帮总经理报销他所有的票据。本来这个工作就像你你刚才说的，把票据贴好，然后完成财务上的流程，就可以了。 -<br/>
+　　其实票据是一种数据记录，它记录了和总经理乃至整个公司营运有关的费用情况。看起来没有意义的一堆数据，其实它们涉及到了公司各方面的经营和运作。于是我建立了一个表格，将所有总经理在我这里报销的数据按照时间，数额，消费场所，联系人，电话等等记录下来。 -<br/>
+　　我起初建立这个表格的目的很简单，我是想在财务上有据可循，同时万一我的上司有情况来询问我的时候，我会有准确的数据告诉他。通过这样的一份数据统计，渐渐的我发现了一些上级在商务活动中的规律，比如，哪一类的商务活动，经常在什么样的场合，费用预算大概是多少；总经理的公共关系常规和非常规的处理方式。等等等等。 -<br/>
+　　当我的上级发现，他布置工作给我的时候，我会处理的很妥贴。有一些信息是他根本没有告诉我的，我也能及时准确的处理。他问我为什么，我告诉了他我的工作方法和信息来源。 -<br/>
+　　渐渐的，他基于这种良性积累，越来越多的交待更加重要的工作。再渐渐的，一种信任和默契就此产生，我升职的时候，他说我是他用过的最好用的助理。 -<br/>
+　　 -<br/>
+　　说完这些长篇大论，我看着这个姑娘，她愣愣的看着我。我跟她直言：我觉得你最大的问题，是你没有用心。在看似简单不动脑子就能完成的工作里，你没有把你的心沉下去，所以，半年了，你觉得自己没有进步。她不出声。但是收回了辞职报告。 -<br/>
+　　 -<br/>
+　　又坚持了３个月，她还是辞职了。这次我没有留她。让她走了。 -<br/>
+　　后来她经常在ＭＳＮ上跟我聊天。告诉我她的新工作的情况。一年内，她换了三份工作。每一次都坚持不了多久。每一次她都说新的工作不是她想要的工作。０５年的时候，她又一次辞职了。很苦恼，跑来找我，要跟我吃饭。我请她去写字楼后面的商场吃日本料理。吃到中途，忽然跟我说：我有些明白你以前说的话是什么意思了。 -<br/>
+　　 -<br/>
+　　3，所谓的职业生涯，其实你很难预测到你将来真正要从事什么工作，将来所要从事的工作，是否跟你在大学里学的专业有关。大多数人，很有可能将来所作的工作，跟他当初所学的专业一点关系都没有。从22岁大学毕业在26岁之间这四年，重要的不是你做了什么，重要的是你在工作中养成了怎么样的良好的工作习惯。这个良好的工作习惯，指的是：认真，踏实的工作作风，以及是否学会了如何用最快的时间接受新的事物，发现新事物的内在规律，比别人更短时间内掌握这些规律并且处理好它们。具备了以上的要素，你就成长为一个被人信任的工作的人。 -<br/>
+　　 -<br/>
+　　人都有惰性，也都愿意用那些用起来顺手的人。当你具备了被人信任的基础，并且在日常的工作中逐渐表现出你的踏实，聪明，和细致的时候，越来越多的工作机会就会提供到你面前。原因很简单，用一句话就能交代清楚并且能被你顺利完成的工作，谁愿意说三句话甚至半小时交待一个怎么都不明白的人呢？沟通也是一种成本，沟通的时间越少，内耗越少，这是作为管理者最清楚的一件事。 -<br/>
+　　 -<br/>
+　　当你有比别人更多的工作机会去接触那些你没有接触过的工作的时候，你就有了比别人多的学习机会，人人都喜欢聪明勤奋的学生，作为管理者，大概更是如此。 -　　 -<br/>
+　　一个新手，大多数新手，在这四年里，是看不出太大的差距的。但是这四年的经历，为以后的职业生涯的发展奠定的基础，是至关重要的。很多人不在乎年轻时走弯路，很多人觉得日常的工作人人都能做好没什么了不起。然而就是这些简单的工作，循序渐进的、隐约的，成为今后发展的分水岭。 -<br/>
+　　 -<br/>
+　　漫不经心的对待基层工作的最大的损失，就是将看似简单的事物性处理方式，分界成为长远发展的能力问题。 -<br/>
+　　 -<br/>
+　　聪明的人，总是不认为自己的能力有问题。时间长了，他会抱怨自己运气不好，抱怨那些看起来资质普通的人，总能比自己更能走狗屎运。抱怨她容貌比自己好，或者他更会讨领导欢心。等等等等。慢慢的，影响心态。所谓的怀才不遇，有时是这种情况。 -<br/>
+　　 -<br/>
+　　工作需要一个聪明人，工作其实更需要一个踏实的人。在聪明和踏实之间，我更愿意选择后者。 -<br/>
+　　 -<br/>
+　　而踏实，是人人都能做到的。和先天条件没有太大关系</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2011-05-25T10:57:46+08:00" itemprop="datePublished">2011/05/25</time>
+			</div>
+			
+			 
+			
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578666756.html" itemprop="url">
+		4399模板</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2011-05-25 11:26</p>
+
+<p>最近做了个4399游戏站的模板，有兴趣的朋友去下载看看吧.<a href="http://bbs.kk-site.com/thread-10881-1-1.html">http://bbs.kk-site.com/thread-10881-1-1.html</a></p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2010-11-27T03:31:46+08:00" itemprop="datePublished">2010/11/27</time>
+			</div>
+			
+			 
+			
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578667198.html" itemprop="url">
+		php笔记</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<p>non-null 非空<br/>
+<pre></pre></p>
+
+<p>[:alnum:]<br/>
+[:alpha:]<br/>
+[:blank:]<br/>
+[:cntrl:]<br/>
+[:digit:]<br/>
+[:graph:]<br/>
+[:lower:]<br/>
+[:print:]<br/>
+[:space:]<br/>
+[:upper:]<br/>
+[:xdigit:]</p>
+
+<p>primary key</p>
+
+<p>int<br/>
+decimal(width[,decimal_digits])<br/>
+datetime<br/>
+time<br/>
+date<br/>
+tiimestamp<br/>
+varchar(length)<br/>
+char(0<br/>
+blob</p>
+
+<p>default<br/>
+zerofill<br/>
+unsigned<br/>
+auto_increment</p>
+
+<p>if exists</p>
+
+<p>select distinct</p>
+
+<p>limit</p>
+
+<p>source</p>
+
+<p>describe</p>
+
+<p>表否定加!号例：if(!(a&gt;b))</p>
+
+<p>str_pad</p>
+
+<p>\(_GET[&quot;&quot;]<br/>
+\)_post</p>
+
+<p>\(HTTP_GET_VARS<br/>
+\)http_post_vars<br/>
+\(http_env_vars 环境变量 <br/>
+\)http_server_vars</p>
+
+<p>后门:system()\shell_exec()\passthru()\exec()</p>
+
+<p>row列</p>
+
+<p>substr</p>
+
+<p>3.举例:</p>
+
+<p>　　STORE&#39;abcdefghijlkm&#39; To mystring<br/>
+　　?SUBSTR(mystring ,1,5) 显示 &quot;abcde&quot;<br/>
+　　?SUBSTR(mystring ,6) 显示 &quot;fghijklm&quot;</p>
+
+<p>isset<br/>
+判断变量是否已配置。</p>
+
+<p>语法: int isset(mixed var);</p>
+
+<p>返回值: 整数</p>
+
+<p>函数种类: PHP 系统功能</p>
+
+<p>内容说明 </p>
+
+<p>本函数用来测试变量是否已经配置。若变量已存在则返回 true 值。其它情形返回 false 值。<br/>
+使用范例 </p>
+
+<p>&lt;?php<br/>
+\(a = &quot;test&quot;;<br/>
+echo isset(\)a); // true<br/>
+unset(\(a);<br/>
+echo isset(\)a); // false<br/>
+?&gt; </p>
+
+<p>header<br/>
+exit</p>
+
+<p>mysql_affected_rows<br/>
+mysql_connect<br/>
+mysql_errno<br/>
+mysql_error<br/>
+mysql_fetch_array<br/>
+mysql_insert_id<br/>
+mysql_num_rows<br/>
+mysql_pconnect<br/>
+mysql_real_escape_string<br/>
+mysql_query<br/>
+mysql_select_db<br/>
+mysql_unbuffered_query</p>
+
+<p>mysql_data_seek<br/>
+mysql_client_encoding<br/>
+mysql_close<br/>
+mysql_fetch_field<br/>
+mysql_fetch_lengths<br/>
+mysql_fetch_object<br/>
+mysql_free_result<br/>
+mysql_get_client_info<br/>
+mysql_get_host_info<br/>
+mysql_get_proto_info<br/>
+mysql_get_server_info<br/>
+mysql_info<br/>
+mysql_list_processes<br/>
+mysql_num_field<br/>
+mysql_ping<br/>
+mysql_thread_id</p>
+
+<p>header()</p>
+
+<p>关于数组：<br/>
+=&gt;<br/>
+var_dump   显示每个元素的类型和值<br/>
+foreach(array_expression as \(value)<br/>
+foreach(array_expression asa \)key=&gt;value)<br/>
+count    &#39;返回元素的数量<br/>
+is_array()     ‘判断是否数组<br/>
+array_count_values(array input)  &#39;计算数组里每个值的实例的数量<br/>
+arrary array_fill()<br/>
+arrary range<br/>
+arrary explode()      &#39;导出句子中的单词作数组<br/>
+string implode()      &#39;连接下来单词作句子。<br/>
+string join()<br/>
+查找数组中的值<br/>
+in_array()       &#39;检查类型<br/>
+array_search()   &#39;不检查类型<br/>
+array_key_exist()      ‘检查成员是否存在<br/>
+array_keys      &#39;数组的字段名<br/>
+array_value()     &#39;输出结果 <br/>
+array_unique()    &#39;输出结果   没有类似[0]=&gt;这样的东西<br/>
+array_merge()    &#39;连接多个数组<br/>
+array_reverse()   &#39;重新排列元素  从尾到开始。<br/>
+sort            &#39;从小到大排序    &#39;字符串排列sort($a,SORT_STRING);<br/>
+                                 SORT_NUMERIC 以数字 SORT_REGULAR 先字母后数字<br/>
+rsort          &#39;从大到小排序<br/>
+asort()        &#39;(保留键值关联性)一样是排序<br/><br/>
+arsort()<br/>
+ksoft()          &#39;根据键排序<br/>
+krsort()<br/>
+usort           &#39;自定义排序<br/>
+uasort<br/>
+uksort<br/>
+strlen          ‘返回长度<br/>
+str_pad         &#39;增加空格<br/>
+strtolower()      &#39;改变大小写<br/><br/>
+strtoupper<br/>
+ucfirst<br/>
+ucwords</p>
+
+<p>清除空白<br/>
+ltrim<br/>
+rtrim<br/>
+trim</p>
+
+<p>strcmp      &#39;字符串比较<br/>
+strncmp<br/>
+substr     &#39;抽取子符串<br/>
+strpos     ‘查找字符串的位置<br/>
+strrpos<br/>
+strstr      输出搜索的开始到最后 区分大小写<br/>
+stristr<br/>
+strrchr     &#39;只匹配第一个字母<br/>
+substr_replace   &#39;替换<br/>
+strtr       &#39;转换字符和子字符串</p>
+
+<p>require      ‘包含文件<br/>
+include</p>
+
+<p>::类引用      &#39;引用变量<br/>
+static        ‘静态变量<br/>
+parent::      &#39;上一层父类<br/>
+protected      ‘状态受保护  允许子类访问父类定义的成员变量与函数，但不允许由类继承关系外的代码直接读取父类的成员变量与函数。<br/>
+final        &#39;可防子类对它重新定义，预防某个子类不小心重新定义这个函数<br/>
+throw try..catch<br/>
+Exception类</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2010-02-06T10:57:46+08:00" itemprop="datePublished">2010/02/06</time>
+			</div>
+			
+			 
+			
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578667154.html" itemprop="url">
+		全文检索</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2010-12-10 01:11</p>
+
+<p>全文检索是指计算机索引程序通过扫描文章中的每一个词，对每一个词建立一个索引，指明该词在文章中出现的次数和位置，当用户查询时，检索程序就根据事先建立的索引进行查找，并将查找的结果反馈给用户的检索方式。这个过程类似于通过字典中的检索字表查字的过程。</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2010-02-06T10:57:46+08:00" itemprop="datePublished">2010/02/06</time>
+			</div>
+			
+			 
+			
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578667250.html" itemprop="url">
+		excel2000自带3D赛车游戏</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2010-11-27 12:47</p>
+
+<p>excel2000自带3D赛车游戏</p>
+
+<p>打开空白》新建》另存WEB页》发布》添加交互对象》在2000行WC列选中按</p>
+
+<p>shift|ctrl|alt同时击excel office logo</p>
+
+<p>方向键    空格开火   H开车灯    O放油烟</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2010-02-06T10:57:46+08:00" itemprop="datePublished">2010/02/06</time>
+			</div>
+			
+			 
+			
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578667504.html" itemprop="url">
+		两个Windows下自动切换IP小脚本</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2010-11-17 05:01</p>
+
+<p>从办公到家庭环境，或者从会议室到办公工位上的IP切换相信已经把你搞的烦死了，那么用下面的2个小脚本吧，呵呵，药到病除。　　 </p>
+
+<p>　　1. 切换成自动获取IP 　　 </p>
+
+<p>　　@echo off　　 </p>
+
+<p>　　netsh interface ip set address name=&quot;local&quot; source=dhcp　　 </p>
+
+<p>　　netsh interface ip set dns name=&quot;local&quot; source=dhcp　　 </p>
+
+<p>　　2. 切换成固定IP 　　 </p>
+
+<p>　　@echo off　　 </p>
+
+<p>　　netsh interface ip set address local static 192.168.0.84 255.255.255.0 192.168.0.254 </p>
+
+<p>　　netsh interface ip set dns local 192.168.0.254　　 </p>
+
+<p>　　netsh interface ip add dns local 202.106.196.115 index=2　　 </p>
+
+<p>　　netsh interface ip add dns local 202.106.0.20 index=3　　 </p>
+
+<p>　　&quot;local&quot; 是你的本地网卡名称，也可能是 &quot;本地连接&quot;，需要自己替换下。如果是2个固定IP间的来回切换，把第2个脚本自己改改吧 :)　　 </p>
+
+<p>　　dns设置中，第一个是set，表示设置，后面两个则是添加，自己替换成当地的dns server。</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2010-02-06T10:57:46+08:00" itemprop="datePublished">2010/02/06</time>
+			</div>
+			
+			 
+			
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578667608.html" itemprop="url">
+		web图书</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2010-10-16 06:32</p>
+
+<p>CSS网站布局实录：基于Web标准的网站设计指南</p>
+
+<p>Flash ActionScript 3殿堂之路</p>
+
+<p>读过的交互书籍整理</p>
+
+<p>在读过的书中，我个人推崇的一些书罗列在下(当然，合适我的不一定合适你)：</p>
+
+<p>交互设计之路<br/>
+UCD火花集<br/>
+设计网事<br/>
+一目了然<br/>
+设计沟通十器<br/>
+GUI设计禁忌<br/>
+Landing page优化权威指南<br/>
+Web Form Design<br/>
+Web 界面设计<br/>
+Designing Interface<br/>
+用户体验草图设计</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2010-02-06T10:57:46+08:00" itemprop="datePublished">2010/02/06</time>
+			</div>
+			
+			 
+			
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578667793.html" itemprop="url">
+		hk工具</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2010-07-19 13:59</p>
+
+<p>MBSA软件检测系统安全</p>
+
+<p>ProtectX扫描器的追踪</p>
+
+<p>Sniffer PortectX</p>
+
+<p>WebDAVScan</p>
+
+<p>Iris</p>
+
+<p>SpyNet sniffer(capture net)</p>
+
+<p>搏获网页内容“艾菲网页侦探”</p>
+
+<p>WebCracker</p>
+
+<p>QuickFyre</p>
+
+<p>Kaboom</p>
+
+<p>VBS脚本病毒生成器</p>
+
+<p>NTLM</p>
+
+<p>MIME</p>
+
+<p>SyGate</p>
+
+<p>间谍、广告的杀手?? AD-aware</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2010-02-06T10:57:46+08:00" itemprop="datePublished">2010/02/06</time>
+			</div>
+			
+			 
+			
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578668135.html" itemprop="url">
+		php万能密码</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2010-05-19 14:55</p>
+
+<p>如果一个网站的前台都是注入漏洞，那么凭经验，万能密码进后台的几率基本上百分之百。可是有的人说对PHP的站如果是GPC魔术转换开启，就会对特殊符号转义，就彻底杜绝了PHP注入。其实说这话的人没有好好想过，更没有尝试过用万能密码进PHP的后台。其实GPC魔术转换是否开启对用万能密码进后台一点影响也没有。</p>
+
+<pre><code class="language-text">    如果你用这样的万能密码‘or&#39;=&#39;or’，当然进不去，理由是GPC开启的时候单引号会被转换。
+
+    PHP注入时我常用的万能密码是：‘or 1=1/*.
+
+    那我们分析一下为什么这可以进后台。
+
+    如果sql语句这样写：“SELECT * FROM admin where name=’”.$_POST[&#39;name&#39;].“‘andpassword=’”.$_POST[&#39;password&#39;].“‘”,那我们在帐号处输入万能密码&#39;or 1=1/*，密码随便输，sql语句就成了select * from admin where name=&#39;&#39;or 1=1/*&#39; and password=’任意字符‘。
+
+    /*为mysql的注释符，这样后面的东西就都被注释掉了，也就是为什么密码随便输的原因。假设GPC转换没有开启，那么请看：where name=&#39;&#39;or 1=1（*/后面的东西被注释掉了），name=&#39;’的逻辑值为假，而后面的1=1逻辑值则为真，对于整体就成了假 or 真，最终的逻辑值还是真，就进后台了。
+
+    那么如果GPC转换开启了，就对单引号进行了转换。语句就变成了where name=&#39;\&#39;or 1=1,再看一下和刚才有什么区别，无非是多了个\。name=&#39;\‘与name=&#39;’的逻辑值一样，都为假，那1=1为真，总的sql语句的逻辑值不还是真吗？那有进不去后台的理由吗？
+
+    所以总的来说，php网站的万能密码可以这样写：‘or 1=1/*，而GPC转换是否开启对它没有任何影响！
+
+    所以请改变你的想法：存在字符型注入的php网站是可以用万能密码&#39;or 1=1/*的
+</code></pre>
+
+<p>转自飞飞</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2010-02-06T10:57:46+08:00" itemprop="datePublished">2010/02/06</time>
+			</div>
+			
+			 
+			
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578668176.html" itemprop="url">
+		检测^^学校工业中心网站比赛</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2010-05-19 10:03</p>
+
+<p>检测到工业中心的漏洞....希望快点修改吧... 我们班还是NO.1....嘿嘿...<br/>
+discuz 0day</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2010-02-06T10:57:46+08:00" itemprop="datePublished">2010/02/06</time>
+			</div>
+			
+			 
+			
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578668268.html" itemprop="url">
+		sc命令</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2010-05-12 13:29</p>
+
+<p>SC命令功能<br/>
+　　SC命令是XP系统中功能强大的DOS命令,SC命令能与“服务控制器”和已安装设备进行通讯。<br/>
+　　SC 是用于与服务控制管理器和服务进行通信的命令行程序。<br/>
+　　SC命令的功能有<br/>
+　　1、SC可以 检索和设置有关服务的控制信息。可以使用 SC.exe 来测试和调试服务程序。<br/>
+　　2、可以设置存储在注册表中的服务属性，以控制如何在启动时启动服务应用程序，以及如何将其作为后台程序运行。即更改服务的启动状态。<br/>
+　　3、SC 命令还可以用来删除系统中的无用的服务。（除非对自己电脑中的软硬件所需的服务比较清楚，否则不建议删除任何系统服务，尤其是基础服务）<br/>
+　　4、SC命令 的参数可以配置指定的服务，检索当前服务的状态，也可以停止和启动服务（功能上类似NET STOP/START命令，但SC速度更快且能停止更多的服务）。<br/>
+　　5、可以创建批处理文件来调用不同的 SC 命令，以自动启动或关闭服务序列。<br/>
+　　SC.exe 提供的功能类似于“控制面板”中“管理工具”项中的“服务”。<br/>
+[编辑本段]SC命令列表及格式<br/>
+　　SC命令不能单独使用,必须和其它的命令结合起来一起使用。一共有24个，如下所示<br/>
+　　sc boot　sc config　sc continue　sc control　sc create　sc delete　sc descrīption　sc enumdepend<br/>
+　　sc failure　sc getdisplayname　sc getkeyname　sc interrogate　sc lock　sc pause　sc qc<br/>
+　　sc qdescrīption　sc qfailure　sc query　sc queryex　sc querylock　sc sdset sc sdshow<br/>
+　　sc　start　sc stop<br/>
+　　在命令行中直接输入SC会显示SC命令的帮助信息，直接输入以上24个命令除sc query 和 sc queryex之外都将显示该SC命令的帮助信息。（输入sc query和sc queryex会显示当前系统中正在运行的所有服务的详细信息，但sc queryex比sc query显示的信息多出来两项:PID和FLAGS）<br/>
+　　SC命令的格式：SC [Servername] command Servicename [Optionname= Optionvalues]<br/>
+　　Servername：指定服务所在的远程服务器的名称。名称必须采用通用命名约定 (UNC) 格式（“\myserver”）。要在本地运行SC.exe，请忽略此参数。<br/>
+　　command ：即以上提到的那24个命令（SC后面的那个，如query,start,stop,create,config等）<br/>
+　　Servicename：服务名，也就是要配置的那个服务的名字，例如你要启动一个服务你就输入sc start +你要启动的服务名。（注意这里的服务名不是服务的显示名称，而是服务名称，这个服务名称可以在系统管理工具下的服务中可以看到，例如在服务中双击DHCP Client可以看到其服务名称是Dhcp，而那个DHCP Client是显示名称，可以用sc命令来更改一个服务的显示名称）<br/>
+　　Optionname= Optionvalues：是选项名和选项的值。<br/>
+　　例如你要在开机是系统自动加载themes服务，你可以使用sc config themes start= auto，后面的start就是选项，auto是选项的值。（注意=号后面有个空格，所有的使用选项的在=号后面都要加个空格再加上选项值）<br/>
+[编辑本段]SC命令的用法<br/>
+　　下面给出每个命令详细的用法<br/>
+　　1、sc boot<br/>
+　　表明最近的启动是否应该保存为上次已知的正确配置。<br/>
+　　语法<br/>
+　　Sc [ServerName] boot [{bad | OK}]<br/>
+　　参数<br/>
+　　ServerName：上面已经介绍，在此不在累述（下同）<br/>
+　　[{bad | OK}] <br/>
+　　指定最近的启动是否错误或它是否应该保存为上次已知的正确启动配置。<br/>
+　　下面的示例显示了如何使用 sc boot 命令：<br/>
+　　sc boot ok <br/>
+　　sc boot bad<br/>
+　　2、sc config<br/>
+　　修改注册表和“服务控制管理器”数据库中服务项目的值。<br/>
+　　语法<br/>
+　　Sc [ServerName] config [ServiceName] [type= {own | share | kernel | filesys | rec | adapt | interacttype= {own | share}}] [start= {boot | system | auto | demand | disabled}] [error= {normal | severe | critical | ignore}] [binpath= BinaryPathName] [group= LoadOrderGroup] [tag= {yes | no}] [depend= dependencies] [obj= {AccountName | ObjectName}] [displayname= DisplayName] [password= Password]<br/>
+　　ServiceName<br/>
+　　指定要操作的服务名。（上面也已经介绍，下文不在累述）<br/>
+　　type= {own | share | kernel | filesys | rec | adapt | interacttype= {own | share}} <br/>
+　　指定服务类型。<br/>
+　　own<br/>
+　　服务以其自身的进程运行。不与其他服务共享可执行文件。这是默认值。<br/>
+　　share<br/>
+　　服务作为共享进程运行。与其他服务共享可执行文件。<br/>
+　　kernel<br/>
+　　驱动程序。<br/>
+　　filesys<br/>
+　　文件系统驱动程序。<br/>
+　　rec<br/>
+　　文件系统识别驱动程序（标识计算机上使用的文件系统）。<br/>
+　　adapt<br/>
+　　适配器驱动程序（标识键盘、鼠标、磁盘驱动器这样的硬件项）。<br/>
+　　interact<br/>
+　　服务可以与桌面交互，接收用户的输入。交互服务必须在 LocalSystem 帐户下运行。该类型必须与 type= own 或 type= shared（例如，type= interact type= own）结合使用。自身使用 type= interact 将会产生参数无效的错误。<br/>
+　　start= {boot | system | auto | demand | disabled} <br/>
+　　指定服务的启动类型。 <br/>
+　　boot<br/>
+　　由启动加载程序加载的设备驱动程序。<br/>
+　　system<br/>
+　　在核心初始化过程中启动的设备驱动程序。<br/>
+　　auto<br/>
+　　每次计算机重新启动时都会自动启动、并且即使无人登录到计算机也能正常运行的服务。<br/>
+　　demand<br/>
+　　必须手动启动的服务。如果没有指定 start=，则此项即为默认值。<br/>
+　　disabled<br/>
+　　不能启动的服务。要启动禁用的服务，应将启动类型更改为其他值。<br/>
+　　error= {normal | severe | critical | ignore} <br/>
+　　如果在启动过程中，服务启动失败，则指定错误的严重性。<br/>
+　　normal<br/>
+　　将记录错误，并且显示消息对话框，通知用户服务启动失败。启动将继续。这是默认设置。<br/>
+　　severe<br/>
+　　记录错误（如果存在）。计算机尝试以最新的有效配置重新启动。这可能导致计算机能够重新启动，但服务却仍然无法运行。<br/>
+　　critical<br/>
+　　记录错误（如果存在）。计算机尝试以最新的有效配置重新启动。如果上次已知正确的配置失败，启动也将失败，启动进程将以停止错误而中止。<br/>
+　　ignore<br/>
+　　错误已记录，启动继续。记录错误超出在事件ri志的范围，不再给用户作出提示。 <br/>
+　　binpath= BinaryPathName<br/>
+　　指定指向服务二进制文件的路径。 <br/>
+　　group= LoadOrderGroup<br/>
+　　指定该服务所属组的名称。组列表存储在注册表的 HKLM\System\CurrentControlSet\Control\ServiceGroupOrder 子项中。默认设置为空值。<br/>
+　　tag= {yes | no} <br/>
+　　指定是否在 CreateService 调用中获得 TagID。标记仅用于引导启动或系统启动驱动程序。<br/>
+　　depend= dependencies<br/>
+　　指定必须在此项服务之前启动的服务或组的名称。名称以正斜杠 (/) 分隔。<br/>
+　　obj= {AccountName | ObjectName} <br/>
+　　指定运行服务将使用的帐户名，或指定运行驱动程序将使用的 Windows 驱动程序对象名。默认设置为 LocalSystem。<br/>
+　　displayname= DisplayName<br/>
+　　指定一个可以在用户界面程序中用于为用户标识服务的友好的、有意义的名称。例如，一项服务的子项名是对用户毫无意义的 wuauserv，而显示的名称是“自动更新”。<br/>
+　　password= Password<br/>
+　　指定一个密码。如果使用了非 LocalSystem 的帐户，则此项是必需的。<br/>
+　　备注<br/>
+　　如果参数及其值之间没有空格，（例如，是 type= own，而不是 type=own），则操作会失败。<br/>
+　　示例<br/>
+　　下面的示例显示了如何使用 sc config 命令：<br/>
+　　sc config NewService binpath= &quot;ntsd -d c:\windows\system32\NewServ.exe&quot;<br/>
+　　３、sc continue<br/>
+　　为了恢复暂停的服务，要给服务发送一个 CONTINUE 控制请求。<br/>
+　　语法<br/>
+　　Sc [ServerName] continue [ServiceName]<br/>
+　　参数<br/>
+　　ServerName：略<br/>
+　　ServiceName：略<br/>
+　　备注<br/>
+　　使用 continue 操作来恢复暂停的服务。 <br/>
+　　下面的示例显示了如何使用 sc continue 命令：<br/>
+　　sc continue tapisrv<br/>
+　　４、sc control<br/>
+　　向服务发送 CONTROL 。<br/>
+　　语法<br/>
+　　sc [ServerName] control [ServiceName] [{paramchange | netbindadd | netbindremove | netbindenable | netbinddisable | UserDefinedControlB}]<br/>
+　　参数<br/>
+　　{paramchange | netbindadd | netbindremove | netbindenable | netbinddisable | UserDefinedControlB} <br/>
+　　指定要发送到服务的控制。<br/>
+　　５、sc create<br/>
+　　在注册表和“服务控制管理器”中为服务创建子项和项目。<br/>
+　　语法<br/>
+　　Sc [ServerName] create [ServiceName] [type= {own | share | kernel | filesys | rec | adapt | interacttype= {own | share}}] [start= {boot | system | auto | demand | disabled}] [error= {normal | severe | critical | ignore}] [binpath= BinaryPathName] [group= LoadOrderGroup] [tag= {yes | no}] [depend= dependencies] [obj= {AccountName | ObjectName}] [displayname= DisplayName] [password= Password]<br/>
+　　参数：各个参数的作用参见sc config 命令<br/>
+　　下面的示例显示了如何使用 sc create 命令：<br/>
+　　sc \myserver create NewService binpath= c:\windows\system32\NewServ.exe<br/>
+　　sc create NewService binpath= c:\windows\system32\NewServ.exe type= share start= auto depend= &quot;+TDI Netbios&quot;<br/>
+　　６、sc delete<br/>
+　　从注册表中删除服务子项。如果服务正在运行或者另一个进程有一个该服务的打开句柄，那么此服务将标记为删除。<br/>
+　　语法<br/>
+　　Sc [ServerName] delete [ServiceName]<br/>
+　　参数：略<br/>
+　　备注<br/>
+　　使用“添加或删除程序”删除 DHCP、DNS 或任何其他内置的操作系统服务。“添加或删除程序”不仅会删除该服务的注册表子项，而且还会卸载该服务并删除其所有的快捷方式。 <br/>
+　　下面的示例显示了如何使用 sc delete 命令：<br/>
+　　sc delete newserv<br/>
+　　７、sc descrīption<br/>
+　　设置服务的描述字符串。<br/>
+　　语法<br/>
+　　Sc [ServerName] descrīption [ServiceName] [Descrīption]<br/>
+　　参数：略<br/>
+　　描述<br/>
+　　为指定服务指定描述。这个描述的内容可以在控制面板－管理工具－服务里通过查看该服务的属性看到。如果没有指定字符串，则不会修改该服务的描述。不限制服务描述中可包含的字符数。<br/>
+　　示例<br/>
+　　下面的示例显示了如何使用 sc descrīption 命令：<br/>
+　　sc descrīption newserv &quot;Runs quality of service control.&quot;<br/>
+　　８、sc enumdepend<br/>
+　　枚举依赖此服务的系统组件，这也可以从控制面板－管理工具－服务里通过查看该服务的属性中的依存关系选项卡看到（“下面的系统组件依赖此服务”下面的部分）<br/>
+　　语法<br/>
+　　Sc [ServerName] enumdepend [ServiceName] [BufferSize]<br/>
+　　参数<br/>
+　　BufferSize<br/>
+　　以字节为单位指定枚举缓冲区的大小。默认值为 1024 字节。<br/>
+　　备注<br/>
+　　如果缓冲区不够大，enumdepend 操作只会部分输出依存关系，并指定输出所有依存关系所需的额外缓冲区大小。如果输出被截断，请重新运行该操作并指定更大的缓冲区大小。<br/>
+　　下面的示例显示了如何使用 sc enumdepend 命令：<br/>
+　　sc enumdepend rpcss 5690<br/>
+　　sc enumdepend tapisrv<br/>
+　　９、sc failure<br/>
+　　指定服务失败时要采取的措施。<br/>
+　　语法<br/>
+　　Sc [ServerName] failure [ServiceName] [reset= ErrorFreePeriod] [reboot= BroadcastMessage] [command= CommandLine] [actions= FailureActionsAndDelayTime]<br/>
+　　参数<br/>
+　　reset= ErrorFreePeriod<br/>
+　　指定没有失败的周期长度（单位为秒），此后失败计数应该重置为 0。这个参数必须与 actions= 参数结合使用。<br/>
+　　reboot= BroadcastMessage<br/>
+　　指定服务失败时要广播的消息。<br/>
+　　command= CommandLine<br/>
+　　指定服务失败时要运行的命令行。有关在失败时如何运行批处理或 VBS 文件的详细信息，请参阅“注释”。<br/>
+　　actions= FailureActionsAndDelayTime<br/>
+　　指定失败操作及其延迟时间（单位为毫秒），以正斜杠 (/) 隔开。以下操作均有效：run、restart 和 reboot。此参数必须与 reset= 参数结合使用。失败后不采取任何操作时，请使用 actions= &quot;&quot;。<br/>
+　　备注<br/>
+　　并非所有服务都允许更改其失败选项。其中一些作为服务集的一部分运行。<br/>
+　　要在失败时运行批处理文件，请指定 cmd.exeDrive:\FileName.bat 为 command= 参数，其中 Drive:\FileName.bat 是批处理文件的完全合格的名称。<br/>
+　　要在失败时运行 VBS 文件，请指定 cscrīpt drive:\myscrīpt.vbs 为 command= 参数，其中 Drive:\myscrīpt.vbs 是脚本文件完全合格的名称。<br/>
+　　可以将三种不同的操作指定为 actions= 参数，它们将会在服务的第一次、第二次、第三次失败时使用。<br/>
+　　如果参数及其值之间没有空格，（例如，是 type= own，而不是 type=own），则操作会失败。<br/>
+　　下面的示例显示了如何使用 sc failure 命令：<br/>
+　　sc failure msftpsvc reset= 30 actions= restart/5000<br/>
+　　sc failure dfs reset= 60 command= c:\windows\services\restart_dfs.exe actions= run/5000<br/>
+　　sc failure dfs reset= 60 actions= reboot/30000<br/>
+　　sc failure dfs reset= 60 reboot= &quot;The Distributed File System service has failed.Because of this, the computer will reboot in 30 seconds.&quot; actions= reboot/30000<br/>
+　　sc failure myservice reset= 3600 reboot= &quot;MyService crashed -- rebooting machine&quot; command= &quot;%windir%\MyServiceRecovery.exe&quot; actions= restart/5000/run/10000/reboot/60000<br/>
+　　１０、sc getdisplayname<br/>
+　　获得与特定服务关联的显示名称。<br/>
+　　语法<br/>
+　　Sc [ServerName] getdisplayname [ServiceName] [BufferSize]<br/>
+　　参数<br/>
+　　BufferSize<br/>
+　　指定缓冲区大小（以字节为单位）。默认值为 1024 字节。<br/>
+　　下面的示例显示了如何使用 sc getdisplayname 命令：<br/>
+　　sc getdisplayname clipsrv<br/>
+　　sc getdisplayname tapisrv<br/>
+　　sc getdisplayname sharedaccess<br/>
+　　１１、sc getkeyname<br/>
+　　使用特定服务的显示名称作为输入的内容会获得与其相关联的项名。<br/>
+　　语法<br/>
+　　sc [ServerName] getkeyname [ServiceDisplayName] [BufferSize]<br/>
+　　参数<br/>
+　　ServiceDisplayName<br/>
+　　指定服务的显示名称。<br/>
+　　BufferSize<br/>
+　　指定缓冲区大小（以字节为单位）。默认值为 1024 字节。<br/>
+　　备注<br/>
+　　如果 ServiceDisplayName 包含空格，请使用引号将文本引起来（例如，&quot;Service Display Name&quot;）。<br/>
+　　下面的示例显示了如何使用 sc getkeyname 命令：<br/>
+　　sc getkeyname &quot;remote procedure call (rpc)&quot;<br/>
+　　sc getkeyname &quot;internet connection sharing&quot;<br/>
+　　sc getkeyname clipbook<br/>
+　　１２、sc interrogate<br/>
+　　向服务发送一个 INTERROGATE 控制请求。<br/>
+　　语法<br/>
+　　Sc [ServerName] interrogate [ServiceName]<br/>
+　　参数：略<br/>
+　　备注<br/>
+　　向服务发送 INTERROGATE 会导致该服务使用“服务控制管理器”更新其状态。<br/>
+　　下面的示例显示了如何使用 sc interrogate 命令：<br/>
+　　sc interrogate sharedaccess<br/>
+　　sc interrogate rpcss<br/>
+　　１３、sc lock<br/>
+　　锁定“服务控制管理器”的数据库。<br/>
+　　语法<br/>
+　　sc [ServerName] lock<br/>
+　　参数：略<br/>
+　　备注<br/>
+　　锁定“服务控制管理器”的数据库会阻止启动任何服务。如果要确保服务在停止之后不会启动，请使用这个命令。这可以使您不受干扰地进行一些操作（例如，删除服务）。<br/>
+　　使用 lock 操作锁定“服务控制管理器”的数据库，然后通过键入 u 来使数据库解锁。也可停止锁定数据库的进程。<br/>
+　　下面的示例显示了如何使用 sc lock 命令：<br/>
+　　sc lock<br/>
+　　１４、sc pause<br/>
+　　向服务发送 PAUSE 控制请求。<br/>
+　　语法<br/>
+　　Sc [ServerName] pause [ServiceName]<br/>
+　　参数：略<br/>
+　　备注<br/>
+　　在终止服务之前使用 pause 操作来暂停它。<br/>
+　　并非所有服务都能够被暂停。<br/>
+　　在暂停时并非所有服务都执行同样的操作。一些服务继续为现有客户端服务，但拒绝接受新的客户端。其他的会终止对现有客户端的服务，同时也会拒绝接受新的客户端。<br/>
+　　下面的示例显示了如何使用 sc pause 命令：<br/>
+　　sc pause tapisrv<br/>
+　　１５、sc qc<br/>
+　　查询服务的配置信息。<br/>
+　　语法<br/>
+　　Sc [ServerName] qc [ServiceName] [BufferSize]<br/>
+　　参数<br/>
+　　BufferSize<br/>
+　　指定缓冲区大小（以字节为单位）。默认值为 1024 字节。<br/>
+　　备注<br/>
+　　qc 操作可以显示有关服务的下列信息：<br/>
+　　SERVICE_NAME（服务的注册表子项名称）、TYPE、ERROR_CONTROL、BINARY_PATH_NAME、LOAD_ORDER_GROUP、TAG、DISPLAY_NAME、DEPENDENCIES 和 SERVICE_START_NAME。<br/>
+　　管理员可以使用 SC 来确定任一服务的二进制名称，并查明它是否与其他服务共享一个进程，在命令行下键入下列命令：<br/>
+　　sc qc ServiceName<br/>
+　　SC 有助于将 Microsoft 管理控制台 (MMC) 的服务节点中的服务与“系统监视器”中的进程进行匹配。如果二进制名称是 Services.exe，那么服务共享“服务控制器”进程。<br/>
+　　Services.exe 启动所有的服务。为节约系统资源，几个为 Windows 开发的 Win32 服务被编写为共享 Services.exe 进程。这些服务不作为独立的进程列在“系统监视器”或“任务管理器”之中。Svchost.exe 也是如此，它是许多操作服务共享的服务主机进程。<br/>
+　　因为第三方 Win32 服务也可以配置为共享进程，所以不可能为每一个 Win32 服务创建一个进程。SC 可以用来获得这些服务的配置信息。但是，如果一项服务不与其他服务共享其进程，那么在服务运行时，“系统监视器”中会出现其进程。<br/>
+　　因为 SC 与包含在 Windows 中的 Services.exe 相比，提供了有关服务的更为详细和准确的信息，所以对于服务开发人员来说，SC 更有用处。Services.exe 可以确定服务是正在运行、已停止还是已暂停。尽管这些工具对于正在平稳运行的已调试应用程序已经足够，但它们提供的有关正开发的服务的信息却会使人误解。例如，正在启动的服务不管其实际运行与否都显示为已启动。<br/>
+　　SC 可执行对所有 Windows 服务控制应用编程接口 (API) 函数的调用。通过在命令行下指定这些函数来设置其参数。<br/>
+　　使用 SC，可以查询服务状态，检索存储在状态结构字段中的值。Services.exe 不能提供服务的完整状态，但 SC 可以显示精确的服务状态，以及最新的检查点号码和等待提示。可以将检查点用作调试工具，原因在于它表明了在程序停止响应之前初始化进行的程度。SC 也可以用来指定远程计算机名，以便于在远程计算机上调用服务 API 函数或查看服务状态结构。<br/>
+　　下面的示例显示了如何使用 sc qc 命令：<br/>
+　　sc qc \myserver newsrvice<br/>
+　　sc qc rpcss 248<br/>
+　　１６、sc qdescrīption<br/>
+　　显示服务的描述字符串。<br/>
+　　语法<br/>
+　　Sc [ServerName] qdescrīption [ServiceName] [BufferSize]<br/>
+　　参数<br/>
+　　BufferSize<br/>
+　　指定缓冲区大小（以字节为单位）。默认值为 1024 字节。<br/>
+　　下面的示例显示了如何使用 sc qdescrīption 命令：<br/>
+　　sc qdescrīption rpcss<br/>
+　　sc qdescrīption rpcss 138<br/>
+　　１７、sc qfailure<br/>
+　　显示指定服务失败时要执行的操作。<br/>
+　　语法<br/>
+　　Sc [ServerName] qfailure [ServiceName] [BufferSize]<br/>
+　　参数<br/>
+　　BufferSize<br/>
+　　指定缓冲区大小（以字节为单位）。默认值为 1024 字节。<br/>
+　　备注<br/>
+　　qfailure 操作可以显示有关服务的下列信息：SERVICE_NAME（服务的注册表子项名）、RESET_PERIOD、REBOOT_MESSAGE、COMMAND_LINE 和 FAILURE_ACTIONS。<br/>
+　　下面的示例显示了如何使用 sc qfailure 命令：<br/>
+　　sc qfailure rpcss<br/>
+　　sc qfailure rpcss 20<br/>
+　　１８、sc query<br/>
+　　获得和显示关于指定的服务、驱动程序、服务类型或驱动程序类型的信息。<br/>
+　　语法<br/>
+　　Sc [ServerName] query [ServiceName] [type= {driver | service | all}] [type= {own | share | interact | kernel | filesys | rec | adapt}] [state= {active | inactive | all}] [bufsize= BufferSize] [ri= ResumeIndex] [group= GroupName]<br/>
+　　参数<br/>
+　　ServiceName<br/>
+　　指定由 getkeyname 操作返回的服务名。此 query 参数不与其他的 query 参数结合使用（除了 ServerName）。<br/>
+　　type= {driver | service | all} <br/>
+　　指定需要枚举的内容。默认类型为 service。<br/>
+　　driver<br/>
+　　指定仅枚举驱动程序。<br/>
+　　service<br/>
+　　指定仅枚举服务。<br/>
+　　all<br/>
+　　指定同时枚举驱动程序和服务。<br/>
+　　type= {own | share | interact | kernel | filesys | rec | adapt} <br/>
+　　指定要枚举的服务类型或驱动程序类型。<br/>
+　　own<br/>
+　　服务以其自身的进程运行。不与其他服务共享可执行文件。这是默认值。<br/>
+　　share<br/>
+　　服务作为共享进程运行。与其他服务共享可执行文件。<br/>
+　　interact<br/>
+　　服务可以与桌面交互，接收用户的输入。交互服务必须在 LocalSystem 帐户下运行。<br/>
+　　kernel<br/>
+　　驱动程序。<br/>
+　　filesys<br/>
+　　文件系统驱动程序。<br/>
+　　state= {active | inactive | all} <br/>
+　　指定要枚举的服务的已开始状态。默认状态是 active。<br/>
+　　active<br/>
+　　指定所有的活动服务。<br/>
+　　inactive<br/>
+　　指定所有暂停或停止的服务。<br/>
+　　all<br/>
+　　指定所有服务。<br/>
+　　bufsize= BufferSize<br/>
+　　以字节为单位指定枚举缓冲区的大小。默认大小为 1024 字节。当从查询返回的显示结果超过 1024 个字节时，增加枚举缓冲区的大小。<br/>
+　　ri= ResumeIndex<br/>
+　　指定开始或继续枚举的索引号。默认值为 0。 在查询返回的信息超过默认缓冲区能够显示的大小时，请与 bufsize= 参数结合使用这个参数。<br/>
+　　group= GroupName<br/>
+　　指定要枚举的服务组。默认设置为所有组。<br/>
+　　备注<br/>
+　　如果参数及其值之间没有空格，（例如，是 type= own，而不是 type=own），则操作会失败。<br/>
+　　query 操作可以显示有关服务的下列信息：SERVICE_NAME（服务的注册表子项名）、TYPE、STATE（以及不可用的状态）、WIN32_EXIT_B、SERVICE_EXIT_B、CHECKPOINT 和 WAIT_HINT。<br/>
+　　在某些情况下，type= 参数可以使用两次。type= 参数的第一次出现指定是否查询服务、驱动器或所有这些项。type= 参数的第二次出现指定一个由 create 操作进一步缩小查询范围的类型。<br/>
+　　当 query 命令的显示结果超过了枚举缓冲区的大小时，显示类似于以下内容的消息： <br/>
+　　Enum: more data, need 1822 bytes start resume at index 79<br/>
+　　要显示剩余的 query 信息，请重新运行 query，将 bufsize= 设置为所需的字节数，并将 ri= 设置为指定的索引。例如，在命令行键入下面的指令会显示剩余的输出：<br/>
+　　sc query bufsize= 1822 ri= 79<br/>
+　　下面的示例显示了如何使用 sc query 命令：<br/>
+　　sc query<br/>
+　　sc query messenger<br/>
+　　sc query type= driver<br/>
+　　sc query type= service<br/>
+　　sc query state= all<br/>
+　　sc query bufsize= 50<br/>
+　　sc query ri= 14<br/>
+　　sc query type= service type= interact<br/>
+　　sc query type= driver group= ndis<br/>
+　　１９、sc queryex<br/>
+　　获得和显示关于指定的服务、驱动程序、服务类型或驱动程序类型的扩展信息。<br/>
+　　语法<br/>
+　　Sc [ServerName] queryex [type= {driver | service | all}] [type= {own | share | interact | kernel | filesys | rec | adapt}] [state= {active | inactive | all}] [bufsize= BufferSize] [ri= ResumeIndex][group= GroupName]<br/>
+　　参数<br/>
+　　ServiceName<br/>
+　　指定由 getkeyname 操作返回的服务名。此 queryex 参数不与 ServerName 之外的任何其他 queryex 参数结合使用。<br/>
+　　type= {driver | service | all} <br/>
+　　指定需要枚举的内容。默认类型为 service。<br/>
+　　driver<br/>
+　　指定仅枚举驱动程序。<br/>
+　　service<br/>
+　　指定仅枚举服务。<br/>
+　　all<br/>
+　　指定同时枚举驱动程序和服务。<br/>
+　　type= {own | share | interact | kernel | filesys | rec | adapt} <br/>
+　　指定要枚举的服务类型或驱动程序类型。<br/>
+　　own<br/>
+　　服务以其自身的进程运行。不与其他服务共享可执行文件。这是默认值。<br/>
+　　share<br/>
+　　服务作为共享进程运行。与其他服务共享可执行文件。<br/>
+　　interact<br/>
+　　服务可以与桌面交互，接收用户的输入。交互服务必须在 LocalSystem 帐户下运行。<br/>
+　　kernel<br/>
+　　驱动程序。<br/>
+　　filesys<br/>
+　　文件系统驱动程序。<br/>
+　　state= {active | inactive | all} <br/>
+　　指定要枚举的服务的已开始状态。默认状态是 active。 <br/>
+　　active<br/>
+　　指定所有的活动服务。<br/>
+　　inactive<br/>
+　　指定所有暂停或停止的服务。<br/>
+　　all<br/>
+　　指定所有服务。<br/>
+　　bufsize= BufferSize<br/>
+　　以字节为单位指定枚举缓冲区的大小。默认大小为 1024 字节。<br/>
+　　ri= ResumeIndex<br/>
+　　指定开始或继续枚举的索引号。默认值为 0。<br/>
+　　group= GroupName<br/>
+　　指定要枚举的服务组。默认设置为所有组。<br/>
+　　备注<br/>
+　　如果参数及其值之间没有空格，（例如，是 type= own，而不是 type=own），则操作会失败。<br/>
+　　queryex 操作可以显示有关服务的下列信息：SERVICE_NAME（服务的注册表子项名）、TYPE、STATE（以及不可用的状态）、WIN32_EXIT_B、SERVICE_EXIT_B、CHECKPOINT、WAIT_HINT、PID 和 FLAGS。<br/>
+　　在某些情况下，type= 参数可以使用两次。type= 参数的第一次出现指定是否查询服务、驱动器或所有这些项。type= 参数的第二次出现指定一个由 create 操作进一步缩小查询范围的类型。<br/>
+　　当 queryex 命令的显示结果超过了枚举缓冲区的大小时，显示类似于以下内容的消息： <br/>
+　　Enum: more data, need 2130 bytes start resume at index 75<br/>
+　　要显示剩余的 queryex 信息，请重新运行 queryex，将 bufsize= 设置为所需的字节数，并将 ri= 设置为指定的索引。例如，在命令行键入下面的指令会显示剩余的输出：<br/>
+　　sc queryex bufsize= 2130 ri= 75<br/>
+　　下面的示例显示了如何使用 sc queryex 命令：<br/>
+　　sc queryex messenger<br/>
+　　sc queryex group= &quot;&quot;<br/>
+　　２０、sc querylock<br/>
+　　查询和显示“服务控制管理器”数据库的锁定信息。<br/>
+　　语法<br/>
+　　Sc [ServerName] querylock<br/>
+　　参数：略<br/>
+　　２１、sc sdset<br/>
+　　使用“服务描述符定义语言 (SDDL)”来设置服务的安全描述符。<br/>
+　　语法<br/>
+　　Sc [ServerName] sdset ServiceName ServiceSecurityDescrīptor<br/>
+　　参数<br/>
+　　ServiceSecurityDescrīptor<br/>
+　　在 SDDL 中指定服务描述符。<br/>
+　　备注<br/>
+　　有关 SDDL 的详细信息，请参阅 Microsoft 网站上的 Security Descrīptor Definition Language（安全描述符定义语言）。 <br/>
+　　２２、sc sdshow<br/>
+　　使用 SDDL 显示服务的安全描述符。<br/>
+　　语法<br/>
+　　Sc [ServerName] sdshow ServiceName<br/>
+　　参数：略<br/>
+　　备注<br/>
+　　有关 SDDL 的详细信息，请参阅 Microsoft 网站上的 Security Descrīptor Definition Language（安全描述符定义语言）。 <br/>
+　　示例<br/>
+　　sc sdshow rpcss<br/>
+　　２３、sc start<br/>
+　　启动正在运行的服务。<br/>
+　　语法<br/>
+　　Sc [ServerName] start ServiceName [ServiceArguments]<br/>
+　　参数<br/>
+　　ServiceArguments<br/>
+　　指定传递给要启动的服务的服务参数。<br/>
+　　下面的示例显示了如何使用 sc start 命令：<br/>
+　　sc start tapisrv<br/>
+　　２４、sc stop<br/>
+　　向服务发送 STOP 控制请求。<br/>
+　　语法<br/>
+　　Sc [ServerName] stop ServiceName<br/>
+　　参数：略<br/>
+　　备注<br/>
+　　并非所有服务都能够被停止。<br/>
+　　下面的示例显示了如何使用 sc stop 命令：<br/>
+　　sc stop tapisrv</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2010-02-06T10:57:46+08:00" itemprop="datePublished">2010/02/06</time>
+			</div>
+			
+			 
+			
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578668499.html" itemprop="url">
+		土豆地址已改</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2010-03-26 10:41</p>
+
+<p><a href="http://www.tudou.com/home/_35504862%20http://www.tudou.com/home/showshou/"><a href="http://www.tudou.com/home/_35504862">http://www.tudou.com/home/_35504862</a> </a>改成<a href="http://www.tudou.com/home/showshou/"><a href="http://www.tudou.com/home/showshou/">http://www.tudou.com/home/showshou/</a></a>?? 有兴趣的上去看看。</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2010-02-06T10:57:46+08:00" itemprop="datePublished">2010/02/06</time>
+			</div>
+			
+			 
+			
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578669645.html" itemprop="url">
+		制作花絮</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2010-02-23 04:23</p>
+
+<p><object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="680" height="480" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0"><param name="src" value="http://www.tudou.com/v/xMdy4UJBc6A" /><embed type="application/x-shockwave-flash" width="680" height="480" src="http://www.tudou.com/v/xMdy4UJBc6A"></embed></object></p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2010-02-06T10:57:46+08:00" itemprop="datePublished">2010/02/06</time>
+			</div>
+			
+			 
+			
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578669695.html" itemprop="url">
+		麻吉弟弟串烧</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2010-02-20 15:41</p>
+
+<p><object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="400" height="100" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0"><param name="src" value="http://www.tudou.com/v/G-ZTJ_u0jFg" /><embed type="application/x-shockwave-flash" width="400" height="100" src="http://www.tudou.com/v/G-ZTJ_u0jFg"></embed></object>麻吉弟弟串烧</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2010-02-06T10:57:46+08:00" itemprop="datePublished">2010/02/06</time>
+			</div>
+			
+			 
+			
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578669740.html" itemprop="url">
+		仙剑回忆篇(1)</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2010-02-17 07:08</p>
+
+<p><object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="683" height="480" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0"><param name="src" value="http://www.tudou.com/v/yymireBLg70" /><embed type="application/x-shockwave-flash" width="683" height="480" src="http://www.tudou.com/v/yymireBLg70"></embed></object></p>
+
+<p>以前的作品。</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2010-02-06T10:57:46+08:00" itemprop="datePublished">2010/02/06</time>
+			</div>
+			
+			 
+			
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578669787.html" itemprop="url">
+		仙剑回忆篇（2）</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2010-02-17 07:11</p>
+
+<p><object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="640" height="480" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0"><param name="src" value="http://www.tudou.com/v/A5E1oEL-7Z8" /><embed type="application/x-shockwave-flash" width="640" height="480" src="http://www.tudou.com/v/A5E1oEL-7Z8"></embed></object></p>
+
+
+			
+			
+		</div>
+
+	</article>
+  
+
+</div>
+<nav id="pagenavi">
+	 <a class="prev" href="all.html">Prev</a>  
+	
+	<div class="center"><a href="archives.html">Blog Archives</a></div>
+
+</nav>
+
+</div>
+
+
+
+        </div>
+			<footer id="footer" class="inner">Copyright &copy; 2014
+Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a> &nbsp;&nbsp; 
+Theme by <a href="http://shashankmehta.in/archive/2012/greyshade.html">Shashank Mehta</a>
+      </footer>
+		</div>
+	</div>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+figure{margin: 1em 0;padding: 0;}
+  figcaption{text-align:center;}
+
+/* PrismJS 1.14.0
+https://prismjs.com/download.html#themes=prism-coy&languages=markup+css+clike+javascript */
+/**
+ * prism.js Coy theme for JavaScript, CoffeeScript, CSS and HTML
+ * Based on https://github.com/tshedor/workshop-wp-theme (Example: http://workshop.kansan.com/category/sessions/basics or http://workshop.timshedor.com/category/sessions/basics);
+ * @author Tim  Shedor
+ */
+
+code[class*="language-"],
+pre[class*="language-"] {
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  position: relative;
+  margin: .5em 0;
+  overflow: visible;
+  padding: 0;
+}
+pre[class*="language-"]>code {
+  position: relative;
+  border-left: 10px solid #358ccb;
+  box-shadow: -1px 0px 0px 0px #358ccb, 0px 0px 0px 1px #dfdfdf;
+  background-color: #fdfdfd;
+  background-image: linear-gradient(transparent 50%, rgba(69, 142, 209, 0.04) 50%);
+  background-size: 3em 3em;
+  background-origin: content-box;
+  background-attachment: local;
+}
+
+code[class*="language"] {
+  max-height: inherit;
+  height: inherit;
+  padding: 0 1em;
+  display: block;
+  overflow: auto;
+}
+
+/* Margin bottom to accomodate shadow */
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+  background-color: #fdfdfd;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin-bottom: 1em;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  position: relative;
+  padding: .2em;
+  border-radius: 0.3em;
+  color: #c92c2c;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  display: inline;
+  white-space: normal;
+}
+
+pre[class*="language-"]:before,
+pre[class*="language-"]:after {
+  content: '';
+  z-index: -2;
+  display: block;
+  position: absolute;
+  bottom: 0.75em;
+  left: 0.18em;
+  width: 40%;
+  height: 20%;
+  max-height: 13em;
+  box-shadow: 0px 13px 8px #979797;
+  -webkit-transform: rotate(-2deg);
+  -moz-transform: rotate(-2deg);
+  -ms-transform: rotate(-2deg);
+  -o-transform: rotate(-2deg);
+  transform: rotate(-2deg);
+}
+
+:not(pre) > code[class*="language-"]:after,
+pre[class*="language-"]:after {
+  right: 0.75em;
+  left: auto;
+  -webkit-transform: rotate(2deg);
+  -moz-transform: rotate(2deg);
+  -ms-transform: rotate(2deg);
+  -o-transform: rotate(2deg);
+  transform: rotate(2deg);
+}
+
+.token.comment,
+.token.block-comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: #7D8B99;
+}
+
+.token.punctuation {
+  color: #5F6364;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.function-name,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: #c92c2c;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.function,
+.token.builtin,
+.token.inserted {
+  color: #2f9c0a;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.token.variable {
+  color: #a67f59;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword,
+.token.class-name {
+  color: #1990b8;
+}
+
+.token.regex,
+.token.important {
+  color: #e90;
+}
+
+.language-css .token.string,
+.style .token.string {
+  color: #a67f59;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.token.important {
+  font-weight: normal;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+.token.italic {
+  font-style: italic;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.namespace {
+  opacity: .7;
+}
+
+@media screen and (max-width: 767px) {
+  pre[class*="language-"]:before,
+  pre[class*="language-"]:after {
+    bottom: 14px;
+    box-shadow: none;
+  }
+
+}
+
+/* Plugin styles */
+.token.tab:not(:empty):before,
+.token.cr:before,
+.token.lf:before {
+  color: #e0d7d1;
+}
+
+/* Plugin styles: Line Numbers */
+pre[class*="language-"].line-numbers.line-numbers {
+  padding-left: 0;
+}
+
+pre[class*="language-"].line-numbers.line-numbers code {
+  padding-left: 3.8em;
+}
+
+pre[class*="language-"].line-numbers.line-numbers .line-numbers-rows {
+  left: 0;
+}
+
+/* Plugin styles: Line Highlight */
+pre[class*="language-"][data-line] {
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 0;
+}
+pre[data-line] code {
+  position: relative;
+  padding-left: 4em;
+}
+pre .line-highlight {
+  margin-top: 0;
+}
+
+pre[class*="language-"].line-numbers {
+    position: relative;
+    padding-left: 3.8em;
+    counter-reset: linenumber;
+}
+
+pre[class*="language-"].line-numbers > code {
+    position: relative;
+    white-space: inherit;
+}
+
+.line-numbers .line-numbers-rows {
+    position: absolute;
+    pointer-events: none;
+    top: 0;
+    font-size: 100%;
+    left: -3.8em;
+    width: 3em; /* works for line-numbers below 1000 lines */
+    letter-spacing: -1px;
+    border-right: 1px solid #999;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+}
+
+    .line-numbers-rows > span {
+        pointer-events: none;
+        display: block;
+        counter-increment: linenumber;
+    }
+
+        .line-numbers-rows > span:before {
+            content: counter(linenumber);
+            color: #999;
+            display: block;
+            padding-right: 0.8em;
+            text-align: right;
+        }
+
+</style>
+  
+    
+
+
+</body>
+</html>
