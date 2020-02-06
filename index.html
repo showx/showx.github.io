@@ -150,16 +150,19 @@
 
 <p>在Gradle中，有一些便捷和可扩展的概念可用来定位这些常见问题。前面提到过，每个由AndroidStudio创建的新项目都会生成debug和release构建类型。另外一个概念是productflavor（不同定制的产品），其让管理多个应用或依赖库版本成为可能。构建类型和productflavor经常结合在一起使用，可以很容易地处理测试和生产应用的免费和付费版本。构建类型和productflavor的结合结果被称之为构建variant。</p>
 
-<p>android{buildTypes{release{minifyEnabledfalseproguardFilesgetDefaultProguardFile(&#39;proguardandroid.txt&#39;),&#39;proguardrules.pro&#39;}</p>
-
-<p>android{productFlavors{red{applicationId&#39;com.gradleforandroid.red&#39;versionCode3}blue{applicationId&#39;com.gradleforandroid.blue&#39;minSdkVersion14versionCode4}}}</p>
+<pre><code class="language-android{buildtypes{release{minifyenabledfalseproguardfilesgetdefaultproguardfile(&#39;proguardandroid.txt&#39;),&#39;proguardrules.pro&#39;}">
+android{productFlavors{red{applicationId&#39;com.gradleforandroid.red&#39;versionCode3}blue{applicationId&#39;com.gradleforandroid.blue&#39;minSdkVersion14versionCode4}}}
+</code></pre>
 
 <p>和构建类型类似，productflavor也可以拥有它们自己的源集目录。为一个特殊的flavor创建一个文件夹就和创建一个有flavor名称的文件夹一样简单。你甚至可以为一个特定构建类型和flavor的结合体创建一个文件夹。该文件夹的名称将是flavor名称＋构建类型的名称。例如，如果你想让blueflavor的release版本有一个不同的应用图标，那么文件夹将会被叫作blueRelease。合并文件夹的组成将比构建类型文件夹和productflavor文件夹拥有更高优先级。</p>
 
 <p>源集的引入额外增加了构建进程的复杂性。Gradle的Android插件在打包应用之前将main源集和构建类型源集合并在一起。此外，library项目也可以提供额外的资源，这些也需要被合并。这同样适用于manifest文件。例如，在你应用的debugvariant中可能需要额外的Android权限来存储log文件。你并不想在main源集中申明该权限，因为这会吓跑潜在客户。相反，你可以在debug构建类型的源集中额外添加一个manifest文件来申明额外的权限。</p>
 
-<p>签名配置：<br/>
-android{signingConfigs{staging.initWith(signingConfigs.debug)release{storeFilefile(&quot;release.keystore&quot;)storePassword&quot;secretpassword&quot;keyAlias&quot;gradleforandroid&quot;keyPassword&quot;secretpassword&quot;}}}</p>
+<p>签名配置：</p>
+
+<pre><code class="language-text">android{signingConfigs{staging.initWith(signingConfigs.debug)release{storeFilefile(&quot;release.keystore&quot;)storePassword&quot;secretpassword&quot;keyAlias&quot;gradleforandroid&quot;keyPassword&quot;secretpassword&quot;}}}
+
+</code></pre>
 
 <p>这是建立多模块项目最简单、最直接的方式。在项目的settings.gradle文件中声明了所有的模块，如下所示：include&#39;:app&#39;,&#39;:library&#39;该代码确保了app和library模块包含在构建配置中。你需要做的就是添加模块的目录名。</p>
 
