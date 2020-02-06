@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<title>  
 	  
-  	tabs切换 - shengsheng的博客
+  	客户端 - shengsheng的博客
   	
 	</title>
 
@@ -114,10 +114,83 @@
 		</div>	
 		<div class="mid-col">
 			<div class="mid-col-container"> <div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
 
-	<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-		<h1 class="title" itemprop="name">tabs切换</h1>
+
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2019-09-03T07:46:42+08:00" itemprop="datePublished">2019/09/03</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='client.html'>客户端</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578628586.html" itemprop="url">
+		gradle读书笔记</a></h1>
 		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2019-09-03 19:46</p>
+
+<p>gradle读书笔记</p>
+
+<p>repositories代码块将JCenter配置成一个仓库，在这种情况下，一个仓库意味着一系列的依赖包，或者说，在我们应用和依赖项目中可使用的一系列可下载的函数库。JCenter是一个很有名的Maven库。</p>
+
+<p>dependencies代码块用于配置构建过程中的依赖包。这也意味着你不能将你的应用或依赖项目所需要的依赖包包含在顶层构建文件中。默认情况下，唯一被定义的依赖包是Gradle的Android插件。每个Android模块都需要有Android插件，因为该插件可使其执行Android相关的任务。</p>
+
+<p>只要你使用了allprojects，模块就会被耦合到项目。这意味着，其很可能在没有主项目构建文件的情况下，无法独立构建模块。最初，这看起来可能不是一个问题，但是如果你后面想要分离一个内部依赖库到自己的项目，那么你将需要重构你的构建文件。</p>
+
+<p>第一个，compileSdkVersion，是要用来编译应用的AndroidAPI版本。第二个，buildToolsVersion，是构建工具和编译器使用的版本号。</p>
+
+<p>assemble：集合项目的输出。clean：清理项目的输出。check：运行所有检查，通常是单元测试和集成测试。build：同时运行assemble和check。Java基础插件添加了源集的概念。Android插件构建于这些约定，这样经验丰富的Gradle用户就可以看到这些暴露的任务。在这些基本的任务之上，Android插件也添加了很多Android特有的任务。</p>
+
+<p>connectedCheck：在连接设备或模拟器上运行测试。deviceCheck：一个占位任务，专为其他插件在远端设备上运行测试。installDebug和installRelease：在连接的设备或模拟器上安装特定版本。所有的installtasks都会有相关的uninstall任务。</p>
+
+<p>在Gradle中，有一些便捷和可扩展的概念可用来定位这些常见问题。前面提到过，每个由AndroidStudio创建的新项目都会生成debug和release构建类型。另外一个概念是productflavor（不同定制的产品），其让管理多个应用或依赖库版本成为可能。构建类型和productflavor经常结合在一起使用，可以很容易地处理测试和生产应用的免费和付费版本。构建类型和productflavor的结合结果被称之为构建variant。</p>
+
+<p>android{buildTypes{release{minifyEnabledfalseproguardFilesgetDefaultProguardFile(&#39;proguardandroid.txt&#39;),&#39;proguardrules.pro&#39;}</p>
+
+<p>android{productFlavors{red{applicationId&#39;com.gradleforandroid.red&#39;versionCode3}blue{applicationId&#39;com.gradleforandroid.blue&#39;minSdkVersion14versionCode4}}}</p>
+
+<p>和构建类型类似，productflavor也可以拥有它们自己的源集目录。为一个特殊的flavor创建一个文件夹就和创建一个有flavor名称的文件夹一样简单。你甚至可以为一个特定构建类型和flavor的结合体创建一个文件夹。该文件夹的名称将是flavor名称＋构建类型的名称。例如，如果你想让blueflavor的release版本有一个不同的应用图标，那么文件夹将会被叫作blueRelease。合并文件夹的组成将比构建类型文件夹和productflavor文件夹拥有更高优先级。</p>
+
+<p>源集的引入额外增加了构建进程的复杂性。Gradle的Android插件在打包应用之前将main源集和构建类型源集合并在一起。此外，library项目也可以提供额外的资源，这些也需要被合并。这同样适用于manifest文件。例如，在你应用的debugvariant中可能需要额外的Android权限来存储log文件。你并不想在main源集中申明该权限，因为这会吓跑潜在客户。相反，你可以在debug构建类型的源集中额外添加一个manifest文件来申明额外的权限。</p>
+
+<p>签名配置：<br/>
+android{signingConfigs{staging.initWith(signingConfigs.debug)release{storeFilefile(&quot;release.keystore&quot;)storePassword&quot;secretpassword&quot;keyAlias&quot;gradleforandroid&quot;keyPassword&quot;secretpassword&quot;}}}</p>
+
+<p>这是建立多模块项目最简单、最直接的方式。在项目的settings.gradle文件中声明了所有的模块，如下所示：include&#39;:app&#39;,&#39;:library&#39;该代码确保了app和library模块包含在构建配置中。你需要做的就是添加模块的目录名。</p>
+
+<p>dependencies{compileproject(&#39;:library&#39;)}</p>
+
+<p>AppEngine插件添加了许多任务，其中使用最多的是appengineRun和appengineUpdate。appengineRun任务用来开启一个本地开发服务器，这样就可以在上传到GoogleAppEngine之前，本地测试整个后端。第一次运行该任务时，构建可能需要一段时间，因为Gradle需要下载AppEngineSDK。我们早已通过downloadSdk=true来设置下载行为。要想停止服务器，你可以使用appengineStop。</p>
+
+<p>Closures是匿名代码块，可以接受参数和返回值。它们可以被视为变量，被当作参数传递给方法。</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2015-08-24T10:57:43+08:00" itemprop="datePublished">2015/08/24</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='client.html'>客户端</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578632578.html" itemprop="url">
+		tabs切换</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
 			<p>date: 2015-08-24 08:39</p>
 
 <p>onfocus onblur</p>
@@ -127,17 +200,132 @@
 <pre><code class="language-text">function $(ID){return document.getElementById(ID)}function showTab(ID){for(var i=1;i&amp;lt;4;i++){if(ID==i){$(&#39;tab&#39;+i).blur();$(&quot;tab&quot;+i).className=&quot;on&quot;;$(&quot;cont&quot;+i).style.display=&quot;block&quot;;}else{$(&quot;tab&quot;+i).className=&quot;off&quot;;$(&quot;cont&quot;+i).style.display=&quot;none&quot;;}}return false;}
 </code></pre>
 
+
+			
+			
 		</div>
+
 	</article>
-	<div class="share-comment">
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2013-02-25T10:57:46+08:00" itemprop="datePublished">2013/02/25</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='client.html'>客户端</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578665794.html" itemprop="url">
+		js编码引发的问题</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2013-02-25 22:15</p>
+
+<p>有时候加载js运行不了，因为js文件编码与页面的不一样，在有些浏览器不支持，犹其是IE6了。</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2013-01-24T05:55:46+08:00" itemprop="datePublished">2013/01/24</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='client.html'>客户端</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578665837.html" itemprop="url">
+		title: 自己写的验证码JQUERY插件</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2013-01-24 17:55</p>
+
+<p>调用方式：</p>
+
+<pre><code class="language-$(&quot;#myform&quot;).captchashow({">            label:&#39;.yanzheng&#39;, //显示验证码的东西
+            inputtext:&#39;.yz&#39;,  //验证输入的input
+ });
+</code></pre>
+
+<p>具体体码：</p>
+
+<pre><code class="language-/*">* Author: show  showshou@126.com
+* DATE:2013.1.24
+*/
+(function($) {
+$.fn.captchashow = function(options) {    
+var opts = $.extend({}, $.fn.captchashow.defaults, options);
+var code,tmp;
+$form = $(this),
+tmp = createCode();
+$(opts.label).html(tmp);
+$(opts.label).attr(&quot;ss&quot;,tmp);
+this.find(&quot;input[type=submit]&quot;).attr(&#39;disabled&#39;,&#39;true&#39;);
+$yz = $(&#39;#yz&#39;);
+$yz[0].addEventListener(&#39;keyup&#39;, yzs, false);
+
+function yzs(){
+    if(this.value == $(opts.label).attr(&#39;ss&#39;)){
+        opts.onSuccess();
+    }else{
+        $form.find(&quot;input[type=submit]&quot;).attr(&#39;disabled&#39;,&#39;true&#39;);
+    }
+}
+}
+$.fn.captchashow.defaults = {
+    label:&#39;.yanzheng&#39;,
+    inputtext:&#39;.yz&#39;,
+    onSuccess: function() {
+               // Enable the submit button:
+               $form.find(&quot;input[type=submit]&quot;).removeAttr(&#39;disabled&#39;);
+               return;
+    }
+}
+function createCode(){ 
+    code = new Array();
+    var codeLength = 4;
+    var selectChar = new Array(2,3,4,5,6,7,8,9,&#39;A&#39;,&#39;B&#39;,&#39;C&#39;,&#39;D&#39;,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;J&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;U&#39;,&#39;V&#39;,&#39;W&#39;,&#39;X&#39;,&#39;Y&#39;,&#39;Z&#39;);
+    for(var i=0;i&lt;codeLength;i++) {
+       var charIndex = Math.floor(Math.random()*32);
+       code +=selectChar[charIndex];
+    }
+    return code;
+};
+})(jQuery);
+
+</code></pre>
+
+
+			
+			
+		</div>
+
+	</article>
+  
+
+</div>
+<nav id="pagenavi">
 	 
+	
+	<div class="center"><a href="archives.html">Blog Archives</a></div>
 
-	  
+</nav>
 
-	  
+</div>
 
-	</div>
-</div>        </div>
+
+
+        </div>
 			<footer id="footer" class="inner">Copyright &copy; 2014
 Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a> &nbsp;&nbsp; 
 Theme by <a href="http://shashankmehta.in/archive/2012/greyshade.html">Shashank Mehta</a>
@@ -160,8 +348,6 @@ Theme by <a href="http://shashankmehta.in/archive/2012/greyshade.html">Shashank 
 
 
 
-
-<script src="asset/prism.js"></script>
 
 
 <style type="text/css">

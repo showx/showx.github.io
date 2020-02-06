@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<title>  
 	  
-  	以前yii学习笔记 - shengsheng的博客
+  	脚本 - shengsheng的博客
   	
 	</title>
 
@@ -114,10 +114,183 @@
 		</div>	
 		<div class="mid-col">
 			<div class="mid-col-container"> <div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
 
-	<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-		<h1 class="title" itemprop="name">以前yii学习笔记</h1>
+
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2015-11-03T10:57:43+08:00" itemprop="datePublished">2015/11/03</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='server.html'>服务端</a>&nbsp;
+			
+			    <a class='category' href='script.html'>脚本</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578631093.html" itemprop="url">
+		if empty打错字的后果。</a></h1>
 		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2015-11-03 14:04</p>
+
+<p>打错字：<br/>
+if(empty(\(a &amp;&amp; empty(\)b))<br/>
+{</p>
+
+<p>}<br/>
+//不符合条件也是对的<br/>
+正确的话：<br/>
+if(empty(\(a) &amp;&amp; empty(\)b))<br/>
+{</p>
+
+<p>}</p>
+
+<p>// \(b = &quot;123&quot;;<br/>
+// \)c = &quot;567&quot;;<br/>
+// \(a = empty(\)b &amp;&amp; false);<br/>
+// var_dump($a);exit();</p>
+
+<p>// if( false &amp;&amp; false)<br/>
+// {<br/>
+//     echo &#39;ok&#39;;exit();<br/>
+// }else{<br/>
+//     echo &#39;no&#39;;exit();<br/>
+// }</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2015-10-23T10:57:43+08:00" itemprop="datePublished">2015/10/23</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='script.html'>脚本</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578631365.html" itemprop="url">
+		淘宝客链接转换</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2015-10-23 15:43</p>
+
+<p>工作需要，转换淘宝链接</p>
+
+<pre><code class="language-$header">$refer =  $header[&#39;Location&#39;];
+
+$tu = explode(&quot;tu=&quot;,$refer);
+$tu = $tu[&#39;1&#39;];
+$url = urldecode($tu);
+
+$user_agent = &#39;Mozilla/5.0 (Windows; U; Windows NT 5.2; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13&#39;;
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+curl_setopt($ch, CURLOPT_REFERER, $refer);
+curl_setopt($ch, CURLOPT_USERAGENT, $user_agent);
+   
+$result = curl_exec($ch);
+$errno  = curl_errno($ch);
+$infos = curl_getinfo($ch); 
+    
+curl_close($ch);
+$h = $infos[&#39;redirect_url&#39;];
+echo $h; //淘宝链接
+</code></pre>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2015-09-09T10:57:43+08:00" itemprop="datePublished">2015/09/09</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='script.html'>脚本</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578632176.html" itemprop="url">
+		php static extends</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2015-09-09 11:06</p>
+
+<p>工作上遇到的问题：<br/>
+class a{public static \(a=&#39;1&#39;;public static function a(){echo self::\)a}<br/>
+class b exntends a{public static $a=&#39;2&#39;}</p>
+
+<p>b::a();<br/>
+输出是1,<br/>
+原因在parent self,静态方法要使用static<br/>
+把class a的self改为static即可</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2015-08-21T10:57:43+08:00" itemprop="datePublished">2015/08/21</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='script.html'>脚本</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578633253.html" itemprop="url">
+		python中的*</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2015-08-21 09:09</p>
+
+<p>非关键字可变长参数（元组）  *<br/>
+关键字变量参数（字典）  **</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2015-08-04T10:57:43+08:00" itemprop="datePublished">2015/08/04</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='script.html'>脚本</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578636026.html" itemprop="url">
+		以前yii学习笔记</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
 			<p>date: 2015-08-04 08:30</p>
 
 <p>开发向导<br/>
@@ -247,17 +420,434 @@ public \(charset;<br/>
 改为public \)charset=&#39;utf8&#39;;也能正常显示了，如下图所示：<br/>
 好了，至此没有写一行代码，但是已经完成了一个网站的大体框架，并且能初步实现增删改查功能了。虽然采用更改全部配置的方式也可以实现显示数据库中的中文，但是不建议采用这种方式。在此非常感谢kingheaven的提示。</p>
 
+
+			
+			
 		</div>
+
 	</article>
-	<div class="share-comment">
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2015-03-11T15:19:03+08:00" itemprop="datePublished">2015/03/11</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='script.html'>脚本</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578645260.html" itemprop="url">
+		鸟2笔记</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2015-03-11 22:33</p>
+
+<p>网卡配置：<br/>
+/etc/sysconfig/network-scripts/ifcfg-eth0</p>
+
+<p>/etc/init.d/network</p>
+
+<p>ifconfig ifup ifdown</p>
+
+<p>ftp lftp</p>
+
+<p>wget <br/>
+文字接口数据包捕获器：tcpdump<br/>
+tcpdump -i eth0 -nn</p>
+
+<p>wireshark nc</p>
+
+<p>防火墙：<br/>
+ip filtering net filter  </p>
+
+<p>tcp Wrappers</p>
+
+<p>nmap扫描 </p>
+
+<p>netstat -tlunp</p>
+
+<p>restorecon semanage </p>
+
+<p>seinfo sesearch</p>
+
+<p>/var/log/messages<br/>
+/var/log/secure<br/>
+last</p>
+
+<p>vim iptables.allow<br/>
+vim iptables.deny</p>
+
+<p>文件服务器NFS<br/>
+账号管理NIS<br/>
+时间管理NTP<br/>
+文件samba</p>
+
+<p>proxy服务器<br/>
+squid</p>
+
+<p>网络驱动器设备：iscsi服务器</p>
+
+<p>dns<br/>
+/etc/hosts<br/>
+/etc/resolv.conf<br/>
+/etc/nsswitch.conf</p>
+
+<p>host<br/>
+nslookup<br/>
+dig</p>
+
+<p>/etc/named.conf<br/>
+/etc/sysconfig/named<br/>
+/var/named/<br/>
+/var/run/named</p>
+
+<p>postfix</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2014-12-31T10:57:44+08:00" itemprop="datePublished">2014/12/31</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='script.html'>脚本</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578648154.html" itemprop="url">
+		PHP中new static()与new self()的区别异同分析</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2014-12-31 16:18</p>
+
+<p>本文实例讲述了PHP中new static()与new self()的区别异同，相信对于大家学习PHP程序设计能够带来一定的帮助。<br/>
+问题的起因是本地搭建一个站。发现用PHP 5.2 搭建不起来，站PHP代码里面有很多5.3以上的部分，要求更改在5.2下能运行。<br/>
+改着改着发现了一个地方</p>
+
+<p>return new static($val);<br/>
+这尼玛是神马，只见过</p>
+
+<p>return new self(\(val);<br/>
+于是上网查了下，他们两个的区别。<br/>
+self - 就是这个类，是代码段里面的这个类。<br/>
+static - PHP 5.3加进来的只得是当前这个类，有点像\)this的意思，从堆内存中提取出来，访问的是当前实例化的那个类，那么 static 代表的就是那个类。<br/>
+还是看看老外的专业解释吧：<br/>
+self refers to the same class whose method the new operation takes place in.<br/>
+static in PHP 5.3&#39;s late static bindings refers to whatever class in the hierarchy which you call the method on.<br/>
+In the following example, B inherits both methods from A. self is bound to A because it&#39;s defined in A&#39;s implementation of the first method, whereas static is bound to the called class (also see  get_called_class() ).</p>
+
+<p>class A {<br/>
+  public static function get_self() {<br/>
+    return new self();<br/>
+  }</p>
+
+<p>public static function get_static() {<br/>
+    return new static();<br/>
+  }<br/>
+}</p>
+
+<p>class B extends A {}</p>
+
+<p>echo get_class(B::get_self()); // A<br/>
+echo get_class(B::get_static()); // B<br/>
+echo get_class(A::get_static()); // A<br/>
+这个例子基本上一看就懂了吧。<br/>
+原理了解了，但是问题还没有解决，如何解决掉 return new static(\(val); 这个问题呢？<br/>
+其实也简单就是用 get_class(\)this); 代码如下：<br/>
+class A {<br/>
+  public function create1() {<br/>
+    \(class = get_class(\)this);<br/>
+　　　　return new $class();<br/>
+  }<br/>
+  public function create2() {<br/>
+    return new static();<br/>
+  }<br/>
+}</p>
+
+<p>class B extends A {</p>
+
+<p>}</p>
+
+<p>\(b = new B();<br/>
+var_dump(get_class(\)b-&gt;create1()), get_class($b-&gt;create2()));</p>
+
+<p>/*<br/>
+The result <br/>
+string(1) &quot;B&quot;<br/>
+string(1) &quot;B&quot;<br/>
+*/</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2013-10-28T10:57:46+08:00" itemprop="datePublished">2013/10/28</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='script.html'>脚本</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578663062.html" itemprop="url">
+		标记</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2013-10-28 10:22</p>
+
+<p>一般用来原样输出HTML代码都是用的：<br/>
+<pre><textarea>。。。</textarea></pre><br/>
+其实还有另一对可原样输出代码的标记：<br/>
+<xmp>。。。</xmp><br/>
+在网页上显示html代码标记<xmp></xmp>有时我们会将html代码显示在网页上,直接写会有问题,如果我们将要显示的html代码放在<xmp></xmp>中就可以实现</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2010-11-27T03:31:46+08:00" itemprop="datePublished">2010/11/27</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='script.html'>脚本</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578667198.html" itemprop="url">
+		php笔记</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<p>non-null 非空<br/>
+<pre></pre></p>
+
+<p>[:alnum:]<br/>
+[:alpha:]<br/>
+[:blank:]<br/>
+[:cntrl:]<br/>
+[:digit:]<br/>
+[:graph:]<br/>
+[:lower:]<br/>
+[:print:]<br/>
+[:space:]<br/>
+[:upper:]<br/>
+[:xdigit:]</p>
+
+<p>primary key</p>
+
+<p>int<br/>
+decimal(width[,decimal_digits])<br/>
+datetime<br/>
+time<br/>
+date<br/>
+tiimestamp<br/>
+varchar(length)<br/>
+char(0<br/>
+blob</p>
+
+<p>default<br/>
+zerofill<br/>
+unsigned<br/>
+auto_increment</p>
+
+<p>if exists</p>
+
+<p>select distinct</p>
+
+<p>limit</p>
+
+<p>source</p>
+
+<p>describe</p>
+
+<p>表否定加!号例：if(!(a&gt;b))</p>
+
+<p>str_pad</p>
+
+<p>\(_GET[&quot;&quot;]<br/>
+\)_post</p>
+
+<p>\(HTTP_GET_VARS<br/>
+\)http_post_vars<br/>
+\(http_env_vars 环境变量 <br/>
+\)http_server_vars</p>
+
+<p>后门:system()\shell_exec()\passthru()\exec()</p>
+
+<p>row列</p>
+
+<p>substr</p>
+
+<p>3.举例:</p>
+
+<p>　　STORE&#39;abcdefghijlkm&#39; To mystring<br/>
+　　?SUBSTR(mystring ,1,5) 显示 &quot;abcde&quot;<br/>
+　　?SUBSTR(mystring ,6) 显示 &quot;fghijklm&quot;</p>
+
+<p>isset<br/>
+判断变量是否已配置。</p>
+
+<p>语法: int isset(mixed var);</p>
+
+<p>返回值: 整数</p>
+
+<p>函数种类: PHP 系统功能</p>
+
+<p>内容说明 </p>
+
+<p>本函数用来测试变量是否已经配置。若变量已存在则返回 true 值。其它情形返回 false 值。<br/>
+使用范例 </p>
+
+<p>&lt;?php<br/>
+\(a = &quot;test&quot;;<br/>
+echo isset(\)a); // true<br/>
+unset(\(a);<br/>
+echo isset(\)a); // false<br/>
+?&gt; </p>
+
+<p>header<br/>
+exit</p>
+
+<p>mysql_affected_rows<br/>
+mysql_connect<br/>
+mysql_errno<br/>
+mysql_error<br/>
+mysql_fetch_array<br/>
+mysql_insert_id<br/>
+mysql_num_rows<br/>
+mysql_pconnect<br/>
+mysql_real_escape_string<br/>
+mysql_query<br/>
+mysql_select_db<br/>
+mysql_unbuffered_query</p>
+
+<p>mysql_data_seek<br/>
+mysql_client_encoding<br/>
+mysql_close<br/>
+mysql_fetch_field<br/>
+mysql_fetch_lengths<br/>
+mysql_fetch_object<br/>
+mysql_free_result<br/>
+mysql_get_client_info<br/>
+mysql_get_host_info<br/>
+mysql_get_proto_info<br/>
+mysql_get_server_info<br/>
+mysql_info<br/>
+mysql_list_processes<br/>
+mysql_num_field<br/>
+mysql_ping<br/>
+mysql_thread_id</p>
+
+<p>header()</p>
+
+<p>关于数组：<br/>
+=&gt;<br/>
+var_dump   显示每个元素的类型和值<br/>
+foreach(array_expression as \(value)<br/>
+foreach(array_expression asa \)key=&gt;value)<br/>
+count    &#39;返回元素的数量<br/>
+is_array()     ‘判断是否数组<br/>
+array_count_values(array input)  &#39;计算数组里每个值的实例的数量<br/>
+arrary array_fill()<br/>
+arrary range<br/>
+arrary explode()      &#39;导出句子中的单词作数组<br/>
+string implode()      &#39;连接下来单词作句子。<br/>
+string join()<br/>
+查找数组中的值<br/>
+in_array()       &#39;检查类型<br/>
+array_search()   &#39;不检查类型<br/>
+array_key_exist()      ‘检查成员是否存在<br/>
+array_keys      &#39;数组的字段名<br/>
+array_value()     &#39;输出结果 <br/>
+array_unique()    &#39;输出结果   没有类似[0]=&gt;这样的东西<br/>
+array_merge()    &#39;连接多个数组<br/>
+array_reverse()   &#39;重新排列元素  从尾到开始。<br/>
+sort            &#39;从小到大排序    &#39;字符串排列sort($a,SORT_STRING);<br/>
+                                 SORT_NUMERIC 以数字 SORT_REGULAR 先字母后数字<br/>
+rsort          &#39;从大到小排序<br/>
+asort()        &#39;(保留键值关联性)一样是排序<br/><br/>
+arsort()<br/>
+ksoft()          &#39;根据键排序<br/>
+krsort()<br/>
+usort           &#39;自定义排序<br/>
+uasort<br/>
+uksort<br/>
+strlen          ‘返回长度<br/>
+str_pad         &#39;增加空格<br/>
+strtolower()      &#39;改变大小写<br/><br/>
+strtoupper<br/>
+ucfirst<br/>
+ucwords</p>
+
+<p>清除空白<br/>
+ltrim<br/>
+rtrim<br/>
+trim</p>
+
+<p>strcmp      &#39;字符串比较<br/>
+strncmp<br/>
+substr     &#39;抽取子符串<br/>
+strpos     ‘查找字符串的位置<br/>
+strrpos<br/>
+strstr      输出搜索的开始到最后 区分大小写<br/>
+stristr<br/>
+strrchr     &#39;只匹配第一个字母<br/>
+substr_replace   &#39;替换<br/>
+strtr       &#39;转换字符和子字符串</p>
+
+<p>require      ‘包含文件<br/>
+include</p>
+
+<p>::类引用      &#39;引用变量<br/>
+static        ‘静态变量<br/>
+parent::      &#39;上一层父类<br/>
+protected      ‘状态受保护  允许子类访问父类定义的成员变量与函数，但不允许由类继承关系外的代码直接读取父类的成员变量与函数。<br/>
+final        &#39;可防子类对它重新定义，预防某个子类不小心重新定义这个函数<br/>
+throw try..catch<br/>
+Exception类</p>
+
+
+			
+			
+		</div>
+
+	</article>
+  
+
+</div>
+<nav id="pagenavi">
 	 
+	
+	<div class="center"><a href="archives.html">Blog Archives</a></div>
 
-	  
+</nav>
 
-	  
+</div>
 
-	</div>
-</div>        </div>
+
+
+        </div>
 			<footer id="footer" class="inner">Copyright &copy; 2014
 Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a> &nbsp;&nbsp; 
 Theme by <a href="http://shashankmehta.in/archive/2012/greyshade.html">Shashank Mehta</a>
@@ -266,9 +856,6 @@ Theme by <a href="http://shashankmehta.in/archive/2012/greyshade.html">Shashank 
 	</div>
 
 
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script type="text/x-mathjax-config">MathJax.Hub.Config({TeX: { equationNumbers: { autoNumber: "AMS" } }});</script>
 
   
 
@@ -283,8 +870,6 @@ Theme by <a href="http://shashankmehta.in/archive/2012/greyshade.html">Shashank 
 
 
 
-
-<script src="asset/prism.js"></script>
 
 
 <style type="text/css">

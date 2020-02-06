@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
   <loc>http://www.shengsheng.net/</loc>
-  <lastmod>2020-02-06T16:17:33+08:00</lastmod>
+  <lastmod>2020-02-06T18:41:34+08:00</lastmod>
 </url>
 
 <url>
@@ -336,6 +336,26 @@
 </url>
 
 
+
+<url>
+  <loc>http://www.shengsheng.net/test.html</loc>
+</url>
+
+<url>
+  <loc>http://www.shengsheng.net/server.html</loc>
+</url>
+
+<url>
+  <loc>http://www.shengsheng.net/client.html</loc>
+</url>
+
+<url>
+  <loc>http://www.shengsheng.net/script.html</loc>
+</url>
+
+<url>
+  <loc>http://www.shengsheng.net/life.html</loc>
+</url>
 
 
 </urlset>
