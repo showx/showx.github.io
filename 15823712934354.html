@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+      
+    划动验证码的破解 - shengsheng的博客
+    
+    </title>
+    
+
+    
+    
+    <link href="atom.xml" rel="alternate" title="shengsheng的博客" type="application/atom+xml">
+    <link rel="stylesheet" href="asset/css/style.min.css">
+    <link rel="stylesheet" href="asset/css/doc.css">
+    <script src="asset/app.js"></script>
+</head>
+  <body>
+    <section class="hero">
+      <div class="hero-head">
+          <nav class="navbar" role="navigation" aria-label="main navigation">
+              <div class="container">
+              <div class="navbar-brand">
+                
+                <a target="self" class="navbar-item " href="index.html">Home</a>
+                
+                <a target="_self" class="navbar-item " href="archives.html">Archives</a>
+                
+
+                <a role="button" id="navbarSNSRssSwitchBtn" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarSNSRssButtons">
+                  <span aria-hidden="true"></span>
+                  <span aria-hidden="true"></span>
+                  <span aria-hidden="true"></span>
+                </a>
+              </div>
+            
+              <div id="navbarSNSRssButtons" class="navbar-menu">
+                <div class="navbar-start">
+                  
+                </div>
+            
+                <div class="navbar-end">
+                  <div class="navbar-item">
+                    <!--buttons start-->
+                    <div class="buttons">
+                      
+                        
+                        
+                        
+                        <a href="https://github.com/showx" target="_blank" title="github">
+                            <span class="icon is-large has-text-grey-darker">
+                               <svg class="svg-inline--fa fa-github fa-w-16 fa-lg" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="github" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" data-fa-i2svg=""><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg><!-- <i class="fab fa-github fa-lg"></i> -->
+                            </span>
+                          </a>
+                        
+                        
+                      
+                      <a href="atom.xml" target="_blank" title="RSS">
+                          <span class="icon is-large has-text-black-bis">
+                              <svg class="svg-inline--fa fa-rss fa-w-14 fa-lg" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="rss" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M128.081 415.959c0 35.369-28.672 64.041-64.041 64.041S0 451.328 0 415.959s28.672-64.041 64.041-64.041 64.04 28.673 64.04 64.041zm175.66 47.25c-8.354-154.6-132.185-278.587-286.95-286.95C7.656 175.765 0 183.105 0 192.253v48.069c0 8.415 6.49 15.472 14.887 16.018 111.832 7.284 201.473 96.702 208.772 208.772.547 8.397 7.604 14.887 16.018 14.887h48.069c9.149.001 16.489-7.655 15.995-16.79zm144.249.288C439.596 229.677 251.465 40.445 16.503 32.01 7.473 31.686 0 38.981 0 48.016v48.068c0 8.625 6.835 15.645 15.453 15.999 191.179 7.839 344.627 161.316 352.465 352.465.353 8.618 7.373 15.453 15.999 15.453h48.068c9.034-.001 16.329-7.474 16.005-16.504z"></path></svg><!-- <i class="fas fa-rss fa-lg"></i> -->
+                          </span>
+                      </a>
+                    </div>
+                    <!--buttons end-->
+
+                  </div>
+                </div>
+                </div>
+              </div>
+            </nav>
+      </div>
+
+ <div class="hero-body ct-body"></div>
+      
+    </section>
+    <section class="ct-body">
+      <div class="container">
+          <div class="columns is-variable bd-klmn-columns is-4 is-centered">
+              <div class="column is-four-fifths">
+                  <div class="post-body single-content">
+                    
+                    <h1 class="title">
+                            划动验证码的破解   
+                      </h1>
+                     
+                    
+                      <div class="media">
+                            
+                            <figure class="media-left">
+                              <p class="image is-48x48">
+                                
+                                  <img class="is-rounded" src="">
+                                
+                              </p>
+                            </figure>
+                            
+                            <div class="media-content">
+                              <div class="content">
+                                <p>
+                                 <span class="date">2020/02/22</span>
+                                  <span class="tran-posted-in">posted in</span>&nbsp; 
+                                  
+                                      <span class="posted-in"><a href='server.html'>服务端</a></span>
+                                         
+                                  
+
+                                   
+                                      
+                                  <br />
+                                  <span class="tran-tags">Tags:</span>&nbsp;
+                                     
+
+                                </p>
+                              </div>
+                            </div>
+                         
+                    </div>
+                </div>
+                  <article class="markdown-body single-content">
+                    <p>最近需要获取某些信息，但每次页面都要滑动一次验证码实在太烦了，so研究一下破解方案。</p>
+
+<h1 id="toc_0">使用的技术</h1>
+
+<ul>
+<li>python3</li>
+<li>opencv</li>
+<li>pymydb</li>
+<li>selenium</li>
+</ul>
+
+<h1 id="toc_1">效果</h1>
+
+<p><a href="media/15823712934354/1582371835327952.mp4">1582371835327952</a></p>
+
+<h1 id="toc_2">核心思路</h1>
+
+<p>1) 使用selenium加载网站，定位到验证码的iframe<br/>
+2) 背景版，缺口图，使用opencv灰度图像分析出缺口位置。</p>
+
+<pre><code class="language-text">result = cv2.matchTemplate(target, template, cv2.TM_CCOEFF_NORMED)
+x, y = np.unravel_index(result.argmax(), result.shape)
+</code></pre>
+
+<p>3) 控制验证码的滑块到指定位置。<br/>
+4) 代理ip的使用，因为对于ip访问次数太多，验证码就算滑中了，也是不正确的。</p>
+
+<h1 id="toc_3">具体代码</h1>
+
+<pre><code class="language-text">#!/usr/bin/env python
+# encoding: utf-8
+
+import random
+import time
+import os
+import cv2
+import ssl
+import pymysql
+import urllib.request
+import numpy as np
+from PIL import Image
+from selenium.webdriver import ActionChains
+from selenium.webdriver import Chrome
+from selenium.webdriver import ChromeOptions
+from selenium.webdriver.support.ui import WebDriverWait
+class Login(object):
+    &quot;&quot;&quot;
+    python + seleniuum + cv2
+    &quot;&quot;&quot;
+    def __init__(self,proxyIP=&#39;&#39;):
+        # 如果是实际应用中，可在此处账号和密码
+        self.option = ChromeOptions()
+        # 不加ip，模拟验证码可能有问题
+        if(proxyIP):
+            self.option.add_argument(&quot;--proxy-server=&quot;+proxyIP);
+        self.option.add_argument(&#39;--headless&#39;);
+        self.option.add_experimental_option(&#39;excludeSwitches&#39;, [&#39;enable-automation&#39;])
+        self.driver = Chrome(options=self.option)
+    
+    def seturl(self,url):
+        self.url = url;
+    
+    @staticmethod
+    def get_postion(otemp, oblk):
+        &quot;&quot;&quot;
+        判断缺口位置
+        :param chunk: 缺口图片是原图
+        :param canves:
+        :return: 位置 x, y
+        &quot;&quot;&quot;
+        target = cv2.imread(otemp, 0)
+        template = cv2.imread(oblk, 0)
+        # w, h = target.shape[::-1]
+        temp = &#39;temp.jpg&#39;
+        targ = &#39;targ.jpg&#39;
+        #imwrite
+        cv2.imwrite(temp, template)
+        cv2.imwrite(targ, target)
+        
+        target = cv2.imread(targ)
+        target = cv2.cvtColor(target, cv2.COLOR_BGR2GRAY)
+        target = abs(255 - target)
+        
+        cv2.imwrite(targ, target)
+        target = cv2.imread(targ)
+        template = cv2.imread(temp)
+        result = cv2.matchTemplate(target, template, cv2.TM_CCOEFF_NORMED)
+        x, y = np.unravel_index(result.argmax(), result.shape)
+        return x, y
+
+    @staticmethod
+    def get_track(distance):
+        tracks = []
+        distance = int(distance);
+        tracks.append(distance)
+        return tracks;
+
+    @staticmethod
+    def urllib_download(imgurl, imgsavepath):
+        from urllib.request import urlretrieve
+        urlretrieve(imgurl, imgsavepath)
+        
+    def quit2(self):
+        self.driver.execute_script(&quot;window.close();&quot;);
+        self.driver.switch_to.window(self.driver.window_handles[-1])
+        
+    def quit(self):
+        self.driver.quit();
+        
+    def login_main(self, driver):
+        driver.switch_to.default_content()
+        #滑块iframe
+        driver.switch_to.frame(driver.find_element_by_tag_name(&quot;iframe&quot;))
+        # 大图
+        bk_block = driver.find_element_by_xpath(&#39;//img[@id=&quot;slideBkg&quot;]&#39;)  
+        web_image_width = bk_block.size
+        web_image_width = web_image_width[&#39;width&#39;]
+        bk_block_x = bk_block.location[&#39;x&#39;]
+     # 小滑块
+        slide_block = driver.find_element_by_xpath(&#39;//img[@id=&quot;slideBlock&quot;]&#39;)  
+        slide_block_x = slide_block.location[&#39;x&#39;]
+        bk_block = driver.find_element_by_xpath(&#39;//img[@id=&quot;slideBkg&quot;]&#39;).get_attribute(&#39;src&#39;) # 大图 url
+#       print(bk_block);
+        slide_block = driver.find_element_by_xpath(&#39;//img[@id=&quot;slideBlock&quot;]&#39;).get_attribute(&#39;src&#39;) # 小滑块 图片url
+#       print(slide_block);
+        slid_ing = driver.find_element_by_xpath(&#39;//div[@id=&quot;slide_bar_head&quot;]&#39;)  # 滑块
+
+        #下载图片分析
+        os.makedirs(&#39;./image/&#39;, exist_ok=True)
+        self.urllib_download(bk_block, &#39;./image/bkBlock.png&#39;)
+        self.urllib_download(slide_block, &#39;./image/slideBlock.png&#39;)
+        time.sleep(0.5)
+        img_bkblock = Image.open(&#39;./image/bkBlock.png&#39;)
+        bkblock_real_width = img_bkblock.size[0]
+        # 滑块宽度/大图背景宽度
+        width_scale = float(bkblock_real_width) / float(web_image_width)
+        #opencv分析,获取滑块与嵌块的位置
+        position = self.get_postion(&#39;./image/bkBlock.png&#39;, &#39;./image/slideBlock.png&#39;)
+        real_position = position[1] / width_scale
+        real_position = real_position - (slide_block_x - bk_block_x)
+        #滑动的轨迹
+        track_list = self.get_track(real_position)
+        # 点击鼠标左键，按住不放
+        ActionChains(driver).click_and_hold(on_element=slid_ing).perform()  
+        time.sleep(0.2)
+        #拖动滑块
+        for track in track_list:
+            #移动鼠标到嵌块距离
+            ActionChains(driver).move_by_offset(xoffset=track, yoffset=0).perform()
+        # 释放鼠标
+        ActionChains(driver).release(on_element=slid_ing).perform()
+
+    def main(self):
+        driver = self.driver
+        driver.maximize_window()
+        print(self.url);
+        #url 这里开始赋值
+        driver.get(self.url)
+        time.sleep(4)
+        self.login_main(driver)
+        driver.switch_to.default_content() #切换主页面
+        #获取相关详细信息
+        time.sleep(4)
+        # 这里获取不了，只能尝试再获取一次验证码的
+        try:
+            test = driver.find_element_by_class_name(&#39;profile-card-user-info-description&#39;)
+            #和对应的id存起来
+            content = test.text;  
+            return test.text;
+        except Exception as e:
+            reutrn;
+        
+#获取代理ip
+def getproxyIP():
+   # 大家可以找出免费的代码ip
+    proxyurl = &quot;xx&quot;;
+    response = urllib.request.urlopen(proxyurl)
+    proxyIP = response.read();
+    proxyIP = proxyIP.decode(&quot;unicode_escape&quot;)
+    proxyIP = str(proxyIP);
+    return proxyIP;
+    
+if __name__ == &#39;__main__&#39;:
+    ssl._create_default_https_context = ssl._create_unverified_context
+    #跑取url的组成
+    conn = pymysql.connect(host=&#39;127.0.0.1&#39;, port=3306, user=&#39;root&#39;, passwd=&#39;root&#39;, db=&#39;phpshow&#39;, charset=&#39;utf8mb4&#39;)
+    # 创建游标
+    cursor = conn.cursor()
+    while(1):
+        cursor.execute(&quot;select UserId from spider where crawl=&#39;1&#39; and intro is Null limit 10&quot;);
+        res = cursor.fetchall();
+        if res==False:
+            break;
+        proxyIP = getproxyIP();
+        print(proxyIP);
+        #这里要有异常处理
+        login = Login(proxyIP)
+        for val in res:
+            print(val[0]);
+            try:
+                time.sleep(1);
+                #url规则，手动更改
+                url = str(&quot;https://xx.com/search/author?keyword=&quot;)+str(val[0])+str(&quot;&amp;page=1&quot;);
+                
+                login.seturl(url);
+                text = login.main()
+                print(text);
+                if text:
+                    print(&quot;update&quot;);
+                    cursor2 = conn.cursor();
+                    # 表名
+                    update_sql = &quot;update xx set intro=&#39;&quot;+str(text)+&quot;&#39; where UserId = &#39;&quot;+str(val[0])+&quot;&#39;&quot;;
+                    print(update_sql);
+                    tmp = cursor2.execute(update_sql);
+                    conn.commit();
+                    cursor2.close;
+                #退出浏览器
+    #           login.quit();
+            except Exception as e:
+                login.quit2();
+                print(&quot;error&quot;);
+        login.quit();
+        print(&quot;---------------------------&quot;);
+    ```
+</code></pre>
+
+                  </article>
+                  <div class="comments-wrap">
+                    <div class="share-comments">
+                      
+
+                      
+
+                      
+                    </div>
+                  </div><!-- end comments wrap -->
+              </div>
+            </div><!-- end columns -->
+      </div><!-- end container -->
+    </section>
+
+
+
+    <footer class="footer">
+        <div class="content has-text-centered">
+          <p>
+              Copyright &copy; 2019
+              Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a>,&nbsp; 
+              Theme used <a target="_blank" href="https://bulma.io/">Bulma CSS</a>.
+          </p>
+        </div>
+      </footer>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="asset/prism.js"></script>
+
+
+
+  
+    
+
+
+
+
+  </body>
+</html>

