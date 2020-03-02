@@ -4,13 +4,65 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-02-22T19:48:59+08:00</updated>
+  <updated>2020-02-28T23:25:45+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[docker mysql5.6切5.7发生的异常]]></title>
+    <link href="http://www.shengsheng.net/15831455058973.html"/>
+    <updated>2020-03-02T18:38:25+08:00</updated>
+    <id>http://www.shengsheng.net/15831455058973.html</id>
+    <content type="html"><![CDATA[
+<p>由于某项目需要用到 mysql 5.7的新功能json类型的字段<br/>
+为了快速搭建,做了不太稳定的做法。<br/>
+我的myql是映射到本地的 ~/code/mysql<br/>
+<code><br/>
+docker pull mysql/5.7<br/>
+</code><br/>
+下载好mysql5.7之后，停掉5.6<br/>
+直接把mysql5.7的数据映射到本地<br/>
+<code><br/>
+docker run -it -d --volumes-from codedata --network docker_mynetwork --ip 172.20.0.7 -v /Users/pengyongsheng/code/mysql:/var/lib/mysql -p 3306:3306 --name mysql57 -e MYSQL_USER=root -e MYSQL_PASSWORD=root -e MYSQL_ROOT_PASSWORD=root mysql:5.7<br/>
+</code></p>
+
+<p><img src="media/15831455058973/15831456759323.jpg" alt=""/></p>
+
+<h1 id="toc_0">事故</h1>
+
+<p>一开始的运行还很正确的，后面出现打开不了tables;<br/>
+Navicat for mysql 打开只能查看到information_schema数据库，而且只剩下CHARACTER_SETS。</p>
+
+<h1 id="toc_1">解决方案</h1>
+
+<ol>
+<li>先将本地的~/code/mysql 重命名~/code/mysql2数据文件夹备份一下<br/>
+把~/code/mysql清空，删除mysql5.7容器后，重新挂载，这时候产生了新的文件夹数据。</li>
+<li><p>把备份的好的数据库文件~/code/msyql2里的数据库重新拷贝到~/code/mysql目录下。<br/>
+打开查看，其实是能正常查看到数据库了。成功了第一步。<br/>
+<img src="media/15831455058973/15831459908580.jpg" alt=""/></p></li>
+<li><p>进一步打开数据库的table , 提示 Table &#39;&#39; doesn&#39;t exist 。<br/>
+嗯。。遇到了新问题。 经查找资源，innodb的问题。停掉服务后，将mysql2的ibdata1文件夹拷到mysql数据文件夹中。这样，问题得到了解决。<br/>
+<img src="media/15831455058973/15831462501495.jpg" alt=""/></p></li>
+</ol>
+
+<h1 id="toc_2">总结</h1>
+
+<ol>
+<li>mysql的升级，因为数据会记录版本和服务器的原因，不能直接切换容器，要么在原来的容器上升级mysql server。 </li>
+<li>使用Innodb会产生三个文件<br/>
+.ibd：包含每个table的数据和索引<br/>
+.frm：用来描述table的结构等<br/>
+ibdata1：包含所有table的字典和历史操作<br/>
+ibdata1文件会记录MySQL中所有InnoDB数据库中table的字典和历史操作,所以要copy ibdata1文件过来。</li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[linux更新服务器]]></title>
@@ -932,20 +984,6 @@ class b exntends a{public static $a=&#39;2&#39;}</p>
 
 <pre><code class="language-text">function $(ID){return document.getElementById(ID)}function showTab(ID){for(var i=1;i&amp;lt;4;i++){if(ID==i){$(&#39;tab&#39;+i).blur();$(&quot;tab&quot;+i).className=&quot;on&quot;;$(&quot;cont&quot;+i).style.display=&quot;block&quot;;}else{$(&quot;tab&quot;+i).className=&quot;off&quot;;$(&quot;cont&quot;+i).style.display=&quot;none&quot;;}}return false;}
 </code></pre>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[python中的*]]></title>
-    <link href="http://www.shengsheng.net/15809578633253.html"/>
-    <updated>2020-02-06T10:57:43+08:00</updated>
-    <id>http://www.shengsheng.net/15809578633253.html</id>
-    <content type="html"><![CDATA[
-<p>date: 2015-08-21 09:09</p>
-
-<p>非关键字可变长参数（元组）  *<br/>
-关键字变量参数（字典）  **</p>
 
 ]]></content>
   </entry>
