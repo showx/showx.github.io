@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>
       
-    linux更新服务器时间 - shengsheng的博客
+    算法训练营 - shengsheng的博客
     
     </title>
     
@@ -83,7 +83,7 @@
                   <div class="post-body single-content">
                     
                     <h1 class="title">
-                            linux更新服务器时间   
+                            算法训练营   
                       </h1>
                      
                     
@@ -100,10 +100,10 @@
                             <div class="media-content">
                               <div class="content">
                                 <p>
-                                 <span class="date">2020/02/28</span>
+                                 <span class="date">2020/03/02</span>
                                   <span class="tran-posted-in">posted in</span>&nbsp; 
                                   
-                                      <span class="posted-in"><a href='server.html'>服务端</a></span>
+                                      <span class="posted-in"><a href='test.html'>测试</a></span>
                                          
                                   
 
@@ -120,50 +120,7 @@
                     </div>
                 </div>
                   <article class="markdown-body single-content">
-                    <p>运营凌晨的时候录入规则，发现录入的规则有异常，查看得知获取的时间异常<br/>
-<img src="media/15829031335030/15829032171296.jpg" alt=""/></p>
-
-<p>默认linux的时区使用了 UTC<br/>
-而中国的时区是CST<br/>
-因为我是使用docker镜像上运行php,所以得去镜像里面更新一下</p>
-
-<h1 id="toc_0">进入镜像</h1>
-
-<p><code><br/>
-docker -it php-fpm /bin/bash<br/>
-</code></p>
-
-<h1 id="toc_1">更新时间</h1>
-
-<pre><code class="language-text">1. 安装ntpdate工具
-sudo apt-get install ntpdate
-2. 设置系统时间与网络时间同步
-ntpdate cn.pool.ntp.org  或者 sudo ntpdate time.stdtime.gov.tw
-#cn.pool.ntp.org是位于中国的公共NTP服务器 
-</code></pre>
-
-<h1 id="toc_2">更新时间失败</h1>
-
-<pre><code class="language-text">root@6fc515dfb754:~# ntpdate us.pool.ntp.org
-3 Nov 09:30:06 ntpdate[966]: Can&#39;t adjust the time of day: Operation not permitted
-cp -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-</code></pre>
-
-<h1 id="toc_3">php的配置</h1>
-
-<h3 id="toc_4">php.ini</h3>
-
-<pre><code class="language-text">[Date]
-date.timezone = &quot;asia/shanghai&quot;
-</code></pre>
-
-<h3 id="toc_5">代码控制</h3>
-
-<pre><code class="language-text">&lt;?php
-date_default_timezone_set(&#39;Asia/Shanghai&#39;);
-</code></pre>
-
-<p>终所述，必须严格查看一下环境上的时间。</p>
+                    <p>占个坑位，更新一下算法总结</p>
 
                   </article>
                   <div class="comments-wrap">
@@ -207,8 +164,6 @@ date_default_timezone_set(&#39;Asia/Shanghai&#39;);
 
 
 
-
-<script src="asset/prism.js"></script>
 
 
 

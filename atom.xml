@@ -4,13 +4,24 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-03-02T19:00:19+08:00</updated>
+  <updated>2020-03-02T19:05:12+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[算法训练营]]></title>
+    <link href="http://www.shengsheng.net/15831470834324.html"/>
+    <updated>2020-03-02T19:04:43+08:00</updated>
+    <id>http://www.shengsheng.net/15831470834324.html</id>
+    <content type="html"><![CDATA[
+<p>占个坑位，更新一下算法总结</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[切换linux数据源]]></title>
@@ -147,7 +158,7 @@ ibdata1文件会记录MySQL中所有InnoDB数据库中table的字典和历史操
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[linux更新服务器]]></title>
+    <title type="html"><![CDATA[linux更新服务器时间]]></title>
     <link href="http://www.shengsheng.net/15829031335030.html"/>
     <updated>2020-02-28T23:18:53+08:00</updated>
     <id>http://www.shengsheng.net/15829031335030.html</id>
@@ -1031,23 +1042,6 @@ class b exntends a{public static $a=&#39;2&#39;}</p>
 输出是1,<br/>
 原因在parent self,静态方法要使用static<br/>
 把class a的self改为static即可</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[mac dash]]></title>
-    <link href="http://www.shengsheng.net/15809578632450.html"/>
-    <updated>2020-02-06T10:57:43+08:00</updated>
-    <id>http://www.shengsheng.net/15809578632450.html</id>
-    <content type="html"><![CDATA[
-<p>date: 2015-09-01 08:34</p>
-
-<p>最近买了款软件dash..</p>
-
-<p>内置购买用了128.。</p>
-
-<p>感觉体验不错。查询十分方便。</p>
 
 ]]></content>
   </entry>
