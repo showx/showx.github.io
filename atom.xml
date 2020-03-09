@@ -4,13 +4,66 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-03-02T19:33:50+08:00</updated>
+  <updated>2020-03-09T22:41:31+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[php简单分析能否买房]]></title>
+    <link href="http://www.shengsheng.net/15837651337922.html"/>
+    <updated>2020-03-09T22:45:33+08:00</updated>
+    <id>http://www.shengsheng.net/15837651337922.html</id>
+    <content type="html"><![CDATA[
+<p>上一年打算买房，故上一年11月的时候写个了程序来分析一下前期大概需要多少钱，或能承受的范围。<br/>
+不买房不知道，打折的规则基本9.8折，应筹更便宜点，还有税和维修基金等费用哈，有空的朋友可以补充上。</p>
+
+<pre><code class="language-text">&lt;?php
+/**
+ * 房子首付计算
+ * Author:show
+ */
+
+
+    $mix = [
+//  &#39;75&#39;,
+    &#39;86&#39;,&#39;110&#39;,&#39;120&#39;
+    ];
+    foreach($mix as $key=&gt;$val)
+    {
+        //30%首付
+        for($i=1.6;$i&lt;=2.6;$i+=0.1)
+        {
+            //假设首付是30%
+            $sum = $val * $i;
+            $sum2 = ($sum - 3) * 0.98 * 0.96 * 0.98;
+            $downpay = $sum2 * 0.3;
+            $loans = $sum2 - $downpay;
+            echo &quot;平方：{$val},单价：[{$i}w],[总价]：{$sum} [减3万订金 0.98*0.96*0.98打折后总价]：{$sum2}w,打折后首付：{$downpay},打折后贷款:{$loans}w\n&quot;;
+        }
+        echo &quot;======================================\n&quot;;
+        
+        //20 30年(360期）
+        //年利率 = 日利率 * 360  = 月利率 * 12. :如果日利率为万分之五，那么年利率就是0.0005*360=18%
+        //0.18/360 = 0.0005
+        //公积金3.25 商业4.9 5.45
+        //先计算等额本息
+        //67万公积金贷 
+        // 利息=本金*利率*存期
+        
+    }
+?&gt;
+</code></pre>
+
+<h1 id="toc_0">运行结果</h1>
+
+<p><img src="media/15837651337922/15837652685497.jpg" alt="" style="width:984px;"/></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[戴尔主机服务器版上的坑]]></title>
@@ -1343,42 +1396,6 @@ if(empty(\(a) &amp;&amp; empty(\)b))<br/>
 
 <p>直接mysqld启动没socket，<br/>
 有时为了方便直接使用mysqld,但socket文件没创建，要保证运行顺畅，还是使用mysqld_safe启动。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[淘宝客链接转换]]></title>
-    <link href="http://www.shengsheng.net/15809578631365.html"/>
-    <updated>2020-02-06T10:57:43+08:00</updated>
-    <id>http://www.shengsheng.net/15809578631365.html</id>
-    <content type="html"><![CDATA[
-<p>date: 2015-10-23 15:43</p>
-
-<p>工作需要，转换淘宝链接</p>
-
-<pre><code class="language-$header">$refer =  $header[&#39;Location&#39;];
-
-$tu = explode(&quot;tu=&quot;,$refer);
-$tu = $tu[&#39;1&#39;];
-$url = urldecode($tu);
-
-$user_agent = &#39;Mozilla/5.0 (Windows; U; Windows NT 5.2; zh-CN; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13&#39;;
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $url);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-curl_setopt($ch, CURLOPT_REFERER, $refer);
-curl_setopt($ch, CURLOPT_USERAGENT, $user_agent);
-   
-$result = curl_exec($ch);
-$errno  = curl_errno($ch);
-$infos = curl_getinfo($ch); 
-    
-curl_close($ch);
-$h = $infos[&#39;redirect_url&#39;];
-echo $h; //淘宝链接
-</code></pre>
 
 ]]></content>
   </entry>
