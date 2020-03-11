@@ -4,13 +4,38 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-03-09T22:41:31+08:00</updated>
+  <updated>2020-03-09T22:49:31+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[微信开发者工具项目导入的问题]]></title>
+    <link href="http://www.shengsheng.net/15838982474217.html"/>
+    <updated>2020-03-11T11:44:07+08:00</updated>
+    <id>http://www.shengsheng.net/15838982474217.html</id>
+    <content type="html"><![CDATA[
+<p>这两天运营老是跟我说，怎么研发打的包，导入老是出现AppId更改的情况，明明project.config.js设置的appid不是这个&quot;wx6ac3f5090a6b99c5&quot;</p>
+
+<p><img src="media/15838982474217/15838984019592.jpg" alt=""/></p>
+
+<h1 id="toc_0">研究</h1>
+
+<p>研究一番，确实会出现此问题，不可能每次导入都修改一次appid吧。<br/>
+使用compare对比工具对比一下没问题的项目，发现有一行明显不一样。<br/>
+<img src="media/15838982474217/15838985171442.jpg" alt=""/></p>
+
+<p>嗯,isGameTourist,这行去掉或改为false,微信开发者工具导入就没问题了，会自动加上。</p>
+
+<h1 id="toc_1">结论</h1>
+
+<p>经英语翻译，isGameTourist 是否观察的意思。那么true就是观察代码的查看了，所以默认使用官方的wx6ac3f5090a6b99c5，isGameTourist这个参数默认就是false,所以去掉就读取你原来配置的appid参数了。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[php简单分析能否买房]]></title>
@@ -1382,20 +1407,6 @@ if(empty(\(a) &amp;&amp; empty(\)b))<br/>
 // }else{<br/>
 //     echo &#39;no&#39;;exit();<br/>
 // }</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[mysql的一些小问题]]></title>
-    <link href="http://www.shengsheng.net/15809578631182.html"/>
-    <updated>2020-02-06T10:57:43+08:00</updated>
-    <id>http://www.shengsheng.net/15809578631182.html</id>
-    <content type="html"><![CDATA[
-<p>date: 2015-10-31 09:29</p>
-
-<p>直接mysqld启动没socket，<br/>
-有时为了方便直接使用mysqld,但socket文件没创建，要保证运行顺畅，还是使用mysqld_safe启动。</p>
 
 ]]></content>
   </entry>
