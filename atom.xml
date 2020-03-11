@@ -4,13 +4,63 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-03-09T22:49:31+08:00</updated>
+  <updated>2020-03-11T14:02:35+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[苹果mac系统mysql的关闭]]></title>
+    <link href="http://www.shengsheng.net/15839060425442.html"/>
+    <updated>2020-03-11T13:54:02+08:00</updated>
+    <id>http://www.shengsheng.net/15839060425442.html</id>
+    <content type="html"><![CDATA[
+<p>因为可视化的开发操作，需本地安装mysql client<br/>
+故一套命令安装好所有brew install mysql.<br/>
+下次重新启动的时候，自动启动了mysql server服务<br/>
+本地的开发环境主要是docker映射本地的端口<br/>
+docker start mysql,3306被本地端口占用，故启动失败。</p>
+
+<p>上网搜索了一下资料，mysql的启动主要是以下:</p>
+
+<pre><code class="language-text">sudo /usr/local/mysql/support-files/mysql.server start
+sudo /usr/local/mysql/support-files/mysql.server stop
+sudo /usr/local/mysql/support-files/mysql.server restart
+</code></pre>
+
+<p>这时候我们执行 .../mysql.server stop 是失败的<br/>
+<img src="media/15839060425442/15839065007011.jpg" alt=""/></p>
+
+<p>提示没有找到pid文件<br/>
+分析一下本地mysql.server文件</p>
+
+<pre><code class="language-text">mysqld_pid=`cat &quot;$mysqld_pid_file_path&quot;`
+</code></pre>
+
+<p>脚本根据写在本地的pid记录来关闭mysql<br/>
+发现脚本的\(mysql_pid_file_path在/usr/local/mysql/data之下。<br/>
+但/usr/local/mysql/data没权限进入<br/>
+给一定权限即可<br/>
+现在的进程，只能ps aux|grep mysql来分析进程id<br/>
+暂时只能手动kill一下<br/>
+kill \)mysql_id<br/>
+之后使用</p>
+
+<pre><code class="language-text">sudo /usr/local/mysql/support-files/mysql.server stop
+docker start mysql
+</code></pre>
+
+<p>就很顺利了</p>
+
+<h1 id="toc_0">思考点</h1>
+
+<p>遇到的朋友可以思考怎么关闭系统自启动mysql server服务。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[微信开发者工具项目导入的问题]]></title>
@@ -1372,41 +1422,6 @@ fn + ctrl + shift + esc</p>
 <p>update bone_m_element set thumb=CONCAT(thumb,&#39;dia.jpg&#39;) where thumb like &#39;%gju%&#39;</p>
 
 <p>update不了的原因是 char(100) 不够长，改为 char(200)即可</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[if empty打错字的后果。]]></title>
-    <link href="http://www.shengsheng.net/15809578631093.html"/>
-    <updated>2020-02-06T10:57:43+08:00</updated>
-    <id>http://www.shengsheng.net/15809578631093.html</id>
-    <content type="html"><![CDATA[
-<p>date: 2015-11-03 14:04</p>
-
-<p>打错字：<br/>
-if(empty(\(a &amp;&amp; empty(\)b))<br/>
-{</p>
-
-<p>}<br/>
-//不符合条件也是对的<br/>
-正确的话：<br/>
-if(empty(\(a) &amp;&amp; empty(\)b))<br/>
-{</p>
-
-<p>}</p>
-
-<p>// \(b = &quot;123&quot;;<br/>
-// \)c = &quot;567&quot;;<br/>
-// \(a = empty(\)b &amp;&amp; false);<br/>
-// var_dump($a);exit();</p>
-
-<p>// if( false &amp;&amp; false)<br/>
-// {<br/>
-//     echo &#39;ok&#39;;exit();<br/>
-// }else{<br/>
-//     echo &#39;no&#39;;exit();<br/>
-// }</p>
 
 ]]></content>
   </entry>
