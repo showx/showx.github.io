@@ -122,14 +122,50 @@
                   <article class="markdown-body single-content">
                     <p>date: 2015-09-09 11:06</p>
 
-<p>工作上遇到的问题：<br/>
-class a{public static \(a=&#39;1&#39;;public static function a(){echo self::\)a}<br/>
-class b exntends a{public static $a=&#39;2&#39;}</p>
+<p>工作上遇到的问题：</p>
+
+<pre><code class="language-text">class a{public static $a=&#39;1&#39;;public static function a(){echo self::$a}
+class b exntends a{public static $a=&#39;2&#39;}
+</code></pre>
 
 <p>b::a();<br/>
 输出是1,<br/>
 原因在parent self,静态方法要使用static<br/>
 把class a的self改为static即可</p>
+
+<h1 id="toc_0">补充，典型的self和static问题</h1>
+
+<ol>
+<li>new static()是在PHP5.3版本中引入的新特性。</li>
+<li><p>实验代码</p>
+<pre><code class="language-text">class Father {
+public function getNewFather() {<br/>
+    return new self();<br/>
+}<br/>
+public function getNewCaller() {<br/>
+    return new static();<br/>
+}
+</code></pre></li>
+</ol>
+
+<p>}</p>
+
+<p>$f = new Father();</p>
+
+<p>print get_class(\(f-&gt;getNewFather());<br/>
+print get_class(\)f-&gt;getNewCaller());</p>
+
+<pre><code class="language-text">
+self 是指父类本身
+static 当前调用本身  son extends father father里的function static 就是指自己了
+
+
+
+
+
+
+
+</code></pre>
 
                   </article>
                   <div class="comments-wrap">
@@ -176,6 +212,8 @@ class b exntends a{public static $a=&#39;2&#39;}</p>
 
 
 
+
+<script src="asset/prism.js"></script>
 
 
 
