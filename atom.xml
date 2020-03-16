@@ -4,13 +4,44 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-03-11T14:04:00+08:00</updated>
+  <updated>2020-03-16T18:55:11+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[git初始化项目]]></title>
+    <link href="http://www.shengsheng.net/15843561632702.html"/>
+    <updated>2020-03-16T18:56:03+08:00</updated>
+    <id>http://www.shengsheng.net/15843561632702.html</id>
+    <content type="html"><![CDATA[
+<p>由于在git上新建每次都要git clone下来，再提交代码。实际不用这么麻烦<br/>
+具体操作如下</p>
+
+<pre><code class="language-text"># 当前项目目录
+# 注册删除之前的.git (rm -rf .git) 
+
+git init
+
+git remote add origin 仓库地址
+
+git pull origin master:master
+
+git push -u origin master
+
+
+git add -A
+git commit -m &#39;&#39;
+git push --set-upstream origin master
+</code></pre>
+
+<p>仓库地址，如果是加了ssh-key,需使用账号地址：<a href="mailto:git@git.com">git@git.com</a>:abc/test，使用http会默认读取账号密码:<a href="http://xx.com/abc/test">http://xx.com/abc/test</a></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[苹果mac系统mysql的关闭]]></title>
@@ -1407,21 +1438,6 @@ InnoDB: using the same InnoDB data or log files.<br/>
 
 <p>锁屏<br/>
 fn + ctrl + shift + esc</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[mysql update不了原因]]></title>
-    <link href="http://www.shengsheng.net/15809578631013.html"/>
-    <updated>2020-02-06T10:57:43+08:00</updated>
-    <id>http://www.shengsheng.net/15809578631013.html</id>
-    <content type="html"><![CDATA[
-<p>date: 2015-11-05 11:25</p>
-
-<p>update bone_m_element set thumb=CONCAT(thumb,&#39;dia.jpg&#39;) where thumb like &#39;%gju%&#39;</p>
-
-<p>update不了的原因是 char(100) 不够长，改为 char(200)即可</p>
 
 ]]></content>
   </entry>
