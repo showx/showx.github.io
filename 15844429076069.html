@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>
       
-    php static extends - shengsheng的博客
+    框架增加restful api功能 - shengsheng的博客
     
     </title>
     
@@ -83,7 +83,7 @@
                   <div class="post-body single-content">
                     
                     <h1 class="title">
-                            php static extends   
+                            框架增加restful api功能   
                       </h1>
                      
                     
@@ -100,10 +100,10 @@
                             <div class="media-content">
                               <div class="content">
                                 <p>
-                                 <span class="date">2015/09/09</span>
+                                 <span class="date">2020/03/17</span>
                                   <span class="tran-posted-in">posted in</span>&nbsp; 
                                   
-                                      <span class="posted-in"><a href='script.html'>脚本</a></span>
+                                      <span class="posted-in"><a href='server.html'>服务端</a></span>
                                          
                                   
 
@@ -120,47 +120,97 @@
                     </div>
                 </div>
                   <article class="markdown-body single-content">
-                    <p>date: 2015-09-09 11:06</p>
+                    <p>由于项目中使用自已开发的php框架，发现没有restful功能.</p>
 
-<p>工作上遇到的问题：</p>
+<h1 id="toc_0">restful架构</h1>
 
-<pre><code class="language-text">class a{public static $a=&#39;1&#39;;public static function a(){echo self::$a}
-class b exntends a{public static $a=&#39;2&#39;}
-</code></pre>
+<p>如下图，简单的CURD功能,以资源为定位</p>
 
-<p>b::a();<br/>
-输出是1,<br/>
-原因在parent self,静态方法要使用static<br/>
-把class a的self改为static即可</p>
-
-<h1 id="toc_0">补充，典型的self和static问题</h1>
-
-<ol>
-<li>new static()是在PHP5.3版本中引入的新特性。</li>
-<li>实验代码</li>
-</ol>
-
-<pre><code class="language-text">class Father {
-
-    public function getNewFather() {
-        return new self();
+<pre><code class="language-text">class Blog
+{
+    /**
+     * 显示资源列表
+     *
+     * @return \think\Response
+     */
+    public function index()
+    {
+        $list = Blogs::all();
+        return json($list);
     }
 
-    public function getNewCaller() {
-        return new static();
+    /**
+     * 保存新建的资源
+     *
+     * @param  \think\Request  $request
+     * @return \think\Response
+     */
+    public function save(Request $request)
+    {
+        $data   = $request-&gt;param();
+        $result = Blogs::create($data);
+        return json($result);
     }
 
+    /**
+     * 显示指定的资源
+     *
+     * @param  int  $id
+     * @return \think\Response
+     */
+    public function read($id)
+    {
+        $data = Blogs::get($id);
+        return json($data);
+    }
+
+    /**
+     * 保存更新的资源
+     *
+     * @param  \think\Request  $request
+     * @param  int  $id
+     * @return \think\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $data   = $request-&gt;param();
+        $result = Blogs::update($data, [&#39;id&#39; =&gt; $id]);
+        return json($result);
+    }
+
+    /**
+     * 删除指定资源
+     *
+     * @param  int  $id
+     * @return \think\Response
+     */
+    public function delete($id)
+    {
+        $result = Blogs::destroy($id);
+        return json($result);
+    }
 }
-
-$f = new Father();
-
-print get_class($f-&gt;getNewFather());
-print get_class($f-&gt;getNewCaller());
-
 </code></pre>
 
-<p>self 是指父类本身<br/>
-static 当前调用本身  son extends father father里的function static 就是指自己了</p>
+<h1 id="toc_1">框架的更新</h1>
+
+<p>框架比较简单<br/>
+url.com/{control}/{action} 或 url.com/index.php/{control}/{action}即可访问<br/>
+我们要实现用户系统的用户添加，通过有资源有<br/>
+查看全部用户 /user/read/<br/>
+查看指定用户 /user/read/1<br/>
+更新指定用户 /user/edit/1<br/>
+删除指定用户 /user/delete/1<br/>
+除了control和action的path，其实后面便可以按顺序注入<br/>
+<img src="media/15844429076069/15844432269462.jpg" alt=""/></p>
+
+<p>把path后台的参数，注入进去即可。</p>
+
+<p><img src="media/15844429076069/15844432799215.jpg" alt=""/></p>
+
+<p>功能如下：</p>
+
+<p><img src="media/15844429076069/15844434785503.jpg" alt=""/></p>
 
                   </article>
                   <div class="comments-wrap">

@@ -4,13 +4,114 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-03-16T18:55:11+08:00</updated>
+  <updated>2020-03-16T18:59:09+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[框架增加restful api功能]]></title>
+    <link href="http://www.shengsheng.net/15844429076069.html"/>
+    <updated>2020-03-17T19:01:47+08:00</updated>
+    <id>http://www.shengsheng.net/15844429076069.html</id>
+    <content type="html"><![CDATA[
+<p>由于项目中使用自已开发的php框架，发现没有restful功能.</p>
+
+<h1 id="toc_0">restful架构</h1>
+
+<p>如下图，简单的CURD功能,以资源为定位</p>
+
+<pre><code class="language-text">class Blog
+{
+    /**
+     * 显示资源列表
+     *
+     * @return \think\Response
+     */
+    public function index()
+    {
+        $list = Blogs::all();
+        return json($list);
+    }
+
+    /**
+     * 保存新建的资源
+     *
+     * @param  \think\Request  $request
+     * @return \think\Response
+     */
+    public function save(Request $request)
+    {
+        $data   = $request-&gt;param();
+        $result = Blogs::create($data);
+        return json($result);
+    }
+
+    /**
+     * 显示指定的资源
+     *
+     * @param  int  $id
+     * @return \think\Response
+     */
+    public function read($id)
+    {
+        $data = Blogs::get($id);
+        return json($data);
+    }
+
+    /**
+     * 保存更新的资源
+     *
+     * @param  \think\Request  $request
+     * @param  int  $id
+     * @return \think\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $data   = $request-&gt;param();
+        $result = Blogs::update($data, [&#39;id&#39; =&gt; $id]);
+        return json($result);
+    }
+
+    /**
+     * 删除指定资源
+     *
+     * @param  int  $id
+     * @return \think\Response
+     */
+    public function delete($id)
+    {
+        $result = Blogs::destroy($id);
+        return json($result);
+    }
+}
+</code></pre>
+
+<h1 id="toc_1">框架的更新</h1>
+
+<p>框架比较简单<br/>
+url.com/{control}/{action} 或 url.com/index.php/{control}/{action}即可访问<br/>
+我们要实现用户系统的用户添加，通过有资源有<br/>
+查看全部用户 /user/read/<br/>
+查看指定用户 /user/read/1<br/>
+更新指定用户 /user/edit/1<br/>
+删除指定用户 /user/delete/1<br/>
+除了control和action的path，其实后面便可以按顺序注入<br/>
+<img src="media/15844429076069/15844432269462.jpg" alt=""/></p>
+
+<p>把path后台的参数，注入进去即可。</p>
+
+<p><img src="media/15844429076069/15844432799215.jpg" alt=""/></p>
+
+<p>功能如下：</p>
+
+<p><img src="media/15844429076069/15844434785503.jpg" alt=""/></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[git初始化项目]]></title>
@@ -1419,25 +1520,6 @@ InnoDB: using the same InnoDB data or log files.<br/>
 使用service mysql restart 即可</p>
 
 <p>setcookie 如果时间设置为0,即session就过期</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[hhkb体验]]></title>
-    <link href="http://www.shengsheng.net/15809578630972.html"/>
-    <updated>2020-02-06T10:57:43+08:00</updated>
-    <id>http://www.shengsheng.net/15809578630972.html</id>
-    <content type="html"><![CDATA[
-<p>date: 2015-11-06 09:58</p>
-
-<p>hhkb跳线相关<br/>
-011001</p>
-
-<p>开启mac模式，6是多媒体相关</p>
-
-<p>锁屏<br/>
-fn + ctrl + shift + esc</p>
 
 ]]></content>
   </entry>
