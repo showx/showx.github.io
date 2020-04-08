@@ -4,13 +4,34 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-03-17T19:11:56+08:00</updated>
+  <updated>2020-04-08T23:39:16+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[kindle开不了机的处理]]></title>
+    <link href="http://www.shengsheng.net/15863602108178.html"/>
+    <updated>2020-04-08T23:36:50+08:00</updated>
+    <id>http://www.shengsheng.net/15863602108178.html</id>
+    <content type="html"><![CDATA[
+<p>有大概两个月没使用kindle了，没电，画面空白。<br/>
+<img src="media/15863602108178/15863602894299.jpg" alt=""/></p>
+
+<p>按电源一直开不了机</p>
+
+<h1 id="toc_0">解决方案</h1>
+
+<p>插上电源的情况下，长按30面，等一下就显示启动界面。<br/>
+<img src="media/15863602108178/15863603294798.jpg" alt=""/></p>
+
+<p>还好没变砖头哈！</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[框架增加restful api功能]]></title>
@@ -1532,25 +1553,6 @@ script_filename = /data/wwwroot/default/xmlrpc.php<br/>
 <p>辅助与设置-》启用鼠标键-》设置连按5下option启用即可</p>
 
 <p>不过delte键和f1那些是不禁用的。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[今天工作遇到的小问题总结]]></title>
-    <link href="http://www.shengsheng.net/15809578630724.html"/>
-    <updated>2020-02-06T10:57:43+08:00</updated>
-    <id>http://www.shengsheng.net/15809578630724.html</id>
-    <content type="html"><![CDATA[
-<p>date: 2015-11-18 19:21</p>
-
-<p>InnoDB: Unable to lock ./ibdata1, error: 11<br/>
-InnoDB: Check that you do not already have another mysqld process<br/>
-InnoDB: using the same InnoDB data or log files.<br/>
-不使用/etc/init.d/mysql restart<br/>
-使用service mysql restart 即可</p>
-
-<p>setcookie 如果时间设置为0,即session就过期</p>
 
 ]]></content>
   </entry>
