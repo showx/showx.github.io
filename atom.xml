@@ -4,13 +4,60 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-04-08T23:39:16+08:00</updated>
+  <updated>2020-04-08T23:39:22+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[php method函数命名空间]]></title>
+    <link href="http://www.shengsheng.net/15868258856753.html"/>
+    <updated>2020-04-14T08:58:05+08:00</updated>
+    <id>http://www.shengsheng.net/15868258856753.html</id>
+    <content type="html"><![CDATA[
+<p>最近会用到method_exists函数，判断是否存在此方法，但是调用出了点异常。</p>
+
+<h1 id="toc_0">原因</h1>
+
+<pre><code class="language-text">use \app\model\ParseAstModel
+ParseAstModel::FunctionExpression();
+if(method_exists(&#39;ParseAstModel&#39;,&#39;FunctionExpression&#39;))
+{
+    echo &#39;此方法存在&#39;.lr;
+}else{
+    echo &#39;此方法不存在&#39;.lr;
+}
+</code></pre>
+
+<p>结果输出此方法不存在</p>
+
+<h1 id="toc_1">处理</h1>
+
+<p>Description<br/>
+<code><br/>
+method_exists ( mixed $object , string $method_name ) : bool<br/>
+Checks if the class method exists in the given object.<br/>
+</code><br/>
+object<br/>
+An object instance or a class name</p>
+
+<p>method_name<br/>
+The method name</p>
+
+<p>查看函数描述比较简单，主要填对象名称和方法名称即可<br/>
+函数内部查找不找寻外面的命名空间，故改成<br/>
+<code><br/>
+if(method_exists(&#39;\app\model\ParseAstModel&#39;,&#39;FunctionExpression&#39;))<br/>
+</code><br/>
+类似这类型的函数，要看清楚手册调用的对象，没new对象的情况下，要写全路径。</p>
+
+<p>还有找到更相似的函数么？ <sup>_^</sup></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[kindle开不了机的处理]]></title>
@@ -1536,23 +1583,6 @@ script_filename = /data/wwwroot/default/xmlrpc.php<br/>
 [0x00007efddb412100] serve_request() /data/wwwroot/default/xmlrpc.php:84</p>
 
 <p>自己暴网站文件地址真的好么？哈哈。。。。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[mac下设置内置键盘失效]]></title>
-    <link href="http://www.shengsheng.net/15809578630162.html"/>
-    <updated>2020-02-06T10:57:43+08:00</updated>
-    <id>http://www.shengsheng.net/15809578630162.html</id>
-    <content type="html"><![CDATA[
-<p>date: 2016-01-21 08:54</p>
-
-<p>使用hhkb，想禁用内置键盘</p>
-
-<p>辅助与设置-》启用鼠标键-》设置连按5下option启用即可</p>
-
-<p>不过delte键和f1那些是不禁用的。</p>
 
 ]]></content>
   </entry>
