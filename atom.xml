@@ -4,13 +4,254 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-04-08T23:39:22+08:00</updated>
+  <updated>2020-04-14T09:04:38+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[linux 1.常用性能指标及USE法分类]]></title>
+    <link href="http://www.shengsheng.net/15869595689820.html"/>
+    <updated>2020-04-15T22:06:08+08:00</updated>
+    <id>http://www.shengsheng.net/15869595689820.html</id>
+    <content type="html"><![CDATA[
+<h1 id="toc_0">CPU 性能指标</h1>
+
+<h2 id="toc_1">cpu使用率</h2>
+
+<ul>
+<li>用户cpu</li>
+<li>系统cpu</li>
+<li>IOWAIT</li>
+<li>软中断</li>
+<li>硬中断</li>
+<li>窃取cpu</li>
+<li>客户cpu</li>
+</ul>
+
+<h2 id="toc_2">上下文切换</h2>
+
+<ul>
+<li>自愿上下文切换</li>
+<li>非自愿上下文切换</li>
+</ul>
+
+<h2 id="toc_3">平均负载</h2>
+
+<h2 id="toc_4">cpu缓存命中率</h2>
+
+<h1 id="toc_5">内存性能指标</h1>
+
+<h2 id="toc_6">系统内存指标</h2>
+
+<ul>
+<li>已用内存</li>
+<li>剩余内存</li>
+<li>可用内存</li>
+<li>缺页异常</li>
+<li>     主缺页异常</li>
+<li>     次缺页异常</li>
+<li>缓存/ 缓冲区</li>
+<li>     使用量</li>
+<li>     命中率</li>
+<li>Slabs</li>
+</ul>
+
+<h2 id="toc_7">进程内存指标</h2>
+
+<ul>
+<li>虚拟内存（VSS）</li>
+<li>常驻内存（RSS）</li>
+<li>按比例分配共享内存后的物理内存(PSS）</li>
+<li>独占内存（USS)</li>
+<li>共享内存</li>
+<li>SWAP内存</li>
+<li>缺页异常
+<ol>
+<li>主缺页异常</li>
+<li>次缺页异常</li>
+</ol></li>
+</ul>
+
+<h2 id="toc_8">SWAP</h2>
+
+<p>已用空间<br/>
+剩余空间<br/>
+换入速度<br/>
+换出速度</p>
+
+<h1 id="toc_9">常用指标分类（USE法）</h1>
+
+<table>
+<thead>
+<tr>
+<th>资源</th>
+<th>类型</th>
+<th>性能指标</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>CPU</td>
+<td>使用率</td>
+<td>CPU使用率</td>
+</tr>
+<tr>
+<td>CPU</td>
+<td>饱和度</td>
+<td>运行队列长度或平均负载</td>
+</tr>
+<tr>
+<td>CPU</td>
+<td>错误数</td>
+<td>硬件CPU错误数</td>
+</tr>
+<tr>
+<td>内存</td>
+<td>使用率</td>
+<td>已用内存百分比或SWAP用量百分比</td>
+</tr>
+<tr>
+<td>内存</td>
+<td>饱和度</td>
+<td>内存换页量</td>
+</tr>
+<tr>
+<td>内存</td>
+<td>错误数</td>
+<td>内存分配失败或OOM</td>
+</tr>
+<tr>
+<td>存储设备I/O</td>
+<td>使用率</td>
+<td>设备I/O时间百分比</td>
+</tr>
+<tr>
+<td>存储设备I/O</td>
+<td>饱和度</td>
+<td>等待队列长度或延迟</td>
+</tr>
+<tr>
+<td>存储设备I/O</td>
+<td>错误数</td>
+<td>I/O错误数</td>
+</tr>
+<tr>
+<td>文件系统</td>
+<td>使用率</td>
+<td>已用容量百分比</td>
+</tr>
+<tr>
+<td>文件系统</td>
+<td>错误数</td>
+<td>文件读写错误数</td>
+</tr>
+<tr>
+<td>网络</td>
+<td>使用率</td>
+<td>带宽使用率</td>
+</tr>
+<tr>
+<td>网络</td>
+<td>饱和度</td>
+<td>重传报文数</td>
+</tr>
+<tr>
+<td>网络</td>
+<td>错误数</td>
+<td>网卡收发错误数、丢包数</td>
+</tr>
+<tr>
+<td>文件描述符</td>
+<td>使用率</td>
+<td>已用文件描述符数百分比</td>
+</tr>
+<tr>
+<td>连接跟踪</td>
+<td>使用率</td>
+<td>已用连接跟踪数百分比</td>
+</tr>
+<tr>
+<td>连接数</td>
+<td>饱和度</td>
+<td>TIMEWAIT状态连接数</td>
+</tr>
+</tbody>
+</table>
+
+<h1 id="toc_10">I/O性能指标</h1>
+
+<h2 id="toc_11">文件系统</h2>
+
+<p>存储空间容量、使用量以及剩余空间<br/>
+索引节点容量、使用量以及剩余量<br/>
+缓存<br/>
+    页缓存<br/>
+    目录项缓存<br/>
+    索引节点缓存<br/>
+    具体文件系统缓存（如ext4的缓存）<br/>
+IOPS（文件I/O）<br/>
+响应时间（延迟）<br/>
+吞吐量（B/S）</p>
+
+<h2 id="toc_12">磁盘</h2>
+
+<p>使用率<br/>
+IOPS<br/>
+吞吐量（B/S）<br/>
+响应时间（延迟）<br/>
+缓冲区<br/>
+相关因素<br/>
+    读写类型（如顺序还是随机）<br/>
+    读写比例<br/>
+    读写大小<br/>
+    存储类型（如RAID级别、本地还是网络）</p>
+
+<h1 id="toc_13">网络性能指标</h1>
+
+<h2 id="toc_14">应用层</h2>
+
+<p>QPS（每秒请求数）<br/>
+套接字缓冲区大小<br/>
+DNS解析延迟<br/>
+响应时间<br/>
+错误数</p>
+
+<h2 id="toc_15">传输层</h2>
+
+<p>tcp连接数<br/>
+    全连接<br/>
+    半连接<br/>
+    TIMEWAIT<br/>
+连接跟踪数<br/>
+重传数<br/>
+丢包数<br/>
+延迟</p>
+
+<h2 id="toc_16">网络层</h2>
+
+<p>丢包数<br/>
+TTL<br/>
+拆包</p>
+
+<h2 id="toc_17">链路层</h2>
+
+<p>PPS（每秒网络帧数）<br/>
+BPS（每秒字节数）<br/>
+丢包数<br/>
+错误数</p>
+
+<h1 id="toc_18">总结</h1>
+
+<p>把极客时间LINUX手册变成MD给大家查看 <sup>_^</sup><br/>
+<img src="media/15869595689820/15869605756641.jpg" alt=""/></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[php method函数命名空间]]></title>
@@ -1551,38 +1792,6 @@ ssl_prefer_server_ciphers on;</p>
 <p>审核大概两天的时间就差不多了，但是提交的版本，你发了最新版本，也只能按提交时候的版本来审核。</p>
 
 <p>现在看了一下统计，每也也有一些用户递增，那就足够了，有兴趣，可以添加『手机归属地』体验一下。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[博客暂停访问原因]]></title>
-    <link href="http://www.shengsheng.net/15809578629750.html"/>
-    <updated>2020-02-06T10:57:42+08:00</updated>
-    <id>http://www.shengsheng.net/15809578629750.html</id>
-    <content type="html"><![CDATA[
-<p>date: 2017-01-21 02:20</p>
-
-<p>最近被攻击，导致停机几天，主要wordpress的xmlrpc.php被一直访问。</p>
-
-<p>一早以为是腾讯云坑了。具体排查了一下，发现是php-fpm进程卡住了。</p>
-
-<p>[21-Jan-2017 08:27:39] [pool www] pid 5966<br/>
-script_filename = /data/wwwroot/default/xmlrpc.php<br/>
-[0x00007efddb412c20] curl_exec() /data/wwwroot/default/wp-includes/Requests/Transport/cURL.php:162<br/>
-[0x00007efddb412b50] request() /data/wwwroot/default/wp-includes/class-requests.php:379<br/>
-[0x00007efddb412a40] request() /data/wwwroot/default/wp-includes/class-http.php:365<br/>
-[0x00007efddb4128a0] request() /data/wwwroot/default/wp-includes/class-http.php:590<br/>
-[0x00007efddb4127e0] get() /data/wwwroot/default/wp-includes/http.php:70<br/>
-[0x00007efddb412730] wp_safe_remote_get() /data/wwwroot/default/wp-includes/class-wp-xmlrpc-server.php:6303<br/>
-[0x00007efddb412480] pingback_ping() /data/wwwroot/default/wp-includes/IXR/class-IXR-server.php:115<br/>
-[0x00007efddb4123a0] call() /data/wwwroot/default/wp-includes/IXR/class-IXR-server.php:65<br/>
-[0x00007efddb4122b0] serve() /data/wwwroot/default/wp-includes/IXR/class-IXR-server.php:27<br/>
-[0x00007efddb412210] __construct() /data/wwwroot/default/wp-includes/IXR/class-IXR-server.php:35<br/>
-[0x00007efddb412170] IXR_Server() /data/wwwroot/default/wp-includes/class-wp-xmlrpc-server.php:206<br/>
-[0x00007efddb412100] serve_request() /data/wwwroot/default/xmlrpc.php:84</p>
-
-<p>自己暴网站文件地址真的好么？哈哈。。。。</p>
 
 ]]></content>
   </entry>
