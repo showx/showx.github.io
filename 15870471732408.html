@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+      
+    linux 2.常用性能工具 - shengsheng的博客
+    
+    </title>
+    
+
+    
+    
+    <link href="atom.xml" rel="alternate" title="shengsheng的博客" type="application/atom+xml">
+    <link rel="stylesheet" href="asset/css/style.min.css">
+    <link rel="stylesheet" href="asset/css/doc.css">
+    <script src="asset/app.js"></script>
+</head>
+  <body>
+    <section class="hero">
+      <div class="hero-head">
+          <nav class="navbar" role="navigation" aria-label="main navigation">
+              <div class="container">
+              <div class="navbar-brand">
+                
+                <a target="self" class="navbar-item " href="index.html">Home</a>
+                
+                <a target="_self" class="navbar-item " href="archives.html">Archives</a>
+                
+
+                <a role="button" id="navbarSNSRssSwitchBtn" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarSNSRssButtons">
+                  <span aria-hidden="true"></span>
+                  <span aria-hidden="true"></span>
+                  <span aria-hidden="true"></span>
+                </a>
+              </div>
+            
+              <div id="navbarSNSRssButtons" class="navbar-menu">
+                <div class="navbar-start">
+                  
+                </div>
+            
+                <div class="navbar-end">
+                  <div class="navbar-item">
+                    <!--buttons start-->
+                    <div class="buttons">
+                      
+                        
+                        
+                        
+                        <a href="https://github.com/showx" target="_blank" title="github">
+                            <span class="icon is-large has-text-grey-darker">
+                               <svg class="svg-inline--fa fa-github fa-w-16 fa-lg" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="github" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" data-fa-i2svg=""><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg><!-- <i class="fab fa-github fa-lg"></i> -->
+                            </span>
+                          </a>
+                        
+                        
+                      
+                      <a href="atom.xml" target="_blank" title="RSS">
+                          <span class="icon is-large has-text-black-bis">
+                              <svg class="svg-inline--fa fa-rss fa-w-14 fa-lg" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="rss" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M128.081 415.959c0 35.369-28.672 64.041-64.041 64.041S0 451.328 0 415.959s28.672-64.041 64.041-64.041 64.04 28.673 64.04 64.041zm175.66 47.25c-8.354-154.6-132.185-278.587-286.95-286.95C7.656 175.765 0 183.105 0 192.253v48.069c0 8.415 6.49 15.472 14.887 16.018 111.832 7.284 201.473 96.702 208.772 208.772.547 8.397 7.604 14.887 16.018 14.887h48.069c9.149.001 16.489-7.655 15.995-16.79zm144.249.288C439.596 229.677 251.465 40.445 16.503 32.01 7.473 31.686 0 38.981 0 48.016v48.068c0 8.625 6.835 15.645 15.453 15.999 191.179 7.839 344.627 161.316 352.465 352.465.353 8.618 7.373 15.453 15.999 15.453h48.068c9.034-.001 16.329-7.474 16.005-16.504z"></path></svg><!-- <i class="fas fa-rss fa-lg"></i> -->
+                          </span>
+                      </a>
+                    </div>
+                    <!--buttons end-->
+
+                  </div>
+                </div>
+                </div>
+              </div>
+            </nav>
+      </div>
+
+ <div class="hero-body ct-body"></div>
+      
+    </section>
+    <section class="ct-body">
+      <div class="container">
+          <div class="columns is-variable bd-klmn-columns is-4 is-centered">
+              <div class="column is-four-fifths">
+                  <div class="post-body single-content">
+                    
+                    <h1 class="title">
+                            linux 2.常用性能工具   
+                      </h1>
+                     
+                    
+                      <div class="media">
+                            
+                            <figure class="media-left">
+                              <p class="image is-48x48">
+                                
+                                  <img class="is-rounded" src="https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLNy2NWBlSIIciaVib8aH6QbLrMiaf7BHibFicW4mp1mc3J1HXm3SKRceeJaqeb8oBos98XbMJRYecyPTw/132">
+                                
+                              </p>
+                            </figure>
+                            
+                            <div class="media-content">
+                              <div class="content">
+                                <p>
+                                 <span class="date">2020/04/16</span>
+                                  <span class="tran-posted-in">posted in</span>&nbsp; 
+                                  
+                                      <span class="posted-in"><a href='server.html'>服务端</a></span>
+                                         
+                                  
+
+                                   
+                                      
+                                  <br />
+                                  <span class="tran-tags">Tags:</span>&nbsp;
+                                     
+
+                                </p>
+                              </div>
+                            </div>
+                         
+                    </div>
+                </div>
+                  <article class="markdown-body single-content">
+                    <h2 id="toc_0">cpu性能工具</h2>
+
+<table>
+<thead>
+<tr>
+<th>性能指标</th>
+<th>性能工具</th>
+<th>说明</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>平均负载</td>
+<td>Uptime top /proc/loadavg</td>
+<td>uptime最简单；top提供了更全的指标；/proc/loadavg常用于监控系统</td>
+</tr>
+<tr>
+<td>系统CPU使用率</td>
+<td>Vmstat mpstat top sar /proc/stat</td>
+<td>Top vmstat mpstat只能动态查看，而sar还可以记录历史数据；/proc/stat是其他性能工具的数据来源，也常用于监控</td>
+</tr>
+<tr>
+<td>进程CPU使用率</td>
+<td>top ps pidstat htop atop</td>
+<td>top和ps可以按CPU使用率给进程排序，而pidstat只显示实际用了CPU的进程；htop和atop以不同颜色显示更直观</td>
+</tr>
+<tr>
+<td>进程上下文切换</td>
+<td>vmstat</td>
+<td>除了上下文切换次数，还提供运行状态和不可中断状态进程的数量</td>
+</tr>
+<tr>
+<td>进程上下文切换</td>
+<td>pidstat</td>
+<td>注意加上-w选项</td>
+</tr>
+<tr>
+<td>软中断</td>
+<td>top mpstat /proc/softirqs</td>
+<td>top提供软中断CPU使用率，而/proc/softirqs和mpstat提供了各种软中断在每个cpu上的运行次数</td>
+</tr>
+<tr>
+<td>硬中断</td>
+<td>Vmstat /proc/interrupts</td>
+<td>vmstat提供总的中断次数，而/proc/interrupts提供各种中断在每个cpu上运行的累积次数</td>
+</tr>
+<tr>
+<td>网络</td>
+<td>dstat sar tcpdump</td>
+<td>dstat sar提供总的网络接收和发送情况，而tcpdump则是动态抓取天上在进行的网络通讯</td>
+</tr>
+<tr>
+<td>I/O</td>
+<td>dstat sar</td>
+<td>dstat和sar都提供了I/O的整体情况</td>
+</tr>
+<tr>
+<td>CPU缓存</td>
+<td>perf</td>
+<td>使用perf stat子命令</td>
+</tr>
+<tr>
+<td>CPU数</td>
+<td>lscpu /proc/cpuinfo</td>
+<td>lscpu更直观</td>
+</tr>
+<tr>
+<td>事件剖析</td>
+<td>Perf \ 火焰图 execsnoop</td>
+<td>perf和火焰图用来分析热点函数以及调用栈，execsnoop用来监测短时进程</td>
+</tr>
+<tr>
+<td>动态追踪</td>
+<td>ftrace bcc systemtap</td>
+<td>ftrace用于跟踪内核函数调用栈，而bcc和systemtap则用于跟踪内核或应用程序的执行过程（注意bcc要求内核版本&gt;=4.1)</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="toc_1">内存性能工具</h2>
+
+<table>
+<thead>
+<tr>
+<th>性能指标</th>
+<th>性能工具</th>
+<th>说明</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>系统已用、可用、剩余内存</td>
+<td>free vmstat sar /proc/meminfo</td>
+<td>free最为简单，而vmstat sar更为全面；/proc/meminfo是其他工具的数据来源，也常用于监控系统中</td>
+</tr>
+<tr>
+<td>进程虚拟内存、常驻内存、共享内存</td>
+<td>ps top pidstat /proc/pid/stat /proc/pid/status</td>
+<td>ps和top最简单，而pidstat则需要加上-r选项；/proc/pid/stat和/proc/pid/status是其他工具的数据来源，也常用于监控系统中</td>
+</tr>
+<tr>
+<td>进程内存分布</td>
+<td>Pmap /proc/pid/maps</td>
+<td>/proc/pid/maps是pmap的数据来源</td>
+</tr>
+<tr>
+<td>进程swap换出内存</td>
+<td>top /proc/pid/status</td>
+<td>/proc/pid/status是top的数据来源</td>
+</tr>
+<tr>
+<td>进程缺页异常</td>
+<td>ps top pidstat</td>
+<td>注意给pidstat 加上-r选项</td>
+</tr>
+<tr>
+<td>系统换页情况</td>
+<td>sar</td>
+<td>注意加上-B选项</td>
+</tr>
+<tr>
+<td>缓存 / 缓冲区使用量</td>
+<td>free vmstat sar cachestat</td>
+<td>vmstat最常用，而cachestat需要安装bcc</td>
+</tr>
+<tr>
+<td>缓存 / 缓冲区命中率</td>
+<td>cachetop</td>
+<td>需要安装bcc</td>
+</tr>
+<tr>
+<td>SWAP已使用空间和剩余空间</td>
+<td>Free sar</td>
+<td>free最为简单，而sar还可以记录历史</td>
+</tr>
+<tr>
+<td>swap换入换出</td>
+<td>vmsata sar</td>
+<td>vmstat最为简单，而sar还可以记录历史</td>
+</tr>
+<tr>
+<td>内存泄露检测</td>
+<td>Memleak valgrind</td>
+<td>memleak需要安装bcc，valgrind还可以在旧版本（如3.x）内核中使用</td>
+</tr>
+<tr>
+<td>指定文件的缓存大小</td>
+<td>pcstat</td>
+<td>需要从源码下载安装</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="toc_2">文件系统和磁盘I/O性能工具</h2>
+
+<table>
+<thead>
+<tr>
+<th style="text-align: center">性能指标</th>
+<th style="text-align: center">性能工具</th>
+<th style="text-align: center">说明</th>
+<th></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td style="text-align: center">文件系统空间容量、使用量以及剩余空间</td>
+<td style="text-align: center">df</td>
+<td style="text-align: center">详细文档可以执行info coreutils ‘df invocation&#39;命令查询</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: center">索引节点容量、使用量以及剩余量</td>
+<td style="text-align: center">df</td>
+<td style="text-align: center">注意加上-i选项</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: center">页缓存和可回收Slab缓存</td>
+<td style="text-align: center">/proc/meminfo  sar vmstat</td>
+<td style="text-align: center">注意sar需要加上-r选项，而/proc/meminfo是其他工具的数据来源，也常用于监控</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: center">缓冲区</td>
+<td style="text-align: center">同上</td>
+<td style="text-align: center">同上</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: center">目录项，索引节点以及文件系统的缓存</td>
+<td style="text-align: center">/proc/slabinfo  slabtop</td>
+<td style="text-align: center">slabtop更直观，而/proc/slabinfo常用于监控</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: center">磁盘I/O使用率，iops，吞吐量，响应时间，I/O平均大小以有等待队列长度</td>
+<td style="text-align: center">iostat sar dstat /proc/diskstats</td>
+<td style="text-align: center">iostat是常用，注意使用iostat -d -x或sar -d选项；/proc/diskstat则是其他工具数据来源，也常用于监控</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: center">进程I/O大小以及I/O延迟</td>
+<td style="text-align: center">pidstat iotop</td>
+<td style="text-align: center">注意使用pidstat -d选项</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: center">块设备I/O事件跟踪</td>
+<td style="text-align: center">bltrace</td>
+<td style="text-align: center">需要跟blkparse配合使用，比如bltrace -d /dev/sda -o                             bltrace -i</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: center">进程I/O系统调用跟踪</td>
+<td style="text-align: center">strace perf trace</td>
+<td style="text-align: center">strace只可以跟踪单个进程，而perf trace还可以跟踪所有进程的系统调用</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: center">进程块设备I/O大小跟踪</td>
+<td style="text-align: center">biosnoop biotop</td>
+<td style="text-align: center">安装bcc</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align: center">动态追踪</td>
+<td style="text-align: center">ftrace bcc systemtap</td>
+<td style="text-align: center">ftrace用户跟踪内核函数调用栈，而bcc和systemtap则用于跟踪内核或应用程序的执行过程（注意bcc要求内核版本&gt;=4.1)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="toc_3">网络性能工具</h2>
+
+<table>
+<thead>
+<tr>
+<th>性能指标</th>
+<th>性能工具</th>
+<th>说明</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>吞吐量（BPS）</td>
+<td>sar nethogs iftop /proc/net/dev</td>
+<td>分别可以查看网络接口，进程以及IP地址的网络吞吐量；/proc/net/dev常用于监控</td>
+</tr>
+<tr>
+<td>吞吐量（PPS）</td>
+<td>sar /proc/net/dev</td>
+<td>注意使用sar -n DEV选项</td>
+</tr>
+<tr>
+<td>网络连接数</td>
+<td>netstat ss</td>
+<td>ss速度更快</td>
+</tr>
+<tr>
+<td>网络错误数</td>
+<td>netsta sar</td>
+<td>注意使用netstat -s或者sar -n EDEV/EIP选项</td>
+</tr>
+<tr>
+<td>网络延迟</td>
+<td>Ping hping3</td>
+<td>ping基于ICMP 而hping3则基于TCP协议</td>
+</tr>
+<tr>
+<td>连接跟踪数</td>
+<td>conntrack /proc/sys/net/netfilter/nf_conntrack_count  /proc/sys/net/netfilter/nf_conntrack_max</td>
+<td>Conntrack可用来查看所有连接跟踪的相关信息 Nf_conntrack_count只是连接跟踪的数量，而nf_conntrack_max则限制了总的连接跟踪数量</td>
+</tr>
+<tr>
+<td>路由</td>
+<td>mtr traceroute route</td>
+<td>route用于查询路由表，而mtr和traceroute则用来排查和定位网络链路中的路由问题</td>
+</tr>
+<tr>
+<td>DNS</td>
+<td>dig nslookup</td>
+<td>用于排查DNS解析的问题</td>
+</tr>
+<tr>
+<td>防火墙和NAT</td>
+<td>iptables</td>
+<td>用于排查防火墙及NAT的问题</td>
+</tr>
+<tr>
+<td>网卡选项</td>
+<td>ethtool</td>
+<td>用于查看和配置网络接口的项目选项</td>
+</tr>
+<tr>
+<td>网络抓包</td>
+<td>tcpdump wireshark</td>
+<td>通常在服务器中使用tcpdump抓包后再复制出来用wireshark的图形界面分析</td>
+</tr>
+<tr>
+<td>动态追踪</td>
+<td>Ftrace bcc systemtap</td>
+<td>ftrace用于跟踪内核函数调用栈，而bcc和systemtap则用于跟踪或应用程序的执行过程（注意bcc要求内核&gt;=4.1)</td>
+</tr>
+</tbody>
+</table>
+
+<h1 id="toc_4">总结</h1>
+
+<p>记录一下常用的linux工具</p>
+
+                  </article>
+                  <div class="comments-wrap">
+                    <div class="share-comments">
+                      
+
+                      
+
+                      
+                    </div>
+                  </div><!-- end comments wrap -->
+              </div>
+            </div><!-- end columns -->
+      </div><!-- end container -->
+    </section>
+
+
+
+    <footer class="footer">
+        <div class="content has-text-centered">
+          <p>
+              Copyright &copy; 2019
+              Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a>,&nbsp; 
+              Theme used <a target="_blank" href="https://bulma.io/">Bulma CSS</a>.
+          </p>
+        </div>
+      </footer>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+
+
+
+
+  </body>
+</html>
