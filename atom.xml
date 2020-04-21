@@ -4,7 +4,7 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-04-16T23:01:55+08:00</updated>
+  <updated>2020-04-21T19:35:10+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -40,7 +40,9 @@ certbot支持强度高，但限制也大，需域名先进行解析才能使用�
 
 <h2 id="toc_3">其它</h2>
 
-<p>腾讯云导入证书</p>
+<p>腾讯云导入证书<br/>
+证书格式转换:<br/>
+<a href="https://cloud.tencent.com/document/product/228/41686">https://cloud.tencent.com/document/product/228/41686</a></p>
 
 <h2 id="toc_4">结伦</h2>
 
