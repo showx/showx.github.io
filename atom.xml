@@ -4,13 +4,50 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-04-15T22:25:37+08:00</updated>
+  <updated>2020-04-16T23:01:55+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[免费域名证书的申请]]></title>
+    <link href="http://www.shengsheng.net/15874683984714.html"/>
+    <updated>2020-04-21T19:26:38+08:00</updated>
+    <id>http://www.shengsheng.net/15874683984714.html</id>
+    <content type="html"><![CDATA[
+<p>对于ssl，我们经常会用到，但对于我们这种贫穷人家，只能通过各种方式来获取免费的ssl。<br/>
+ssl证书好处，这里不多说，有疑问请度娘。<br/>
+比较折腾的是，免费的都不支持泛解析。</p>
+
+<h1 id="toc_0">测评</h1>
+
+<h2 id="toc_1">certbot</h2>
+
+<p>业内比较大的免费证书机构是certbot,<br/>
+certbot支持强度高，但限制也大，需域名先进行解析才能使用。<br/>
+<img src="media/15874683984714/15874686027554.jpg" alt=""/></p>
+
+<h2 id="toc_2">freessl.cn</h2>
+
+<p>操作简单，快捷，打开freessl.cn注册邮箱即可。<br/>
+<img src="media/15874683984714/15874687480297.jpg" alt=""/></p>
+
+<p>域名认证方面，使用txt作为解析，解析成功即可获得证书。<br/>
+需注意，申请好之后，要保存好私钥。</p>
+
+<h2 id="toc_3">其它</h2>
+
+<p>腾讯云导入证书</p>
+
+<h2 id="toc_4">结伦</h2>
+
+<p>相对来讲，本人较喜欢freessl.cn，不用解析ip即可申请。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[linux 2.常用性能工具]]></title>
@@ -2017,45 +2054,6 @@ partition day_2017_02 values less than (201702),<br/>
 partition day_2017_03 values less than (201703),<br/>
 PARTITION day_2017_04 VALUES less than MAXVALUE<br/>
 );</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[数据库区分大小写问题]]></title>
-    <link href="http://www.shengsheng.net/15809578629442.html"/>
-    <updated>2020-02-06T10:57:42+08:00</updated>
-    <id>http://www.shengsheng.net/15809578629442.html</id>
-    <content type="html"><![CDATA[
-<p>date: 2017-04-12 02:10</p>
-
-<p>其实关于自己选择集有关</p>
-
-<p>例如列有:</p>
-
-<p>user</p>
-
-<p>gw</p>
-
-<p>GW</p>
-
-<p>查询时候group by user，只有GW</p>
-
-<p>ALTER TABLE table CHANGE COLUMN <code>user</code> <code>user</code> varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT &#39;名称&#39;;</p>
-
-<p>改变collate就会区分大小写的了</p>
-
-<p>设置collate（校对） 。 collate规则：</p>
-
-<p>*_bin: 表示的是binary case sensitive collation，也就是说是区分大小写的<br/>
-*_cs: case sensitive collation，区分大小写<br/>
-*_ci: case insensitive collation，不区分大小写</p>
-
-<p>对于只是单项查询区分，使用binary就可够了。 where user binary(&#39;gw&#39;);</p>
-
-<p>sql的一个例子：</p>
-
-<p>select user collate utf8_bin from table group by user collate utf8_bin;</p>
 
 ]]></content>
   </entry>
