@@ -4,7 +4,7 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-04-21T19:35:10+08:00</updated>
+  <updated>2020-04-21T19:37:05+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -40,11 +40,28 @@ certbot支持强度高，但限制也大，需域名先进行解析才能使用�
 
 <h2 id="toc_3">其它</h2>
 
-<p>腾讯云导入证书<br/>
-证书格式转换:<br/>
-<a href="https://cloud.tencent.com/document/product/228/41686">https://cloud.tencent.com/document/product/228/41686</a></p>
+<h3 id="toc_4">腾讯云导入证书</h3>
 
-<h2 id="toc_4">结伦</h2>
+<p><img src="media/15874683984714/15874698281428.jpg" alt=""/><br/>
+下载之后有两个文件<br/>
+private.key为私钥<br/>
+full_chain.pem为公钥</p>
+
+<p><img src="media/15874683984714/15874699416978.jpg" alt=""/></p>
+
+<p>复制私钥的内容到私钥栏<br/>
+full_chain.pem复制上半部分即可<br/>
+<img src="media/15874683984714/15874700104254.jpg" alt=""/></p>
+
+<h3 id="toc_5">证书格式转换:</h3>
+
+<p><a href="https://cloud.tencent.com/document/product/228/41686">https://cloud.tencent.com/document/product/228/41686</a></p>
+
+<h3 id="toc_6">p12,pem,key</h3>
+
+<p>这部分度娘了解一下证书原理即可。</p>
+
+<h2 id="toc_7">结伦</h2>
 
 <p>相对来讲，本人较喜欢freessl.cn，不用解析ip即可申请。</p>
 
