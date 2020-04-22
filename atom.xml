@@ -4,13 +4,37 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-04-21T19:37:05+08:00</updated>
+  <updated>2020-04-21T19:54:58+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[mysql导出指定条数的数据]]></title>
+    <link href="http://www.shengsheng.net/15875516508594.html"/>
+    <updated>2020-04-22T18:34:10+08:00</updated>
+    <id>http://www.shengsheng.net/15875516508594.html</id>
+    <content type="html"><![CDATA[
+<p>平时习惯了使用navicat for mysql来复制数据到本地数据库</p>
+
+<p><img src="media/15875516508594/15875517328254.jpg" alt=""/></p>
+
+<p>数据多的时候，复制会很慢，而且某些hash的索引会变成btree。<br/>
+为了使本地测试机有线上部分数据库，故使用mysqldump导出指定条数。</p>
+
+<p><code><br/>
+mysqldump  --column-statistics=0 --host=127.0.0.1 --port=3306  -uroot -proot dbname --where=&quot; 1=1 limit 100&quot;&gt; db.sql <br/>
+</code></p>
+
+<p>例导出指定库，每个表格前100条数据，可以使用 --where参数，limit 100条</p>
+
+<p>mysqldump导出的时候会锁表，还有比较好的工具，后更新。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[免费域名证书的申请]]></title>
@@ -2044,35 +2068,6 @@ android{productFlavors{red{applicationId&#39;com.gradleforandroid.red&#39;versio
 <li></li>
 <li><p>别盲目选，给自己三天时间好好思考一下，选择自己所爱的，爱自己所选的</p></li>
 </ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[mysql PARTITION表分区要注意事项]]></title>
-    <link href="http://www.shengsheng.net/15809578629394.html"/>
-    <updated>2020-02-06T10:57:42+08:00</updated>
-    <id>http://www.shengsheng.net/15809578629394.html</id>
-    <content type="html"><![CDATA[
-<p>date: 2017-04-18 16:33</p>
-
-<p>把表进行分区，数据量有一定的时候，会减轻压力。</p>
-
-<p>1.主键，一定要使用复合主键。例如，主键为id, 复合字段就是 id,date</p>
-
-<p>2.按月进行分区，其它没区分出的，放在MAXVALUE</p>
-
-<p>3.写个shell crond,每个月设置一次。</p>
-
-<p>例:</p>
-
-<p>alter table day PARTITION by range(itime_d div 100)<br/>
-(<br/>
-partition day_2017_01 values less than (201701),<br/>
-partition day_2017_02 values less than (201702),<br/>
-partition day_2017_03 values less than (201703),<br/>
-PARTITION day_2017_04 VALUES less than MAXVALUE<br/>
-);</p>
 
 ]]></content>
   </entry>
