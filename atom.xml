@@ -4,13 +4,136 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-04-21T19:54:58+08:00</updated>
+  <updated>2020-04-22T18:38:20+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[shell常用复习]]></title>
+    <link href="http://www.shengsheng.net/15876399053304.html"/>
+    <updated>2020-04-23T19:05:05+08:00</updated>
+    <id>http://www.shengsheng.net/15876399053304.html</id>
+    <content type="html"><![CDATA[
+<h2 id="toc_0">常用快捷键</h2>
+
+<ul>
+<li>Ctrl + L：清除屏幕并将当前行移到页面顶部。</li>
+<li>Ctrl + U：从光标位置删除到行首。</li>
+<li>Ctrl + K：从光标位置删除到行尾。</li>
+<li>Ctrl + a：移到行首。</li>
+<li>Ctrl + b：向行首移动一个字符，与左箭头作用相同。</li>
+<li>Ctrl + e：移到行尾。</li>
+<li>Ctrl + f：向行尾移动一个字符，与右箭头作用相同。</li>
+<li>Alt + f：移动到当前单词的词尾。</li>
+<li>Alt + b：移动到当前单词的词首。</li>
+<li>Ctrl + d：删除光标位置的字符（delete）。</li>
+<li>Ctrl + w：删除光标前面的单词。</li>
+<li>Ctrl + t：光标位置的字符与它前面一位的字符交换位置（transpose）。</li>
+<li>Alt + t：光标位置的词与它前面一位的词交换位置（transpose）。</li>
+<li>Alt + l：将光标位置至词尾转为小写（lowercase）。</li>
+<li>Alt + u：将光标位置至词尾转为大写（uppercase）。</li>
+<li>使用Ctrl + d的时候，如果当前行没有任何字符，会导致退出当前 Shell，所以要小心。</li>
+</ul>
+
+<h3 id="toc_1">剪切和粘贴快捷键如下。</h3>
+
+<ul>
+<li>Ctrl + k：剪切光标位置到行尾的文本。</li>
+<li>Ctrl + u：剪切光标位置到行首的文本。</li>
+<li>Alt + d：剪切光标位置到词尾的文本。</li>
+<li>Alt + Backspace：剪切光标位置到词首的文本。</li>
+<li><p>Ctrl + y：在光标位置粘贴文本。</p></li>
+<li><p>Ctrl + p：显示上一个命令，与向上箭头效果相同（previous）。</p></li>
+<li><p>Ctrl + n：显示下一个命令，与向下箭头效果相同（next）。</p></li>
+<li><p>Alt + &lt;：显示第一个命令。</p></li>
+<li><p>Alt + &gt;：显示最后一个命令，即当前的命令。</p></li>
+<li><p>Ctrl + o：执行历史文件里面的当前条目，并自动显示下一条命令。这对重复执行某个序列的命令很有帮助。</p></li>
+</ul>
+
+<h3 id="toc_2">感叹号!的快捷键如下。</h3>
+
+<ul>
+<li>!!：执行上一个命令。</li>
+<li>!n：执行历史文件里面行号为n的命令。</li>
+<li>!-n：执行当前命令之前n条的命令。</li>
+<li>!string：执行最近一个以指定字符串string开头的命令。</li>
+<li>!?string：执行最近一条包含字符串string的命令。</li>
+<li><sup>string1<sup>string2：执行最近一条包含string1的命令，将其替换成string2。</sup></sup></li>
+</ul>
+
+<h2 id="toc_3">()号</h2>
+
+<p>\((...)可以扩展成另一个命令的运行结果，该命令的所有输出都会作为返回值。<br/>
+\)((...))可以扩展成整数运算的结果，详见《Bash 的算术运算》一章。</p>
+
+<p>\( myvar=USER<br/>
+\) echo ${!myvar}<br/>
+ruanyf</p>
+
+<p>$?为上一个命令的退出码，用来判断上一个命令是否执行成功。返回值是0，表示上一个命令执行成功；如果是非零，上一个命令执行失败。</p>
+
+<p>字符串截数<br/>
+1.最近 2.最贪婪<br/>
+从前往后</p>
+
+<pre><code class="language-text">#
+##
+</code></pre>
+
+<p>从后往前</p>
+
+<pre><code class="language-text">%
+%%
+</code></pre>
+
+<h2 id="toc_4">for与while</h2>
+
+<h3 id="toc_5">for</h3>
+
+<p>类型js里面的for in<br/>
+for i in &quot;\(@&quot;; do<br/>
+  echo \)i<br/>
+done</p>
+
+<h3 id="toc_6">while</h3>
+
+<p>while getopts &#39;lha:&#39; OPTION; do<br/>
+  case &quot;$OPTION&quot; in<br/>
+    l)<br/>
+      echo &quot;linuxconfig&quot;<br/>
+      ;;</p>
+
+<pre><code class="language-text">h)
+  echo &quot;h stands for h&quot;
+  ;;
+
+a)
+  avalue=&quot;$OPTARG&quot;
+  echo &quot;The value provided is $OPTARG&quot;
+  ;;
+?)
+  echo &quot;script usage: $(basename $0) [-l] [-h] [-a somevalue]&quot; &gt;&amp;2
+  exit 1
+  ;;
+</code></pre>
+
+<p>esac<br/>
+done<br/>
+shift &quot;\(((\)OPTIND - 1))&quot;</p>
+
+<h2 id="toc_7">命令的参数</h2>
+
+<p>bash的-x参数可以在执行每一行命令之前，打印该命令。这样就不用自己输出执行的命令，一旦出错，比较容易追查。<br/>
+-n：不运行脚本，只检查是否有语法错误。<br/>
+-v：输出每一行语句运行结果前，会先输出该行语句。<br/>
+-x：每一个命令处理完以后，先输出该命令，再进行下一个命令的处理。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[mysql导出指定条数的数据]]></title>
@@ -1992,82 +2115,6 @@ android{productFlavors{red{applicationId&#39;com.gradleforandroid.red&#39;versio
 <p>AppEngine插件添加了许多任务，其中使用最多的是appengineRun和appengineUpdate。appengineRun任务用来开启一个本地开发服务器，这样就可以在上传到GoogleAppEngine之前，本地测试整个后端。第一次运行该任务时，构建可能需要一段时间，因为Gradle需要下载AppEngineSDK。我们早已通过downloadSdk=true来设置下载行为。要想停止服务器，你可以使用appengineStop。</p>
 
 <p>Closures是匿名代码块，可以接受参数和返回值。它们可以被视为变量，被当作参数传递给方法。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[钟总公开课笔记。]]></title>
-    <link href="http://www.shengsheng.net/15809578629104.html"/>
-    <updated>2020-02-06T10:57:42+08:00</updated>
-    <id>http://www.shengsheng.net/15809578629104.html</id>
-    <content type="html"><![CDATA[
-<p>date: 2017-08-28 03:26</p>
-
-<p>为什么要换工作？</p>
-
-<ul>
-<li>  没意思 心态上或没人聊天 ，不满意  薪水，升个职<br/></li>
-<li><br/></li>
-<li>  如果这公司发生的，可能到下家公司也会遇到！</li>
-<li><br/></li>
-<li>  最基础的开端其实是从心态开始</li>
-<li><br/></li>
-<li><p>结果，时间</p></li>
-<li><p>下份工作目标</p></li>
-<li><p>赚钱   钱在哪里？  大公司，创业？</p></li>
-<li><p>稳定   透过佛法看世界</p></li>
-<li></li>
-<li><p>两种公司，歌酒菜，画大饼</p></li>
-<li><p>歌酒菜，没情怀！</p></li>
-<li></li>
-<li><p>梦想是要靠现实来支撑的</p></li>
-<li></li>
-<li><p>歌酒菜</p></li>
-<li><p>抱X包类，贪便宜</p></li>
-<li><p>快速支付 </p></li>
-<li><p>健康养生</p></li>
-<li><p>成人用品</p></li>
-<li></li>
-<li><p>区块链ico     </p></li>
-<li><p>技术与操盘</p></li>
-<li></li>
-<li><p>情怀与梦想</p></li>
-<li><p>公司是可以赚快钱 企业要慢慢捱</p></li>
-<li><p>企业：战略与管理   </p></li>
-<li></li>
-<li><p>ppt 成果展示  </p></li>
-<li></li>
-<li><p>组织人才，其实要培训自己的团队</p></li>
-<li><p>招高管  你能帮我带多少人过来</p></li>
-<li><p>判断做事：1.效率  2.效益 </p></li>
-<li><p>功劳和苦劳</p></li>
-<li></li>
-<li><p>用对人，做对事</p></li>
-<li><p>自聪明人与机器人（自动化）！</p></li>
-<li><p>以技术的能力取代人工！以核心的数据分析！  算法部分</p></li>
-<li><p>流程产品化</p></li>
-<li><p>结果反馈机制</p></li>
-<li><p>数据，算法，协同  人工智能三要素</p></li>
-<li><p>挖掘需求，效率更高</p></li>
-<li><p>数据智能，数据化，算法化，智能化</p></li>
-<li></li>
-<li></li>
-<li><p>我作为一个投资人，我要看到一个企业横向和纵向的分析 </p></li>
-<li></li>
-<li><p>基础数据要进行分析 </p></li>
-<li></li>
-<li><p>谈判条件 </p></li>
-<li><p>你有什么优势，你能做什么，带来什么价值 </p></li>
-<li><p>你有什么要求，工资？ 要准备心态 </p></li>
-<li><p>有可能工作一年重踏旧路，我又不想干了</p></li>
-<li><p>志同道合 </p></li>
-<li><p>门当户对</p></li>
-<li><p>压力源于自身不足，动力源于自身实力</p></li>
-<li></li>
-<li></li>
-<li><p>别盲目选，给自己三天时间好好思考一下，选择自己所爱的，爱自己所选的</p></li>
-</ul>
 
 ]]></content>
   </entry>
