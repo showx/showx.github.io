@@ -4,13 +4,65 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-04-24T19:42:21+08:00</updated>
+  <updated>2020-04-24T19:54:19+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[cors跨域失败的问题]]></title>
+    <link href="http://www.shengsheng.net/15877943484342.html"/>
+    <updated>2020-04-25T13:59:08+08:00</updated>
+    <id>http://www.shengsheng.net/15877943484342.html</id>
+    <content type="html"><![CDATA[
+<p>通常前后端分离或某些跨域请求，我们会用到cors来控制<br/>
+以下是php代码示例，nginx、java等其它都可以实现</p>
+
+<pre><code class="language-text">header(&#39;Access-Control-Allow-Origin: *&#39;);  
+header(&#39;Access-Control-Allow-Credentials: true&#39;); //是否允许后续请求携带认证信息（cookies）,该值只能是true,否则不返回
+header(&#39;Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS&#39;); //允许的请求类型
+header(&quot;Access-Control-Allow-Headers: Accept,AUTHORIZATION,DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization&quot;); 
+header(&quot;Access-Control-Allow-Headers: *&quot;);
+</code></pre>
+
+<h1 id="toc_0">问题</h1>
+
+<p>在搭建的过程中，会遇到失效的问题。<br/>
+查看了一下<br/>
+<code><br/>
+Access-Control-Allow-Origin: *<br/>
+</code><br/>
+设置为*即允许所有，但登录成功之后获取信息有错。<br/>
+<img src="media/15877943484342/15877944590386.jpg" alt=""/></p>
+
+<p>改变一下Access-Control-Allow-Origin测试<br/>
+<code><br/>
+Access-Control-Allow-Origin: http://test<br/>
+</code><br/>
+<img src="media/15877943484342/15877945540038.jpg" alt=""/><br/>
+发现不是Access-Control-Allow-Origin的问题。</p>
+
+<p>使用Charles抓包查看一下<br/>
+<img src="media/15877943484342/15877974328399.jpg" alt=""/></p>
+
+<p>每次请求cors前都有个OPTIONS方法，里面没有任何的参数内容<br/>
+<img src="media/15877943484342/15877975157214.jpg" alt=""/><br/>
+由于框架每次都会验证一下jwt权限，遇到没内容直接返回401状态码。</p>
+
+<p><img src="media/15877943484342/15877977625055.jpg" alt=""/></p>
+
+<p>改写一下代码即可。</p>
+
+<h1 id="toc_1">结论</h1>
+
+<p>查阅相关资料，得出如下提醒：<br/>
+跨域资源共享标准新增了一组 HTTP 首部字段，允许服务器声明哪些源站通过浏览器有权限访问哪些资源。另外，规范要求，对那些可能对服务器数据产生副作用的 HTTP 请求方法（特别是 GET 以外的 HTTP 请求，或者搭配某些 MIME 类型的 POST 请求），浏览器必须首先使用 OPTIONS 方法发起一个预检请求（preflight request），从而获知服务端是否允许该跨域请求。服务器确认允许之后，才发起实际的 HTTP 请求。在预检请求的返回中，服务器端也可以通知客户端，是否需要携带身份凭证（包括 Cookies 和 HTTP 认证相关数据）</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[docker发布hub过程]]></title>
@@ -1813,241 +1865,6 @@ date_default_timezone_set(&#39;Asia/Shanghai&#39;);
 </code></pre>
 
 <p>终所述，必须严格查看一下环境上的时间。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[划动验证码的破解]]></title>
-    <link href="http://www.shengsheng.net/15823712934354.html"/>
-    <updated>2020-02-22T19:34:53+08:00</updated>
-    <id>http://www.shengsheng.net/15823712934354.html</id>
-    <content type="html"><![CDATA[
-<p>最近需要获取某些信息，但每次页面都要滑动一次验证码实在太烦了，so研究一下破解方案。</p>
-
-<h1 id="toc_0">使用的技术</h1>
-
-<ul>
-<li>python3</li>
-<li>opencv</li>
-<li>pymydb</li>
-<li>selenium</li>
-</ul>
-
-<h1 id="toc_1">效果</h1>
-
-<p><a href="media/15823712934354/1582371835327952.mp4">1582371835327952</a></p>
-
-<h1 id="toc_2">核心思路</h1>
-
-<p>1) 使用selenium加载网站，定位到验证码的iframe<br/>
-2) 背景版，缺口图，使用opencv灰度图像分析出缺口位置。</p>
-
-<pre><code class="language-text">result = cv2.matchTemplate(target, template, cv2.TM_CCOEFF_NORMED)
-x, y = np.unravel_index(result.argmax(), result.shape)
-</code></pre>
-
-<p>3) 控制验证码的滑块到指定位置。<br/>
-4) 代理ip的使用，因为对于ip访问次数太多，验证码就算滑中了，也是不正确的。</p>
-
-<h1 id="toc_3">具体代码</h1>
-
-<pre><code class="language-text">#!/usr/bin/env python
-# encoding: utf-8
-
-import random
-import time
-import os
-import cv2
-import ssl
-import pymysql
-import urllib.request
-import numpy as np
-from PIL import Image
-from selenium.webdriver import ActionChains
-from selenium.webdriver import Chrome
-from selenium.webdriver import ChromeOptions
-from selenium.webdriver.support.ui import WebDriverWait
-class Login(object):
-    &quot;&quot;&quot;
-    python + seleniuum + cv2
-    &quot;&quot;&quot;
-    def __init__(self,proxyIP=&#39;&#39;):
-        # 如果是实际应用中，可在此处账号和密码
-        self.option = ChromeOptions()
-        # 不加ip，模拟验证码可能有问题
-        if(proxyIP):
-            self.option.add_argument(&quot;--proxy-server=&quot;+proxyIP);
-        self.option.add_argument(&#39;--headless&#39;);
-        self.option.add_experimental_option(&#39;excludeSwitches&#39;, [&#39;enable-automation&#39;])
-        self.driver = Chrome(options=self.option)
-    
-    def seturl(self,url):
-        self.url = url;
-    
-    @staticmethod
-    def get_postion(otemp, oblk):
-        &quot;&quot;&quot;
-        判断缺口位置
-        :param chunk: 缺口图片是原图
-        :param canves:
-        :return: 位置 x, y
-        &quot;&quot;&quot;
-        target = cv2.imread(otemp, 0)
-        template = cv2.imread(oblk, 0)
-        # w, h = target.shape[::-1]
-        temp = &#39;temp.jpg&#39;
-        targ = &#39;targ.jpg&#39;
-        #imwrite
-        cv2.imwrite(temp, template)
-        cv2.imwrite(targ, target)
-        
-        target = cv2.imread(targ)
-        target = cv2.cvtColor(target, cv2.COLOR_BGR2GRAY)
-        target = abs(255 - target)
-        
-        cv2.imwrite(targ, target)
-        target = cv2.imread(targ)
-        template = cv2.imread(temp)
-        result = cv2.matchTemplate(target, template, cv2.TM_CCOEFF_NORMED)
-        x, y = np.unravel_index(result.argmax(), result.shape)
-        return x, y
-
-    @staticmethod
-    def get_track(distance):
-        tracks = []
-        distance = int(distance);
-        tracks.append(distance)
-        return tracks;
-
-    @staticmethod
-    def urllib_download(imgurl, imgsavepath):
-        from urllib.request import urlretrieve
-        urlretrieve(imgurl, imgsavepath)
-        
-    def quit2(self):
-        self.driver.execute_script(&quot;window.close();&quot;);
-        self.driver.switch_to.window(self.driver.window_handles[-1])
-        
-    def quit(self):
-        self.driver.quit();
-        
-    def login_main(self, driver):
-        driver.switch_to.default_content()
-        #滑块iframe
-        driver.switch_to.frame(driver.find_element_by_tag_name(&quot;iframe&quot;))
-        # 大图
-        bk_block = driver.find_element_by_xpath(&#39;//img[@id=&quot;slideBkg&quot;]&#39;)  
-        web_image_width = bk_block.size
-        web_image_width = web_image_width[&#39;width&#39;]
-        bk_block_x = bk_block.location[&#39;x&#39;]
-     # 小滑块
-        slide_block = driver.find_element_by_xpath(&#39;//img[@id=&quot;slideBlock&quot;]&#39;)  
-        slide_block_x = slide_block.location[&#39;x&#39;]
-        bk_block = driver.find_element_by_xpath(&#39;//img[@id=&quot;slideBkg&quot;]&#39;).get_attribute(&#39;src&#39;) # 大图 url
-#       print(bk_block);
-        slide_block = driver.find_element_by_xpath(&#39;//img[@id=&quot;slideBlock&quot;]&#39;).get_attribute(&#39;src&#39;) # 小滑块 图片url
-#       print(slide_block);
-        slid_ing = driver.find_element_by_xpath(&#39;//div[@id=&quot;slide_bar_head&quot;]&#39;)  # 滑块
-
-        #下载图片分析
-        os.makedirs(&#39;./image/&#39;, exist_ok=True)
-        self.urllib_download(bk_block, &#39;./image/bkBlock.png&#39;)
-        self.urllib_download(slide_block, &#39;./image/slideBlock.png&#39;)
-        time.sleep(0.5)
-        img_bkblock = Image.open(&#39;./image/bkBlock.png&#39;)
-        bkblock_real_width = img_bkblock.size[0]
-        # 滑块宽度/大图背景宽度
-        width_scale = float(bkblock_real_width) / float(web_image_width)
-        #opencv分析,获取滑块与嵌块的位置
-        position = self.get_postion(&#39;./image/bkBlock.png&#39;, &#39;./image/slideBlock.png&#39;)
-        real_position = position[1] / width_scale
-        real_position = real_position - (slide_block_x - bk_block_x)
-        #滑动的轨迹
-        track_list = self.get_track(real_position)
-        # 点击鼠标左键，按住不放
-        ActionChains(driver).click_and_hold(on_element=slid_ing).perform()  
-        time.sleep(0.2)
-        #拖动滑块
-        for track in track_list:
-            #移动鼠标到嵌块距离
-            ActionChains(driver).move_by_offset(xoffset=track, yoffset=0).perform()
-        # 释放鼠标
-        ActionChains(driver).release(on_element=slid_ing).perform()
-
-    def main(self):
-        driver = self.driver
-        driver.maximize_window()
-        print(self.url);
-        #url 这里开始赋值
-        driver.get(self.url)
-        time.sleep(4)
-        self.login_main(driver)
-        driver.switch_to.default_content() #切换主页面
-        #获取相关详细信息
-        time.sleep(4)
-        # 这里获取不了，只能尝试再获取一次验证码的
-        try:
-            test = driver.find_element_by_class_name(&#39;profile-card-user-info-description&#39;)
-            #和对应的id存起来
-            content = test.text;  
-            return test.text;
-        except Exception as e:
-            reutrn;
-        
-#获取代理ip
-def getproxyIP():
-   # 大家可以找出免费的代码ip
-    proxyurl = &quot;xx&quot;;
-    response = urllib.request.urlopen(proxyurl)
-    proxyIP = response.read();
-    proxyIP = proxyIP.decode(&quot;unicode_escape&quot;)
-    proxyIP = str(proxyIP);
-    return proxyIP;
-    
-if __name__ == &#39;__main__&#39;:
-    ssl._create_default_https_context = ssl._create_unverified_context
-    #跑取url的组成
-    conn = pymysql.connect(host=&#39;127.0.0.1&#39;, port=3306, user=&#39;root&#39;, passwd=&#39;root&#39;, db=&#39;phpshow&#39;, charset=&#39;utf8mb4&#39;)
-    # 创建游标
-    cursor = conn.cursor()
-    while(1):
-        cursor.execute(&quot;select UserId from spider where crawl=&#39;1&#39; and intro is Null limit 10&quot;);
-        res = cursor.fetchall();
-        if res==False:
-            break;
-        proxyIP = getproxyIP();
-        print(proxyIP);
-        #这里要有异常处理
-        login = Login(proxyIP)
-        for val in res:
-            print(val[0]);
-            try:
-                time.sleep(1);
-                #url规则，手动更改
-                url = str(&quot;https://xx.com/search/author?keyword=&quot;)+str(val[0])+str(&quot;&amp;page=1&quot;);
-                
-                login.seturl(url);
-                text = login.main()
-                print(text);
-                if text:
-                    print(&quot;update&quot;);
-                    cursor2 = conn.cursor();
-                    # 表名
-                    update_sql = &quot;update xx set intro=&#39;&quot;+str(text)+&quot;&#39; where UserId = &#39;&quot;+str(val[0])+&quot;&#39;&quot;;
-                    print(update_sql);
-                    tmp = cursor2.execute(update_sql);
-                    conn.commit();
-                    cursor2.close;
-                #退出浏览器
-    #           login.quit();
-            except Exception as e:
-                login.quit2();
-                print(&quot;error&quot;);
-        login.quit();
-        print(&quot;---------------------------&quot;);
-    ```
-</code></pre>
 
 ]]></content>
   </entry>
