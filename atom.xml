@@ -4,13 +4,32 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-04-25T15:18:28+08:00</updated>
+  <updated>2020-04-27T10:10:28+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[超高性能的php框架之phpshow]]></title>
+    <link href="http://www.shengsheng.net/15880420318169.html"/>
+    <updated>2020-04-28T10:47:11+08:00</updated>
+    <id>http://www.shengsheng.net/15880420318169.html</id>
+    <content type="html"><![CDATA[
+<p>基于workerman撸了个比较好性能的轻量级php框架。已得到官方收录，经实际项目实践。</p>
+
+<p><img src="media/15880420318169/15880421689585.jpg" alt=""/></p>
+
+<p>搭建比较简单，代码里都有示例app</p>
+
+<p><img src="media/15880420318169/15880421212309.jpg" alt=""/></p>
+
+<p>后续更新相关教程。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[绕过微信小程序机审]]></title>
@@ -1875,88 +1894,6 @@ Linked List 实战题目<br/>
 
 <p>最后晒晒自己在极客的毕业证书<br/>
 <img src="media/15831470834324/15831485775250.jpg" alt=""/></p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[切换linux数据源]]></title>
-    <link href="http://www.shengsheng.net/15831463679623.html"/>
-    <updated>2020-03-02T18:52:47+08:00</updated>
-    <id>http://www.shengsheng.net/15831463679623.html</id>
-    <content type="html"><![CDATA[
-<p>由于打算上docker容器里修改一些服务，但没有vim，实在用得麻烦。<br/>
-但直接apt-get install vim是不行的，因为容器还是比较精简的linux。<br/>
-于是有了以下命令<br/>
-<code><br/>
-apt-get update<br/>
-</code><br/>
-实在忍受不了国外镜像的速度，需要切换一下。</p>
-
-<h1 id="toc_0">具体操作</h1>
-
-<p>使用网易163的镜像源<br/>
-<code><br/>
-http://mirrors.163.com<br/>
-</code><br/>
-查看本地系统版本命令：<br/>
-<code><br/>
-cat /etc/debian_version<br/>
-cat /etc/os-release<br/>
-</code><br/>
-<img src="media/15831463679623/15831465636406.jpg" alt=""/></p>
-
-<p>使用命令得知，我们的系统是9,即VERSION_CODENAME,stretch<br/>
-为了稳定安全，操作前备份一下我们的原始镜像配置<br/>
-<code><br/>
-cp sources.list sources.list_bak<br/>
-</code><br/>
-往我们的/etc/apt/sources.list修改成新的镜像源<br/>
-<code><br/>
-echo &quot;deb http://mirrors.163.com/debian/ stretch main non-free contrib&quot; &gt; /etc/apt/sources.list<br/>
-echo &quot;deb http://mirrors.163.com/debian-security stretch/updates main&quot; &gt;&gt; /etc/apt/sources.list<br/>
-echo &quot;deb http://mirrors.163.com/debian stretch-updates main&quot; &gt; /etc/apt/sources.list<br/>
-</code><br/>
-再次update安装<br/>
-<code><br/>
-apt-get update<br/>
-apt-get install vim<br/>
-</code><br/>
-最后一个“爽”字来形容。</p>
-
-<h1 id="toc_1">其它像像源</h1>
-
-<p>1.企业贡献：<br/>
- 搜狐开源镜像站：<a href="http://mirrors.sohu.com/">http://mirrors.sohu.com/</a><br/>
-网易开源镜像站：<a href="http://mirrors.163.com/">http://mirrors.163.com/</a><br/>
-2.大学教学：<br/>
- 北京理工大学：<br/>
-<a href="http://mirror.bit.edu.cn">http://mirror.bit.edu.cn</a> (IPv4 only)<br/>
-<a href="http://mirror.bit6.edu.cn">http://mirror.bit6.edu.cn</a> (IPv6 only)<br/>
-北京交通大学：<br/>
-<a href="http://mirror.bjtu.edu.cn">http://mirror.bjtu.edu.cn</a> (IPv4 only)<br/>
-<a href="http://mirror6.bjtu.edu.cn">http://mirror6.bjtu.edu.cn</a> (IPv6 only)<br/>
-<a href="http://debian.bjtu.edu.cn">http://debian.bjtu.edu.cn</a> (IPv4+IPv6)<br/>
-兰州大学：<a href="http://mirror.lzu.edu.cn/">http://mirror.lzu.edu.cn/</a><br/>
-厦门大学：<a href="http://mirrors.xmu.edu.cn/">http://mirrors.xmu.edu.cn/</a><br/>
-上海交通大学：<br/>
-<a href="http://ftp.sjtu.edu.cn/">http://ftp.sjtu.edu.cn/</a> (IPv4 only)<br/>
-<a href="http://ftp6.sjtu.edu.cn">http://ftp6.sjtu.edu.cn</a> (IPv6 only)<br/>
-清华大学：<br/>
-<a href="http://mirrors.tuna.tsinghua.edu.cn/">http://mirrors.tuna.tsinghua.edu.cn/</a> (IPv4+IPv6)<br/>
-<a href="http://mirrors.6.tuna.tsinghua.edu.cn/">http://mirrors.6.tuna.tsinghua.edu.cn/</a> (IPv6 only)<br/>
-<a href="http://mirrors.4.tuna.tsinghua.edu.cn/">http://mirrors.4.tuna.tsinghua.edu.cn/</a> (IPv4 only)<br/>
-天津大学：<a href="http://mirror.tju.edu.cn/">http://mirror.tju.edu.cn/</a><br/>
-中国科学技术大学：<br/>
-<a href="http://mirrors.ustc.edu.cn/">http://mirrors.ustc.edu.cn/</a> (IPv4+IPv6)<br/>
-<a href="http://mirrors4.ustc.edu.cn/">http://mirrors4.ustc.edu.cn/</a><br/>
-<a href="http://mirrors6.ustc.edu.cn/">http://mirrors6.ustc.edu.cn/</a><br/>
-西南大学：<a href="http://linux.swu.edu.cn/swudownload/Distributions/">http://linux.swu.edu.cn/swudownload/Distributions/</a><br/>
-东北大学：<br/>
-<a href="http://mirror.neu.edu.cn/">http://mirror.neu.edu.cn/</a> (IPv4 only)<br/>
-<a href="http://mirror.neu6.edu.cn/">http://mirror.neu6.edu.cn/</a> (IPv6 only)<br/>
-电子科技大学：<a href="http://ubuntu.uestc.edu.cn/">http://ubuntu.uestc.edu.cn/</a><br/>
-青岛大学：<a href="http://mirror.qdu.edu.cn/">http://mirror.qdu.edu.cn/</a></p>
 
 ]]></content>
   </entry>
