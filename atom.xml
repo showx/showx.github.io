@@ -4,13 +4,116 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-04-28T10:49:49+08:00</updated>
+  <updated>2020-04-29T23:10:18+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[php自定义异常类]]></title>
+    <link href="http://www.shengsheng.net/15882435726461.html"/>
+    <updated>2020-04-30T18:46:12+08:00</updated>
+    <id>http://www.shengsheng.net/15882435726461.html</id>
+    <content type="html"><![CDATA[
+<p>工作中会经常用到异常的调试<br/>
+所以会用到异常类</p>
+
+<pre><code class="language-text">&lt;?php
+Exception implements Throwable {
+/* Properties */
+protected string $message ;
+protected int $code ;
+protected string $file ;
+protected int $line ;
+/* Methods */
+public __construct ([ string $message = &quot;&quot; [, int $code = 0 [, Throwable $previous = NULL ]]] )
+final public getMessage ( void ) : string
+final public getPrevious ( void ) : Throwable
+final public getCode ( void ) : mixed
+final public getFile ( void ) : string
+final public getLine ( void ) : int
+final public getTrace ( void ) : array
+final public getTraceAsString ( void ) : string
+public __toString ( void ) : string
+final private __clone ( void ) : void
+}
+</code></pre>
+
+<p>结合实际我们会自定义一些异常类来处理特定的事情</p>
+
+<h1 id="toc_0">自定义异常类的编写</h1>
+
+<pre><code class="language-text">Class dbException extends \Exception
+{
+    private $errorCode;
+    private $sql;
+
+    /**
+     * 初始化异常
+     */
+    public function __construct($code = &quot;&quot;, $message = &quot;&quot;,  $sql = &quot;&quot;)
+    {
+        parent::__construct($message, 0);
+        $this-&gt;errorCode = $code;
+        $this-&gt;sql = $sql;
+    }
+
+    /**
+     *  获取错误码
+     */
+    public function getErrorCode()
+    {
+        return $this-&gt;errorCode;
+    }
+
+    /**
+     * 获取错误的sql语句
+     */
+    public function getSql():string
+    {
+        return $this-&gt;sql;
+    }
+    
+    /**
+     * 格式化输出异常码，异常信息，请求id
+     * @return string
+     */
+    public function __toString()
+    {
+        return &quot;[&quot;.__CLASS__.&quot;]&quot;.&quot; code:&quot;.$this-&gt;errorCode.
+            &quot; message:&quot;.$this-&gt;getMessage().
+            &quot; sql:&quot;.$this-&gt;sql;
+    }
+
+}
+</code></pre>
+
+<p><img src="media/15882435726461/15882443213130.jpg" alt=""/></p>
+
+<p>我们简单测试一下自定义的异常类</p>
+
+<p><img src="media/15882435726461/15882441893437.jpg" alt=""/></p>
+
+<p><img src="media/15882435726461/15882442464889.jpg" alt=""/></p>
+
+<p>运行一下我们只走到了Exception,但我们不是没结果的时候拋出dbException么？<br/>
+其实是没走到throw new dbException，语句已经有错，直接底层拋出Exception</p>
+
+<p>改写一下函数<br/>
+<img src="media/15882435726461/15882443985466.jpg" alt=""/></p>
+
+<p>这样就捕获到异常了<br/>
+<img src="media/15882435726461/15882444468903.jpg" alt=""/></p>
+
+<h1 id="toc_1">结论</h1>
+
+<p>提高效率，写好异常类是很有必要的！</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[android常用工具]]></title>
@@ -1592,91 +1695,6 @@ docker start mysql
 <h1 id="toc_0">运行结果</h1>
 
 <p><img src="media/15837651337922/15837652685497.jpg" alt="" style="width:984px;"/></p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[戴尔主机服务器版上的坑]]></title>
-    <link href="http://www.shengsheng.net/15837639036208.html"/>
-    <updated>2020-03-09T22:25:03+08:00</updated>
-    <id>http://www.shengsheng.net/15837639036208.html</id>
-    <content type="html"><![CDATA[
-<p>最近朋友送我一台戴尔t130主机，这台服务器版配置还是挺高的，cpu E6,8G内存。 128 ssd + 4T raid 1。<br/>
-但服务版，分辨率实在是低。故需增加独显。</p>
-
-<h1 id="toc_0">踩坑</h1>
-
-<p>服务器相比普通主机，缺少以下：</p>
-
-<ol>
-<li>独显</li>
-<li>无线wifi</li>
-<li>声卡</li>
-</ol>
-
-<p>原本以为装上显卡，就可以顺畅玩玩。起码分辨率高点，看得也舒服点。<br/>
-附上第一次显卡截图<br/>
-<img src="media/15837639036208/15837641504042.jpg" alt="" style="width:614px;"/></p>
-
-<p>其它配件：<br/>
-<img src="media/15837639036208/15837641759551.jpg" alt="" style="width:525px;"/></p>
-
-<p><img src="media/15837639036208/15837642400336.jpg" alt="" style="width:635px;"/></p>
-
-<p>因为办公用原因，不用太高端的显卡（主要因为穷）。接上显卡之后，显示器黑屏。问客服原因，该显卡不支持品牌机，ok，申请退货。</p>
-
-<p>故我再选择第二款好点的显卡<br/>
-<img src="media/15837639036208/15837643160244.jpg" alt="" style="width:585px;"/></p>
-
-<p>经过网上查资料，该主机开机只能使用vga显示，进入界面成功.<br/>
-在设备管理器禁用集显的启动，顺利切换到hdmi高清分辨率。</p>
-
-<p><img src="media/15837639036208/15837644347248.jpg" alt=""/></p>
-
-<p><img src="media/15837639036208/15837644420414.jpg" alt=""/></p>
-
-<p><img src="media/15837639036208/15837644485155.jpg" alt=""/></p>
-
-<p>尝试过bios禁用集显启动，换来的是一直卡在自检界面。进入不了，再切回来。</p>
-
-<h1 id="toc_1">坑2</h1>
-
-<p>虽然独显使用成功了，但主机内的风扇超级大声。这是因为这主板pci-e插糟有东西就一定会触发。</p>
-
-<h1 id="toc_2">解决</h1>
-
-<p>还好，戴尔有idrac远程管理功能。在bios上开启一下，并启用pci1的vlan功能，设置上ip。使用网线直接链接该pci1网线口。设置同一网端即可。<br/>
-没必要买idrac扩展哈。</p>
-
-<p><img src="media/15837639036208/15837647037986.jpg" alt="" style="width:379px;"/></p>
-
-<h1 id="toc_3">idrac默认设置</h1>
-
-<p>账号：root<br/>
-密码：calvin<br/>
-IP：192.168.0.120</p>
-
-<p><code><br/>
-ipmitool -I lanplus -H IDRAC网口 iP -U 用户名 -P 密码 raw 0x30 0xce 0x00 0x16 0x05 0x00 0x00 0x00 0x05 0x00 0x01 0x00 0x00<br/>
-</code><br/>
-ipmitool功能，即可减少风扇转速。<br/>
-ipmitool在mac下直接<br/>
-<code><br/>
-brew install ipmitool<br/>
-</code><br/>
-<img src="media/15837639036208/15837648289587.jpg" alt="" style="width:576px;"/></p>
-
-<h1 id="toc_4">参考链接</h1>
-
-<ul>
-<li><a href="https://jingyan.baidu.com/article/6c67b1d64f567b2787bb1e02.html">https://jingyan.baidu.com/article/6c67b1d64f567b2787bb1e02.html</a></li>
-<li><a href="https://www.chiphell.com/thread-1653396-1-1.html">https://www.chiphell.com/thread-1653396-1-1.html</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/92259408">https://zhuanlan.zhihu.com/p/92259408</a></li>
-<li><a href="https://www.dell.com/community/PowerEdge%E6%9C%8D%E5%8A%A1%E5%99%A8/T630%E5%A1%94%E5%BC%8F%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8A%A0%E8%A3%85GPU%E5%99%AA%E9%9F%B3%E9%9D%9E%E5%B8%B8%E5%A4%A7/m-p/6035279#M9648">https://www.dell.com/community/PowerEdge%E6%9C%8D%E5%8A%A1%E5%99%A8/T630%E5%A1%94%E5%BC%8F%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8A%A0%E8%A3%85GPU%E5%99%AA%E9%9F%B3%E9%9D%9E%E5%B8%B8%E5%A4%A7/m-p/6035279#M9648</a></li>
-<li><a href="https://www.dell.com/community/PowerEdge%E6%9C%8D%E5%8A%A1%E5%99%A8/%E6%B1%82%E5%8A%A9-R720xd%E5%BC%80%E6%9C%BA%E8%BF%9B%E5%85%A5%E7%B3%BB%E7%BB%9F%E5%90%8E%E9%A3%8E%E6%89%87%E5%A5%BD%E5%93%8D/m-p/6127205#M10642">https://www.dell.com/community/PowerEdge%E6%9C%8D%E5%8A%A1%E5%99%A8/%E6%B1%82%E5%8A%A9-R720xd%E5%BC%80%E6%9C%BA%E8%BF%9B%E5%85%A5%E7%B3%BB%E7%BB%9F%E5%90%8E%E9%A3%8E%E6%89%87%E5%A5%BD%E5%93%8D/m-p/6127205#M10642</a></li>
-<li><a href="https://blog.51cto.com/xiaocuik/1975216">https://blog.51cto.com/xiaocuik/1975216</a></li>
-</ul>
 
 ]]></content>
   </entry>
