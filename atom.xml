@@ -4,13 +4,124 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-04-29T23:10:18+08:00</updated>
+  <updated>2020-04-30T19:02:16+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[加大效率的快捷键]]></title>
+    <link href="http://www.shengsheng.net/15886055945928.html"/>
+    <updated>2020-05-04T23:19:54+08:00</updated>
+    <id>http://www.shengsheng.net/15886055945928.html</id>
+    <content type="html"><![CDATA[
+<p>偶尔用到某些功能的时候，忘记快捷键是多少了，故本篇主要记录一下常用快捷键</p>
+
+<h2 id="toc_0">iterm2</h2>
+
+<pre><code class="language-text">command + t：新建窗口
+
+command + d：垂直分屏，
+
+command + shift + d：水平分屏。
+
+command + ] 和command + [ 在最近使用的分屏直接切换.
+
+command + alt + 方向键：切换到指定位置的分屏。
+
+command + 数字：切换标签页。
+
+command + 方向键：按方向切换标签页。
+
+shift + command + s：保存当前窗口快照。
+
+command + alt + b：快照回放。很有意思的功能，你可以对你的操作根据时间轴进行回放。可以拖动下方的时间轴，也可以按左右方向s
+</code></pre>
+
+<h2 id="toc_1">visual studio code</h2>
+
+<pre><code class="language-text">单行注释：[ctrl+k,ctrl+c] 或 ctrl+/
+
+移动行：alt+up/down
+
+显示/隐藏左侧目录栏 ctrl + b
+
+复制当前行：shift + alt +up/down
+
+删除当前行：shift + ctrl + k
+
+控制台终端显示与隐藏：ctrl + ~
+
+查找文件/安装vs code 插件地址：ctrl + p
+
+代码格式化：shift + alt +f
+
+新建一个窗口 : ctrl + shift + n
+
+行增加缩进: ctrl + [
+
+行减少缩进: ctrl + ]
+
+裁剪尾随空格(去掉一行的末尾那些没用的空格) : ctrl + shift + x
+
+字体放大/缩小: ctrl + ( + 或 - )
+
+拆分编辑器 : ctrl + 1/2/3
+
+切换窗口 : ctrl + shift + left/right
+
+关闭编辑器窗口 : ctrl + w
+
+关闭所有窗口 : ctrl + k + w
+
+切换全屏 : F11
+
+自动换行 : alt + z
+
+显示git : ctrl + shift + g
+
+全局查找文件：ctrl + shift + f
+
+显示相关插件的命令(如：git log)：ctrl + shift + p
+
+选中文字：shift + left / right / up / down
+
+折叠代码： ctrl + k + 0-9 (0是完全折叠)
+
+展开代码： ctrl + k + j (完全展开代码)
+
+删除行 ： ctrl + shift + k
+
+快速切换主题：ctrl + k / ctrl + t
+
+快速回到顶部 ： ctrl + home
+
+快速回到底部 : ctrl + end
+
+格式化选定代码 ：ctrl + k / ctrl +f
+
+选中代码 ： shift + 鼠标左键
+
+多行同时添加内容（光标） ：ctrl + alt + up/down
+
+全局替换：ctrl + shift + h
+
+当前文件替换：ctrl + h
+
+打开最近打开的文件：ctrl + r
+
+打开新的命令窗：ctrl + shift + c
+</code></pre>
+
+<h1 id="toc_2">后记</h1>
+
+<p>陆续会更新常用工具的快捷键</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[php自定义异常类]]></title>
@@ -1642,59 +1753,6 @@ docker start mysql
 <h1 id="toc_1">结论</h1>
 
 <p>经英语翻译，isGameTourist 是否观察的意思。那么true就是观察代码的查看了，所以默认使用官方的wx6ac3f5090a6b99c5，isGameTourist这个参数默认就是false,所以去掉就读取你原来配置的appid参数了。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[php简单分析能否买房]]></title>
-    <link href="http://www.shengsheng.net/15837651337922.html"/>
-    <updated>2020-03-09T22:45:33+08:00</updated>
-    <id>http://www.shengsheng.net/15837651337922.html</id>
-    <content type="html"><![CDATA[
-<p>上一年打算买房，故上一年11月的时候写个了程序来分析一下前期大概需要多少钱，或能承受的范围。<br/>
-不买房不知道，打折的规则基本9.8折，应筹更便宜点，还有税和维修基金等费用哈，有空的朋友可以补充上。</p>
-
-<pre><code class="language-text">&lt;?php
-/**
- * 房子首付计算
- * Author:show
- */
-
-
-    $mix = [
-//  &#39;75&#39;,
-    &#39;86&#39;,&#39;110&#39;,&#39;120&#39;
-    ];
-    foreach($mix as $key=&gt;$val)
-    {
-        //30%首付
-        for($i=1.6;$i&lt;=2.6;$i+=0.1)
-        {
-            //假设首付是30%
-            $sum = $val * $i;
-            $sum2 = ($sum - 3) * 0.98 * 0.96 * 0.98;
-            $downpay = $sum2 * 0.3;
-            $loans = $sum2 - $downpay;
-            echo &quot;平方：{$val},单价：[{$i}w],[总价]：{$sum} [减3万订金 0.98*0.96*0.98打折后总价]：{$sum2}w,打折后首付：{$downpay},打折后贷款:{$loans}w\n&quot;;
-        }
-        echo &quot;======================================\n&quot;;
-        
-        //20 30年(360期）
-        //年利率 = 日利率 * 360  = 月利率 * 12. :如果日利率为万分之五，那么年利率就是0.0005*360=18%
-        //0.18/360 = 0.0005
-        //公积金3.25 商业4.9 5.45
-        //先计算等额本息
-        //67万公积金贷 
-        // 利息=本金*利率*存期
-        
-    }
-?&gt;
-</code></pre>
-
-<h1 id="toc_0">运行结果</h1>
-
-<p><img src="media/15837651337922/15837652685497.jpg" alt="" style="width:984px;"/></p>
 
 ]]></content>
   </entry>
