@@ -4,13 +4,300 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-04-30T19:02:16+08:00</updated>
+  <updated>2020-05-04T23:24:14+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[linux 3.根据指标找工具]]></title>
+    <link href="http://www.shengsheng.net/15886892533426.html"/>
+    <updated>2020-05-05T22:34:13+08:00</updated>
+    <id>http://www.shengsheng.net/15886892533426.html</id>
+    <content type="html"><![CDATA[
+<h1 id="toc_0">根据指标找工具（cpu性能）</h1>
+
+<table>
+<thead>
+<tr>
+<th>性能指标</th>
+<th>性能工具</th>
+<th>说明</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>平均负载</td>
+<td>Uptime top</td>
+<td>uptime最简单；top提供了更全的指标</td>
+</tr>
+<tr>
+<td>系统整体CPU使用率</td>
+<td>vmstat mpstat top sar /proc/stat</td>
+<td>top vmstat mpstat只可以动态查看，而sar还可以记录历史数据 /proc/stat是其它性能工具的数据来源</td>
+</tr>
+<tr>
+<td>进程CPU使用率</td>
+<td>top pidstat ps htop atop</td>
+<td>top和ps可以按CPU使用给进程排序，而pidstat只显示实际用了CPU的进程，htop和atop以不同颜色显示更直观</td>
+</tr>
+<tr>
+<td>系统上下文切换</td>
+<td>vmstat</td>
+<td>除了上下文切换次数，还提供运行状态和不可中断状态进程的数量</td>
+</tr>
+<tr>
+<td>进程上下文切换</td>
+<td>pidstat</td>
+<td>注意加上-w选项</td>
+</tr>
+<tr>
+<td>软中断</td>
+<td>top /proc/softrqs mpstat</td>
+<td>top提供软中断CPU使用率，而/proc/softirqs和mpstat提供各种中断在每个CPU上运行的累积次数</td>
+</tr>
+<tr>
+<td>硬中断</td>
+<td>vmstat /proc/interrupts</td>
+<td>vmstat提供总的中断次数，而/proc/interrupts提供各种中断在每个CPU上运行的累积次数</td>
+</tr>
+<tr>
+<td>网络</td>
+<td>Dstat sar tcpdump</td>
+<td>dstat和sar提供总的网络接收和发送情况，而tcpdump则是动态抓取正在进行的网络通讯</td>
+</tr>
+<tr>
+<td>I/O</td>
+<td>Dstat sar</td>
+<td>dstat和sar都提供了I/O的整体情况</td>
+</tr>
+<tr>
+<td>CPU个数</td>
+<td>/proc/cpuinfo lscpu</td>
+<td>lscpu更直观</td>
+</tr>
+<tr>
+<td>事件剖析</td>
+<td>Perf execsnoop</td>
+<td>perf可以用来分析CPU的缓存以及内核调用链，execsnoop用来监控短时进程</td>
+</tr>
+</tbody>
+</table>
+
+<h1 id="toc_1">根据指标找工具（文件系统和磁盘I/O）</h1>
+
+<table>
+<thead>
+<tr>
+<th>性能指标</th>
+<th>性能工具</th>
+<th>说明</th>
+<th></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>文件系统空间容量、使用量以及剩余空间</td>
+<td>df</td>
+<td>Info coreutils’df invocation&#39;</td>
+<td></td>
+</tr>
+<tr>
+<td>索引节点容量、使用量以及剩余量</td>
+<td>df</td>
+<td>使用-i选项</td>
+<td></td>
+</tr>
+<tr>
+<td>页缓存和可回收Slab缓存</td>
+<td>/proc/meminfo sar vmstat</td>
+<td>使用sar -r选项</td>
+<td></td>
+</tr>
+<tr>
+<td>缓冲区</td>
+<td>/proc/meminfo sar vmstat</td>
+<td>Sar -r</td>
+<td></td>
+</tr>
+<tr>
+<td>目录项、索引节点以及文件系统的缓存</td>
+<td>/proc/slabinfo slabtop</td>
+<td>slabtop</td>
+<td></td>
+</tr>
+<tr>
+<td>磁盘I/O使用率，IOPS，吞吐量，响应时间，I/O平均大小以及等待队列长度</td>
+<td>iostat sar dstat</td>
+<td>使用iostat -d -x 或 sar -d</td>
+<td></td>
+</tr>
+<tr>
+<td>进程I/O大小以及I/O延迟</td>
+<td>pidstat iotop</td>
+<td>使用pidstat -d</td>
+<td></td>
+</tr>
+<tr>
+<td>块设备I/O事件跟踪</td>
+<td>blktrace</td>
+<td>blktrace -d /dev/ sda -o       blkparse -i</td>
+<td></td>
+</tr>
+<tr>
+<td>进程I/O系统调用跟踪</td>
+<td>strace</td>
+<td>strace</td>
+<td></td>
+</tr>
+<tr>
+<td>进程块设备I/O大小跟踪</td>
+<td>biosnoop biotop</td>
+<td>需要安装bcc软件包</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<h1 id="toc_2">根据指标找工具（内存性能）</h1>
+
+<table>
+<thead>
+<tr>
+<th>性能指标</th>
+<th>性能工具</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>系统已用、可用、剩余内存</td>
+<td>free vmstat sar /proc/meminfo</td>
+</tr>
+<tr>
+<td>进程虚拟内存、常驻内存、共享内存</td>
+<td>ps top</td>
+</tr>
+<tr>
+<td>进程内存分布</td>
+<td>pmap</td>
+</tr>
+<tr>
+<td>进程swap换出内存</td>
+<td>top /roc/pid/status</td>
+</tr>
+<tr>
+<td>进程缺页异常</td>
+<td>ps top</td>
+</tr>
+<tr>
+<td>系统换页情况</td>
+<td>sar</td>
+</tr>
+<tr>
+<td>缓存 / 缓冲区用量</td>
+<td>free vmstat sar cachestat</td>
+</tr>
+<tr>
+<td>缓存 / 缓冲区命中率</td>
+<td>cachetop</td>
+</tr>
+<tr>
+<td>SWAP已用空间和剩余空间</td>
+<td>free sar</td>
+</tr>
+<tr>
+<td>swap换入换出</td>
+<td>vmstat</td>
+</tr>
+<tr>
+<td>内存泄漏检测</td>
+<td>memleak valgrind</td>
+</tr>
+<tr>
+<td>指定文件的缓存大小</td>
+<td>pcstat</td>
+</tr>
+</tbody>
+</table>
+
+<h1 id="toc_3">根据指标找工具（网络性能）</h1>
+
+<table>
+<thead>
+<tr>
+<th>性能指标</th>
+<th>性能工具</th>
+<th>说明</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>吞吐量（BPS）</td>
+<td>sar nethogs iftop</td>
+<td>分别可以查看网络接口 进程以及IP地址的网络吴吐量</td>
+</tr>
+<tr>
+<td>PPS</td>
+<td>sar /proc/net/dev</td>
+<td>查看网络接口的PPS</td>
+</tr>
+<tr>
+<td>连接数</td>
+<td>netstat ss</td>
+<td>查看网络连接数</td>
+</tr>
+<tr>
+<td>延迟</td>
+<td>ping hping3</td>
+<td>通过ICMP TCP等测试网络延迟</td>
+</tr>
+<tr>
+<td>连接跟踪数</td>
+<td>conntrack</td>
+<td>查看和管理连接跟踪状况</td>
+</tr>
+<tr>
+<td>路由</td>
+<td>mtr route traceroute</td>
+<td>查看路由并测试链路信息</td>
+</tr>
+<tr>
+<td>DNS</td>
+<td>dig nslookup</td>
+<td>查看路由并测试链路信息</td>
+</tr>
+<tr>
+<td>防火墙和NAT</td>
+<td>iptables</td>
+<td>配置和管理防火墙及NAT规则</td>
+</tr>
+<tr>
+<td>网卡功能</td>
+<td>ethtool</td>
+<td>查看和配置网络接口的功能</td>
+</tr>
+<tr>
+<td>抓包</td>
+<td>tcpdump wireshark</td>
+<td>分析</td>
+</tr>
+<tr>
+<td>内核协议栈跟踪</td>
+<td>bcc systemtap</td>
+<td>动态跟踪内核协议栈的行为</td>
+</tr>
+</tbody>
+</table>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[加大效率的快捷键]]></title>
@@ -1728,31 +2015,6 @@ docker start mysql
 <h1 id="toc_0">思考点</h1>
 
 <p>遇到的朋友可以思考怎么关闭系统自启动mysql server服务。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[微信开发者工具项目导入的问题]]></title>
-    <link href="http://www.shengsheng.net/15838982474217.html"/>
-    <updated>2020-03-11T11:44:07+08:00</updated>
-    <id>http://www.shengsheng.net/15838982474217.html</id>
-    <content type="html"><![CDATA[
-<p>这两天运营老是跟我说，怎么研发打的包，导入老是出现AppId更改的情况，明明project.config.js设置的appid不是这个&quot;wx6ac3f5090a6b99c5&quot;</p>
-
-<p><img src="media/15838982474217/15838984019592.jpg" alt=""/></p>
-
-<h1 id="toc_0">研究</h1>
-
-<p>研究一番，确实会出现此问题，不可能每次导入都修改一次appid吧。<br/>
-使用compare对比工具对比一下没问题的项目，发现有一行明显不一样。<br/>
-<img src="media/15838982474217/15838985171442.jpg" alt=""/></p>
-
-<p>嗯,isGameTourist,这行去掉或改为false,微信开发者工具导入就没问题了，会自动加上。</p>
-
-<h1 id="toc_1">结论</h1>
-
-<p>经英语翻译，isGameTourist 是否观察的意思。那么true就是观察代码的查看了，所以默认使用官方的wx6ac3f5090a6b99c5，isGameTourist这个参数默认就是false,所以去掉就读取你原来配置的appid参数了。</p>
 
 ]]></content>
   </entry>
