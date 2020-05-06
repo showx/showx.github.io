@@ -4,13 +4,69 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-05-04T23:24:14+08:00</updated>
+  <updated>2020-05-05T23:08:43+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[linux权限和组]]></title>
+    <link href="http://www.shengsheng.net/15887614689176.html"/>
+    <updated>2020-05-06T18:37:48+08:00</updated>
+    <id>http://www.shengsheng.net/15887614689176.html</id>
+    <content type="html"><![CDATA[
+<p>最近都是想写写linux基础为主</p>
+
+<h1 id="toc_0">group</h1>
+
+<p>/etc/group<br/>
+我们以root:x:0:root,linuxsir 为例： 用户组root，x是密码段，表示没有设置密码，GID是0,root用户组下包括root、linuxsir以及GID为0的其它用户。</p>
+
+<h1 id="toc_1">用户</h1>
+
+<p>/etc/passwd<br/>
+用户名:口令:用户标识号:组标识号:注释性描述:主目录:登录Shell</p>
+
+<h1 id="toc_2">权限命令</h1>
+
+<p>chown 修改文件或文件夹的归属用户和归属组 <br/>
+chmod 修改权限属性</p>
+
+<h1 id="toc_3">权限组成</h1>
+
+<p><img src="media/15887614689176/15887617349056.jpg" alt=""/></p>
+
+<p>前在的d代表文件夹的意思<br/>
+r 代表读取 read<br/>
+w 写  write<br/>
+x 执行 execute</p>
+
+<p>一共有三段 <br/>
+即<br/>
+用户|组|其它</p>
+
+<p>这里可以看出jar文件夹的用户是pengyongsheng,组是staff<br/>
+pengyongsheng对应的权限是读写执行<br/>
+staff对应的权限只有读和执行<br/>
+其它的用户只有执行的权限</p>
+
+<p>r=4，w=2，x=1<br/>
+想修改jar的组权限为可写，即该组下的用户都有写的功能<br/>
+4+2+1=7<br/>
+所以我们修改成<br/>
+<code><br/>
+chmod jar 771<br/>
+</code></p>
+
+<h1 id="toc_4">其它</h1>
+
+<p>root是终极用户，可以理解为super用户</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[linux 3.根据指标找工具]]></title>
@@ -1965,56 +2021,6 @@ git push --set-upstream origin master
 </code></pre>
 
 <p>仓库地址，如果是加了ssh-key,需使用账号地址：<a href="mailto:git@git.com">git@git.com</a>:abc/test，使用http会默认读取账号密码:<a href="http://xx.com/abc/test">http://xx.com/abc/test</a></p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[苹果mac系统mysql的关闭]]></title>
-    <link href="http://www.shengsheng.net/15839060425442.html"/>
-    <updated>2020-03-11T13:54:02+08:00</updated>
-    <id>http://www.shengsheng.net/15839060425442.html</id>
-    <content type="html"><![CDATA[
-<p>因为可视化的开发操作，需本地安装mysql client<br/>
-故一套命令安装好所有brew install mysql.<br/>
-下次重新启动的时候，自动启动了mysql server服务<br/>
-本地的开发环境主要是docker映射本地的端口<br/>
-docker start mysql,3306被本地端口占用，故启动失败。</p>
-
-<p>上网搜索了一下资料，mysql的启动主要是以下:</p>
-
-<pre><code class="language-text">sudo /usr/local/mysql/support-files/mysql.server start
-sudo /usr/local/mysql/support-files/mysql.server stop
-sudo /usr/local/mysql/support-files/mysql.server restart
-</code></pre>
-
-<p>这时候我们执行 .../mysql.server stop 是失败的<br/>
-<img src="media/15839060425442/15839065007011.jpg" alt=""/></p>
-
-<p>提示没有找到pid文件<br/>
-分析一下本地mysql.server文件</p>
-
-<pre><code class="language-text">mysqld_pid=`cat &quot;$mysqld_pid_file_path&quot;`
-</code></pre>
-
-<p>脚本根据写在本地的pid记录来关闭mysql<br/>
-发现脚本的\(mysql_pid_file_path在/usr/local/mysql/data之下。<br/>
-但/usr/local/mysql/data没权限进入<br/>
-给一定权限即可<br/>
-现在的进程，只能ps aux|grep mysql来分析进程id<br/>
-暂时只能手动kill一下<br/>
-kill \)mysql_id<br/>
-之后使用</p>
-
-<pre><code class="language-text">sudo /usr/local/mysql/support-files/mysql.server stop
-docker start mysql
-</code></pre>
-
-<p>就很顺利了</p>
-
-<h1 id="toc_0">思考点</h1>
-
-<p>遇到的朋友可以思考怎么关闭系统自启动mysql server服务。</p>
 
 ]]></content>
   </entry>
