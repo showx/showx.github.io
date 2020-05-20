@@ -4,13 +4,94 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-05-06T18:46:39+08:00</updated>
+  <updated>2020-05-06T19:01:25+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[CI/CD构建利器 Jenkins]]></title>
+    <link href="http://www.shengsheng.net/15899883082622.html"/>
+    <updated>2020-05-20T23:25:08+08:00</updated>
+    <id>http://www.shengsheng.net/15899883082622.html</id>
+    <content type="html"><![CDATA[
+<p>传统的ftp上传，或通过svn hook提交，显得效率太慢，而且不太靠谱。<br/>
+之前写了个gitlab 发布脚本。</p>
+
+<pre><code class="language-text">echo &#39;pull project:&#39;$1
+gitBasePath=&#39;/show/gitBase/&#39;
+cd $gitBasePath$1
+git pull
+
+message=$(git log --pretty=format:&quot;%s&quot; -1)
+isRedeploy=false
+#检测到RELEASE，即发布项目
+[[ $message =~ &quot;[RELEASE]&quot; ]] &amp;&amp; isRedeploy=true
+echo &quot;是否可发布版本：&quot;$isRedeploy;
+
+#一定要传git项目名
+if [[ $isRedeploy = true &amp;&amp; $1 ]]
+then
+    #判断$2, 有可能$1 与实际环境名不一样
+    if [[ -n $2 ]];then
+        webAppPath=$2
+    else
+        webAppPath=&#39;/webwww/www/&#39;$1&#39;/&#39;
+    fi
+    #git 基础路径保持不变
+    gitBasePath=&#39;/show/gitBase/&#39;$1&#39;/&#39;
+    echo &quot;git:&quot;.$gitBasePath;
+    echo &quot;web:&quot;.$webAppPath;
+    cp -r -f -v $gitBasePath* $webAppPath
+    echo &quot;success&quot;;
+else
+    echo &quot;fail&quot;;
+fi;
+</code></pre>
+
+<p>通过提交检测到[RELEASE]关键词即提交。</p>
+
+<p>但未免还是会发生构建没记录，没权限的事情。故研究玩一下jenkins</p>
+
+<h1 id="toc_0">安装</h1>
+
+<p>使用docker顺带搭建出来<br/>
+<code><br/>
+docker run -it -d -u root -p 8090:8080 -v jenkins-data:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock -v &quot;$HOME&quot;:/home --name jenkins -v /webwww:/webwww jenkinsci/blueocean<br/>
+</code><br/>
+<img src="media/15899883082622/15899886195287.jpg" alt=""/></p>
+
+<p>需安装以下扩展<br/>
+Gitlab Hook、Build Authorization Token Root、Publish Over SSH、Gitlab Authentication、Gitlab、Git Parameter</p>
+
+<p><img src="media/15899883082622/15899887426504.jpg" alt=""/></p>
+
+<p>通过Publicsh over SSH我们创建与系统相关的通讯key</p>
+
+<h1 id="toc_1">构建项目</h1>
+
+<p><img src="media/15899883082622/15899887889342.jpg" alt=""/></p>
+
+<p><img src="media/15899883082622/15899888131244.jpg" alt=""/></p>
+
+<p><img src="media/15899883082622/15899888451155.jpg" alt=""/></p>
+
+<p>输入需要获取的gitlab地址，需先配置通讯key</p>
+
+<p><img src="media/15899883082622/15899888947470.jpg" alt=""/></p>
+
+<p>构建选择send files去指定服务器<br/>
+<img src="media/15899883082622/15899890185872.jpg" alt=""/></p>
+
+<p><img src="media/15899883082622/15899890745327.jpg" alt=""/></p>
+
+<p>每次更新好项目，按一下构建即马上发布代码到线上。当然也可以同步到测试机。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[php之JsonSerializable]]></title>
@@ -1890,138 +1971,6 @@ if(method_exists(&#39;\app\model\ParseAstModel&#39;,&#39;FunctionExpression&#39;
 <img src="media/15863602108178/15863603294798.jpg" alt=""/></p>
 
 <p>还好没变砖头哈！</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[框架增加restful api功能]]></title>
-    <link href="http://www.shengsheng.net/15844429076069.html"/>
-    <updated>2020-03-17T19:01:47+08:00</updated>
-    <id>http://www.shengsheng.net/15844429076069.html</id>
-    <content type="html"><![CDATA[
-<p>由于项目中使用自已开发的php框架，发现没有restful功能.</p>
-
-<h1 id="toc_0">restful架构</h1>
-
-<p>如下图，简单的CURD功能,以资源为定位</p>
-
-<pre><code class="language-text">class Blog
-{
-    /**
-     * 显示资源列表
-     *
-     * @return \think\Response
-     */
-    public function index()
-    {
-        $list = Blogs::all();
-        return json($list);
-    }
-
-    /**
-     * 保存新建的资源
-     *
-     * @param  \think\Request  $request
-     * @return \think\Response
-     */
-    public function save(Request $request)
-    {
-        $data   = $request-&gt;param();
-        $result = Blogs::create($data);
-        return json($result);
-    }
-
-    /**
-     * 显示指定的资源
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function read($id)
-    {
-        $data = Blogs::get($id);
-        return json($data);
-    }
-
-    /**
-     * 保存更新的资源
-     *
-     * @param  \think\Request  $request
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $data   = $request-&gt;param();
-        $result = Blogs::update($data, [&#39;id&#39; =&gt; $id]);
-        return json($result);
-    }
-
-    /**
-     * 删除指定资源
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function delete($id)
-    {
-        $result = Blogs::destroy($id);
-        return json($result);
-    }
-}
-</code></pre>
-
-<h1 id="toc_1">框架的更新</h1>
-
-<p>框架比较简单<br/>
-url.com/{control}/{action} 或 url.com/index.php/{control}/{action}即可访问<br/>
-我们要实现用户系统的用户添加，通过有资源有<br/>
-查看全部用户 /user/read/<br/>
-查看指定用户 /user/read/1<br/>
-更新指定用户 /user/edit/1<br/>
-删除指定用户 /user/delete/1<br/>
-除了control和action的path，其实后面便可以按顺序注入<br/>
-<img src="media/15844429076069/15844432269462.jpg" alt=""/></p>
-
-<p>把path后台的参数，注入进去即可。</p>
-
-<p><img src="media/15844429076069/15844432799215.jpg" alt=""/></p>
-
-<p>功能如下：</p>
-
-<p><img src="media/15844429076069/15844434785503.jpg" alt=""/></p>
-
-<h1 id="toc_2">PHP_INO</h1>
-
-<p>有些朋友忘记设置nginx的php info功能,是用不了/index.php/index/index这种的</p>
-
-<h3 id="toc_3">关键配置</h3>
-
-<pre><code class="language-text">fastcgi_split_path_info       ^(.+\.php)(.*)$;
-fastcgi_param SCRIPT_FILENAME /path/to/php$fastcgi_script_name;
-fastcgi_param PATH_INFO       $fastcgi_path_info;
-</code></pre>
-
-<h3 id="toc_4">完整配置:</h3>
-
-<pre><code class="language-text">location ~ [^/]\.php(/|$) {
-        fastcgi_pass 172.20.0.3:9000;
-        #fastcgi_pass unix:/var/run/php5-fpm.sock;
-        fastcgi_index index.php;
-        include fastcgi_params;
-        fastcgi_split_path_info       ^(.+\.php)(.*)$;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_param PATH_INFO       $fastcgi_path_info;
-    }
-
-</code></pre>
-
-<h3 id="toc_5">php.ini配置文件</h3>
-
-<p><code><br/>
-cgi.fix_pathinfo=0   ;这个要设置为0<br/>
-</code></p>
 
 ]]></content>
   </entry>
