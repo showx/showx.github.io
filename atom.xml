@@ -4,13 +4,75 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-05-20T23:40:07+08:00</updated>
+  <updated>2020-05-22T22:50:38+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[php或php-fpm命令行相关参数]]></title>
+    <link href="http://www.shengsheng.net/15902458128298.html"/>
+    <updated>2020-05-23T22:56:52+08:00</updated>
+    <id>http://www.shengsheng.net/15902458128298.html</id>
+    <content type="html"><![CDATA[
+<p>平时使用php多，这里记录一下php命令行下的方法说明 </p>
+
+<pre><code class="language-text">#测试php-fpm配置
+/usr/local/php/sbin/php-fpm -t
+/usr/local/php/sbin/php-fpm -c /usr/local/php/etc/php.ini -y /usr/local/php/etc/php-fpm.conf -t
+ 
+#启动php-fpm
+/usr/local/php/sbin/php-fpm
+/usr/local/php/sbin/php-fpm -c /usr/local/php/etc/php.ini -y /usr/local/php/etc/php-fpm.conf
+ 
+</code></pre>
+
+<h2 id="toc_0">官方命令解释</h2>
+
+<pre><code class="language-text">  -a               Run as interactive shell
+  -c &lt;path&gt;|&lt;file&gt; Look for php.ini file in this directory
+  -n               No configuration (ini) files will be used
+  -d foo[=bar]     Define INI entry foo with value &#39;bar&#39;
+  -e               Generate extended information for debugger/profiler
+  -f &lt;file&gt;        Parse and execute &lt;file&gt;.
+  -h               This help
+  -i               PHP information
+  -l               Syntax check only (lint)
+  -m               Show compiled in modules
+  -r &lt;code&gt;        Run PHP &lt;code&gt; without using script tags &lt;?..?&gt;
+  -B &lt;begin_code&gt;  Run PHP &lt;begin_code&gt; before processing input lines
+  -R &lt;code&gt;        Run PHP &lt;code&gt; for every input line
+  -F &lt;file&gt;        Parse and execute &lt;file&gt; for every input line
+  -E &lt;end_code&gt;    Run PHP &lt;end_code&gt; after processing all input lines
+  -H               Hide any passed arguments from external tools.
+  -S &lt;addr&gt;:&lt;port&gt; Run with built-in web server.
+  -t &lt;docroot&gt;     Specify document root &lt;docroot&gt; for built-in web server.
+  -s               Output HTML syntax highlighted source.
+  -v               Version number
+  -w               Output source with stripped comments and whitespace.
+  -z &lt;file&gt;        Load Zend extension &lt;file&gt;.
+
+  args...          Arguments passed to script. Use -- args when first argument
+                   starts with - or script is read from stdin
+
+  --ini            Show configuration file names
+
+  --rf &lt;name&gt;      Show information about function &lt;name&gt;.
+  --rc &lt;name&gt;      Show information about class &lt;name&gt;.
+  --re &lt;name&gt;      Show information about extension &lt;name&gt;.
+  --rz &lt;name&gt;      Show information about Zend extension &lt;name&gt;.
+  --ri &lt;name&gt;      Show configuration for extension &lt;name&gt;.
+</code></pre>
+
+<h2 id="toc_1">结语</h2>
+
+<p>虽然比较基础，但工作了几年的phper也未必都知道！</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[web常用测试]]></title>
@@ -2081,53 +2143,6 @@ BPS（每秒字节数）<br/>
 
 <p>把极客时间LINUX手册变成MD给大家查看  <sup>_^</sup><br/>
 <img src="media/15869595689820/15869605756641.jpg" alt=""/></p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[php method函数命名空间]]></title>
-    <link href="http://www.shengsheng.net/15868258856753.html"/>
-    <updated>2020-04-14T08:58:05+08:00</updated>
-    <id>http://www.shengsheng.net/15868258856753.html</id>
-    <content type="html"><![CDATA[
-<p>最近会用到method_exists函数，判断是否存在此方法，但是调用出了点异常。</p>
-
-<h1 id="toc_0">原因</h1>
-
-<pre><code class="language-text">use \app\model\ParseAstModel
-ParseAstModel::FunctionExpression();
-if(method_exists(&#39;ParseAstModel&#39;,&#39;FunctionExpression&#39;))
-{
-    echo &#39;此方法存在&#39;.lr;
-}else{
-    echo &#39;此方法不存在&#39;.lr;
-}
-</code></pre>
-
-<p>结果输出此方法不存在</p>
-
-<h1 id="toc_1">处理</h1>
-
-<p>Description<br/>
-<code><br/>
-method_exists ( mixed $object , string $method_name ) : bool<br/>
-Checks if the class method exists in the given object.<br/>
-</code><br/>
-object<br/>
-An object instance or a class name</p>
-
-<p>method_name<br/>
-The method name</p>
-
-<p>查看函数描述比较简单，主要填对象名称和方法名称即可<br/>
-函数内部查找不找寻外面的命名空间，故改成<br/>
-<code><br/>
-if(method_exists(&#39;\app\model\ParseAstModel&#39;,&#39;FunctionExpression&#39;))<br/>
-</code><br/>
-类似这类型的函数，要看清楚手册调用的对象，没new对象的情况下，要写全路径。</p>
-
-<p>还有找到更相似的函数么？ <sup>_^</sup></p>
 
 ]]></content>
   </entry>
