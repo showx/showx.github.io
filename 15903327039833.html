@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>
       
-    php或php-fpm命令行相关参数 - shengsheng的博客
+    ssh公钥与私钥注意事项 - shengsheng的博客
     
     </title>
     
@@ -83,7 +83,7 @@
                   <div class="post-body single-content">
                     
                     <h1 class="title">
-                            php或php-fpm命令行相关参数   
+                            ssh公钥与私钥注意事项   
                       </h1>
                      
                     
@@ -100,7 +100,7 @@
                             <div class="media-content">
                               <div class="content">
                                 <p>
-                                 <span class="date">2020/05/23</span>
+                                 <span class="date">2020/05/24</span>
                                   <span class="tran-posted-in">posted in</span>&nbsp; 
                                   
                                       <span class="posted-in"><a href='test.html'>测试</a></span>
@@ -112,7 +112,7 @@
                                   <br />
                                   <span class="tran-tags">Tags:</span>&nbsp;
                                   
-                                    <a class="tag is-link is-light" href='tag_php.html'>#php</a>
+                                    <a class="tag is-link is-light" href='tag_linux.html'>#linux</a>
                                      
 
                                 </p>
@@ -122,58 +122,36 @@
                     </div>
                 </div>
                   <article class="markdown-body single-content">
-                    <p>平时使用php多，这里记录一下php命令行下的方法说明 </p>
+                    <p>公钥与私钥都是为了保障我们信息安全</p>
 
-<pre><code class="language-text">#测试php-fpm配置
-/usr/local/php/sbin/php-fpm -t
-/usr/local/php/sbin/php-fpm -c /usr/local/php/etc/php.ini -y /usr/local/php/etc/php-fpm.conf -t
- 
-#启动php-fpm
-/usr/local/php/sbin/php-fpm
-/usr/local/php/sbin/php-fpm -c /usr/local/php/etc/php.ini -y /usr/local/php/etc/php-fpm.conf
- 
+<h2 id="toc_0">linux下生成rsa匙</h2>
+
+<pre><code class="language-text">ssh-keygen -t rsa -C &quot;your_email@youremail.com&quot;
 </code></pre>
 
-<h2 id="toc_0">官方命令解释</h2>
+<p>-t  表示私钥类型<br/>
+-C 表示注释，一般为自己的邮箱地址<br/>
+记住生成的私钥一定要644权限，不然连接的时候会提示</p>
 
-<pre><code class="language-text">  -a               Run as interactive shell
-  -c &lt;path&gt;|&lt;file&gt; Look for php.ini file in this directory
-  -n               No configuration (ini) files will be used
-  -d foo[=bar]     Define INI entry foo with value &#39;bar&#39;
-  -e               Generate extended information for debugger/profiler
-  -f &lt;file&gt;        Parse and execute &lt;file&gt;.
-  -h               This help
-  -i               PHP information
-  -l               Syntax check only (lint)
-  -m               Show compiled in modules
-  -r &lt;code&gt;        Run PHP &lt;code&gt; without using script tags &lt;?..?&gt;
-  -B &lt;begin_code&gt;  Run PHP &lt;begin_code&gt; before processing input lines
-  -R &lt;code&gt;        Run PHP &lt;code&gt; for every input line
-  -F &lt;file&gt;        Parse and execute &lt;file&gt; for every input line
-  -E &lt;end_code&gt;    Run PHP &lt;end_code&gt; after processing all input lines
-  -H               Hide any passed arguments from external tools.
-  -S &lt;addr&gt;:&lt;port&gt; Run with built-in web server.
-  -t &lt;docroot&gt;     Specify document root &lt;docroot&gt; for built-in web server.
-  -s               Output HTML syntax highlighted source.
-  -v               Version number
-  -w               Output source with stripped comments and whitespace.
-  -z &lt;file&gt;        Load Zend extension &lt;file&gt;.
-
-  args...          Arguments passed to script. Use -- args when first argument
-                   starts with - or script is read from stdin
-
-  --ini            Show configuration file names
-
-  --rf &lt;name&gt;      Show information about function &lt;name&gt;.
-  --rc &lt;name&gt;      Show information about class &lt;name&gt;.
-  --re &lt;name&gt;      Show information about extension &lt;name&gt;.
-  --rz &lt;name&gt;      Show information about Zend extension &lt;name&gt;.
-  --ri &lt;name&gt;      Show configuration for extension &lt;name&gt;.
+<pre><code class="language-text">Permissions 0644 for &#39;/Users/pengyongsheng/.ssh/yongsheng_qcloud_rsa&#39; are too open.
+It is required that your private key files are NOT accessible by others.
 </code></pre>
 
-<h2 id="toc_1">结语</h2>
+<h2 id="toc_1">目标服务器添加公钥登录</h2>
 
-<p>虽然比较基础，但工作了几年的phper也未必都知道！</p>
+<p>将生成的公钥添加到目标服务器的~/.ssh/authorized_keys上即可使用相应的用户登录<br/>
+例如~指/home/ubuntu,即可获得ubuntu权限</p>
+
+<h2 id="toc_2">使用命令登录</h2>
+
+<p>默认本地会读取id_rsa.pem作为私钥<br/>
+sftp -oIdentityFile=私钥地址 -oPort=端口 用户名@ip<br/>
+ssh <a href="mailto:root@xx.xx.xx.xx">root@xx.xx.xx.xx</a> -p 22 -i 本地私钥地址</p>
+
+<h2 id="toc_3">软件类使用ssh</h2>
+
+<p>软件类默认也是读取本地的id_rsa.pem,如有不同也要指定相应的即s<br/>
+<img src="media/15903327039833/15903331776616.jpg" alt="" style="width:563px;"/></p>
 
                   </article>
                   <div class="comments-wrap">

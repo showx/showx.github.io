@@ -4,13 +4,53 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-05-22T22:50:38+08:00</updated>
+  <updated>2020-05-23T23:00:40+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[ssh公钥与私钥注意事项]]></title>
+    <link href="http://www.shengsheng.net/15903327039833.html"/>
+    <updated>2020-05-24T23:05:03+08:00</updated>
+    <id>http://www.shengsheng.net/15903327039833.html</id>
+    <content type="html"><![CDATA[
+<p>公钥与私钥都是为了保障我们信息安全</p>
+
+<h2 id="toc_0">linux下生成rsa匙</h2>
+
+<pre><code class="language-text">ssh-keygen -t rsa -C &quot;your_email@youremail.com&quot;
+</code></pre>
+
+<p>-t  表示私钥类型<br/>
+-C 表示注释，一般为自己的邮箱地址<br/>
+记住生成的私钥一定要644权限，不然连接的时候会提示</p>
+
+<pre><code class="language-text">Permissions 0644 for &#39;/Users/pengyongsheng/.ssh/yongsheng_qcloud_rsa&#39; are too open.
+It is required that your private key files are NOT accessible by others.
+</code></pre>
+
+<h2 id="toc_1">目标服务器添加公钥登录</h2>
+
+<p>将生成的公钥添加到目标服务器的~/.ssh/authorized_keys上即可使用相应的用户登录<br/>
+例如~指/home/ubuntu,即可获得ubuntu权限</p>
+
+<h2 id="toc_2">使用命令登录</h2>
+
+<p>默认本地会读取id_rsa.pem作为私钥<br/>
+sftp -oIdentityFile=私钥地址 -oPort=端口 用户名@ip<br/>
+ssh <a href="mailto:root@xx.xx.xx.xx">root@xx.xx.xx.xx</a> -p 22 -i 本地私钥地址</p>
+
+<h2 id="toc_3">软件类使用ssh</h2>
+
+<p>软件类默认也是读取本地的id_rsa.pem,如有不同也要指定相应的即s<br/>
+<img src="media/15903327039833/15903331776616.jpg" alt="" style="width:563px;"/></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[php或php-fpm命令行相关参数]]></title>
@@ -1902,247 +1942,6 @@ full_chain.pem复制上半部分即可<br/>
 <h1 id="toc_4">总结</h1>
 
 <p>记录一下常用的linux工具</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[linux 1.常用性能指标及USE法分类]]></title>
-    <link href="http://www.shengsheng.net/15869595689820.html"/>
-    <updated>2020-04-15T22:06:08+08:00</updated>
-    <id>http://www.shengsheng.net/15869595689820.html</id>
-    <content type="html"><![CDATA[
-<h1 id="toc_0">CPU 性能指标</h1>
-
-<h2 id="toc_1">cpu使用率</h2>
-
-<ul>
-<li>用户cpu</li>
-<li>系统cpu</li>
-<li>IOWAIT</li>
-<li>软中断</li>
-<li>硬中断</li>
-<li>窃取cpu</li>
-<li>客户cpu</li>
-</ul>
-
-<h2 id="toc_2">上下文切换</h2>
-
-<ul>
-<li>自愿上下文切换</li>
-<li>非自愿上下文切换</li>
-</ul>
-
-<h2 id="toc_3">平均负载</h2>
-
-<h2 id="toc_4">cpu缓存命中率</h2>
-
-<h1 id="toc_5">内存性能指标</h1>
-
-<h2 id="toc_6">系统内存指标</h2>
-
-<ul>
-<li>已用内存</li>
-<li>剩余内存</li>
-<li>可用内存</li>
-<li>缺页异常</li>
-<li>     主缺页异常</li>
-<li>     次缺页异常</li>
-<li>缓存/ 缓冲区</li>
-<li>     使用量</li>
-<li>     命中率</li>
-<li>Slabs</li>
-</ul>
-
-<h2 id="toc_7">进程内存指标</h2>
-
-<ul>
-<li>虚拟内存（VSS）</li>
-<li>常驻内存（RSS）</li>
-<li>按比例分配共享内存后的物理内存(PSS）</li>
-<li>独占内存（USS)</li>
-<li>共享内存</li>
-<li>SWAP内存</li>
-<li>缺页异常
-<ol>
-<li>主缺页异常</li>
-<li>次缺页异常</li>
-</ol></li>
-</ul>
-
-<h2 id="toc_8">SWAP</h2>
-
-<p>已用空间<br/>
-剩余空间<br/>
-换入速度<br/>
-换出速度</p>
-
-<h1 id="toc_9">常用指标分类（USE法）</h1>
-
-<table>
-<thead>
-<tr>
-<th>资源</th>
-<th>类型</th>
-<th>性能指标</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>CPU</td>
-<td>使用率</td>
-<td>CPU使用率</td>
-</tr>
-<tr>
-<td>CPU</td>
-<td>饱和度</td>
-<td>运行队列长度或平均负载</td>
-</tr>
-<tr>
-<td>CPU</td>
-<td>错误数</td>
-<td>硬件CPU错误数</td>
-</tr>
-<tr>
-<td>内存</td>
-<td>使用率</td>
-<td>已用内存百分比或SWAP用量百分比</td>
-</tr>
-<tr>
-<td>内存</td>
-<td>饱和度</td>
-<td>内存换页量</td>
-</tr>
-<tr>
-<td>内存</td>
-<td>错误数</td>
-<td>内存分配失败或OOM</td>
-</tr>
-<tr>
-<td>存储设备I/O</td>
-<td>使用率</td>
-<td>设备I/O时间百分比</td>
-</tr>
-<tr>
-<td>存储设备I/O</td>
-<td>饱和度</td>
-<td>等待队列长度或延迟</td>
-</tr>
-<tr>
-<td>存储设备I/O</td>
-<td>错误数</td>
-<td>I/O错误数</td>
-</tr>
-<tr>
-<td>文件系统</td>
-<td>使用率</td>
-<td>已用容量百分比</td>
-</tr>
-<tr>
-<td>文件系统</td>
-<td>错误数</td>
-<td>文件读写错误数</td>
-</tr>
-<tr>
-<td>网络</td>
-<td>使用率</td>
-<td>带宽使用率</td>
-</tr>
-<tr>
-<td>网络</td>
-<td>饱和度</td>
-<td>重传报文数</td>
-</tr>
-<tr>
-<td>网络</td>
-<td>错误数</td>
-<td>网卡收发错误数、丢包数</td>
-</tr>
-<tr>
-<td>文件描述符</td>
-<td>使用率</td>
-<td>已用文件描述符数百分比</td>
-</tr>
-<tr>
-<td>连接跟踪</td>
-<td>使用率</td>
-<td>已用连接跟踪数百分比</td>
-</tr>
-<tr>
-<td>连接数</td>
-<td>饱和度</td>
-<td>TIMEWAIT状态连接数</td>
-</tr>
-</tbody>
-</table>
-
-<h1 id="toc_10">I/O性能指标</h1>
-
-<h2 id="toc_11">文件系统</h2>
-
-<p>存储空间容量、使用量以及剩余空间<br/>
-索引节点容量、使用量以及剩余量<br/>
-缓存<br/>
-    页缓存<br/>
-    目录项缓存<br/>
-    索引节点缓存<br/>
-    具体文件系统缓存（如ext4的缓存）<br/>
-IOPS（文件I/O）<br/>
-响应时间（延迟）<br/>
-吞吐量（B/S）</p>
-
-<h2 id="toc_12">磁盘</h2>
-
-<p>使用率<br/>
-IOPS<br/>
-吞吐量（B/S）<br/>
-响应时间（延迟）<br/>
-缓冲区<br/>
-相关因素<br/>
-    读写类型（如顺序还是随机）<br/>
-    读写比例<br/>
-    读写大小<br/>
-    存储类型（如RAID级别、本地还是网络）</p>
-
-<h1 id="toc_13">网络性能指标</h1>
-
-<h2 id="toc_14">应用层</h2>
-
-<p>QPS（每秒请求数）<br/>
-套接字缓冲区大小<br/>
-DNS解析延迟<br/>
-响应时间<br/>
-错误数</p>
-
-<h2 id="toc_15">传输层</h2>
-
-<p>tcp连接数<br/>
-    全连接<br/>
-    半连接<br/>
-    TIMEWAIT<br/>
-连接跟踪数<br/>
-重传数<br/>
-丢包数<br/>
-延迟</p>
-
-<h2 id="toc_16">网络层</h2>
-
-<p>丢包数<br/>
-TTL<br/>
-拆包</p>
-
-<h2 id="toc_17">链路层</h2>
-
-<p>PPS（每秒网络帧数）<br/>
-BPS（每秒字节数）<br/>
-丢包数<br/>
-错误数</p>
-
-<h1 id="toc_18">总结</h1>
-
-<p>把极客时间LINUX手册变成MD给大家查看  <sup>_^</sup><br/>
-<img src="media/15869595689820/15869605756641.jpg" alt=""/></p>
 
 ]]></content>
   </entry>
