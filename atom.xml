@@ -4,13 +4,131 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-05-23T23:00:40+08:00</updated>
+  <updated>2020-05-24T23:13:38+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[workerman ip的获取]]></title>
+    <link href="http://www.shengsheng.net/15904033106403.html"/>
+    <updated>2020-05-25T18:41:50+08:00</updated>
+    <id>http://www.shengsheng.net/15904033106403.html</id>
+    <content type="html"><![CDATA[
+<p>记录一下workerman的ip处理,由于常驻内存的原因，workerman并不能直接获取ip和使用header等php函数。本文主要记录一下获取ip的方式。</p>
+
+<h2 id="toc_0">官方示例代码：</h2>
+
+<p>$_SERVER[&#39;HTTP_X_REAL_IP&#39;]方式</p>
+
+<pre><code class="language-text">server {
+  listen 443;
+
+  ssl on;
+  ssl_certificate /etc/ssl/server.pem;
+  ssl_certificate_key /etc/ssl/server.key;
+  ssl_session_timeout 5m;
+  ssl_session_cache shared:SSL:50m;
+  ssl_protocols SSLv3 SSLv2 TLSv1 TLSv1.1 TLSv1.2;
+  ssl_ciphers ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP;
+
+  location /wss
+  {
+    proxy_pass http://127.0.0.1:8282;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection &quot;Upgrade&quot;;
+    # 这部分是利用http头透传真实客户端ip
+    proxy_set_header X-Real-IP $remote_addr;
+  }
+
+  # location / {} 站点的其它配置...
+}
+
+
+&lt;?php
+require_once __DIR__ . &#39;/../Workerman/Autoloader.php&#39;;
+use Workerman\Worker;
+$worker = new Worker(&#39;websocket://0.0.0.0:7272&#39;);
+
+// 客户端练上来时，即完成TCP三次握手后的回调
+$worker-&gt;onConnect = function($connection) {
+   /**
+    * 客户端websocket握手时的回调onWebSocketConnect
+    * 在onWebSocketConnect回调中获得nginx通过http头中的X_REAL_IP值
+    */
+   $connection-&gt;onWebSocketConnect = function($connection){
+       /**
+        * connection对象本没有realIP属性，这里给connection对象动态添加个realIP属性
+        * 记住php对象是可以动态添加属性的，你也可以用自己喜欢的属性名
+        */
+       $connection-&gt;realIP = $_SERVER[&#39;HTTP_X_REAL_IP&#39;];
+   };
+};
+$worker-&gt;onMessage = function($connection, $data)
+{
+    // 当使用客户端真实ip时，直接使用$connection-&gt;realIP即可
+    $connection-&gt;send($connection-&gt;realIP);
+};
+Worker::runAll();
+</code></pre>
+
+<h2 id="toc_1">nginx配置</h2>
+
+<pre><code class="language-text">server {
+    listen 80;
+    server_name example.com;
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_read_timeout 365d;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection &quot;upgrade&quot;;
+    }
+}
+
+</code></pre>
+
+<p>或简单点</p>
+
+<pre><code class="language-text">server {
+        server_name test.cn;
+        location / {
+            proxy_pass http://127.0.0.1:8080;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection &quot;upgrade&quot;;
+            proxy_set_header X-Real-IP $remote_addr;
+        }
+}
+</code></pre>
+
+<h2 id="toc_2">header获取</h2>
+
+<pre><code class="language-text">进入的$connection
+$connection-&gt;header()-&gt;[&#39;x-real-ip&#39;];
+</code></pre>
+
+<h2 id="toc_3">getRemoteIP</h2>
+
+<pre><code class="language-text">$worker-&gt;onConnect = function($connection)
+{
+    echo &quot;new connection from ip &quot; . $connection-&gt;getRemoteIp() . &quot;\n&quot;;
+};
+</code></pre>
+
+<h1 id="toc_4">总结</h1>
+
+<p>测试过\(_SERVER和getRemoteIP拿到的ip并不正常，使用\)connection-&gt;header()的方式能顺利拿到x-real-ip。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ssh公钥与私钥注意事项]]></title>
@@ -1617,331 +1735,6 @@ full_chain.pem复制上半部分即可<br/>
 <h2 id="toc_7">结伦</h2>
 
 <p>相对来讲，本人较喜欢freessl.cn，不用解析ip即可申请。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[linux 2.常用性能工具]]></title>
-    <link href="http://www.shengsheng.net/15870471732408.html"/>
-    <updated>2020-04-16T22:26:13+08:00</updated>
-    <id>http://www.shengsheng.net/15870471732408.html</id>
-    <content type="html"><![CDATA[
-<h2 id="toc_0">cpu性能工具</h2>
-
-<table>
-<thead>
-<tr>
-<th>性能指标</th>
-<th>性能工具</th>
-<th>说明</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>平均负载</td>
-<td>Uptime top /proc/loadavg</td>
-<td>uptime最简单；top提供了更全的指标；/proc/loadavg常用于监控系统</td>
-</tr>
-<tr>
-<td>系统CPU使用率</td>
-<td>Vmstat mpstat top sar /proc/stat</td>
-<td>Top vmstat mpstat只能动态查看，而sar还可以记录历史数据；/proc/stat是其他性能工具的数据来源，也常用于监控</td>
-</tr>
-<tr>
-<td>进程CPU使用率</td>
-<td>top ps pidstat htop atop</td>
-<td>top和ps可以按CPU使用率给进程排序，而pidstat只显示实际用了CPU的进程；htop和atop以不同颜色显示更直观</td>
-</tr>
-<tr>
-<td>进程上下文切换</td>
-<td>vmstat</td>
-<td>除了上下文切换次数，还提供运行状态和不可中断状态进程的数量</td>
-</tr>
-<tr>
-<td>进程上下文切换</td>
-<td>pidstat</td>
-<td>注意加上-w选项</td>
-</tr>
-<tr>
-<td>软中断</td>
-<td>top mpstat /proc/softirqs</td>
-<td>top提供软中断CPU使用率，而/proc/softirqs和mpstat提供了各种软中断在每个cpu上的运行次数</td>
-</tr>
-<tr>
-<td>硬中断</td>
-<td>Vmstat /proc/interrupts</td>
-<td>vmstat提供总的中断次数，而/proc/interrupts提供各种中断在每个cpu上运行的累积次数</td>
-</tr>
-<tr>
-<td>网络</td>
-<td>dstat sar tcpdump</td>
-<td>dstat sar提供总的网络接收和发送情况，而tcpdump则是动态抓取天上在进行的网络通讯</td>
-</tr>
-<tr>
-<td>I/O</td>
-<td>dstat sar</td>
-<td>dstat和sar都提供了I/O的整体情况</td>
-</tr>
-<tr>
-<td>CPU缓存</td>
-<td>perf</td>
-<td>使用perf stat子命令</td>
-</tr>
-<tr>
-<td>CPU数</td>
-<td>lscpu /proc/cpuinfo</td>
-<td>lscpu更直观</td>
-</tr>
-<tr>
-<td>事件剖析</td>
-<td>Perf \ 火焰图 execsnoop</td>
-<td>perf和火焰图用来分析热点函数以及调用栈，execsnoop用来监测短时进程</td>
-</tr>
-<tr>
-<td>动态追踪</td>
-<td>ftrace bcc systemtap</td>
-<td>ftrace用于跟踪内核函数调用栈，而bcc和systemtap则用于跟踪内核或应用程序的执行过程（注意bcc要求内核版本&gt;=4.1)</td>
-</tr>
-</tbody>
-</table>
-
-<h2 id="toc_1">内存性能工具</h2>
-
-<table>
-<thead>
-<tr>
-<th>性能指标</th>
-<th>性能工具</th>
-<th>说明</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>系统已用、可用、剩余内存</td>
-<td>free vmstat sar /proc/meminfo</td>
-<td>free最为简单，而vmstat sar更为全面；/proc/meminfo是其他工具的数据来源，也常用于监控系统中</td>
-</tr>
-<tr>
-<td>进程虚拟内存、常驻内存、共享内存</td>
-<td>ps top pidstat /proc/pid/stat /proc/pid/status</td>
-<td>ps和top最简单，而pidstat则需要加上-r选项；/proc/pid/stat和/proc/pid/status是其他工具的数据来源，也常用于监控系统中</td>
-</tr>
-<tr>
-<td>进程内存分布</td>
-<td>Pmap /proc/pid/maps</td>
-<td>/proc/pid/maps是pmap的数据来源</td>
-</tr>
-<tr>
-<td>进程swap换出内存</td>
-<td>top /proc/pid/status</td>
-<td>/proc/pid/status是top的数据来源</td>
-</tr>
-<tr>
-<td>进程缺页异常</td>
-<td>ps top pidstat</td>
-<td>注意给pidstat 加上-r选项</td>
-</tr>
-<tr>
-<td>系统换页情况</td>
-<td>sar</td>
-<td>注意加上-B选项</td>
-</tr>
-<tr>
-<td>缓存 / 缓冲区使用量</td>
-<td>free vmstat sar cachestat</td>
-<td>vmstat最常用，而cachestat需要安装bcc</td>
-</tr>
-<tr>
-<td>缓存 / 缓冲区命中率</td>
-<td>cachetop</td>
-<td>需要安装bcc</td>
-</tr>
-<tr>
-<td>SWAP已使用空间和剩余空间</td>
-<td>Free sar</td>
-<td>free最为简单，而sar还可以记录历史</td>
-</tr>
-<tr>
-<td>swap换入换出</td>
-<td>vmsata sar</td>
-<td>vmstat最为简单，而sar还可以记录历史</td>
-</tr>
-<tr>
-<td>内存泄露检测</td>
-<td>Memleak valgrind</td>
-<td>memleak需要安装bcc，valgrind还可以在旧版本（如3.x）内核中使用</td>
-</tr>
-<tr>
-<td>指定文件的缓存大小</td>
-<td>pcstat</td>
-<td>需要从源码下载安装</td>
-</tr>
-</tbody>
-</table>
-
-<h2 id="toc_2">文件系统和磁盘I/O性能工具</h2>
-
-<table>
-<thead>
-<tr>
-<th style="text-align: center">性能指标</th>
-<th style="text-align: center">性能工具</th>
-<th style="text-align: center">说明</th>
-<th></th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td style="text-align: center">文件系统空间容量、使用量以及剩余空间</td>
-<td style="text-align: center">df</td>
-<td style="text-align: center">详细文档可以执行info coreutils ‘df invocation&#39;命令查询</td>
-<td></td>
-</tr>
-<tr>
-<td style="text-align: center">索引节点容量、使用量以及剩余量</td>
-<td style="text-align: center">df</td>
-<td style="text-align: center">注意加上-i选项</td>
-<td></td>
-</tr>
-<tr>
-<td style="text-align: center">页缓存和可回收Slab缓存</td>
-<td style="text-align: center">/proc/meminfo  sar vmstat</td>
-<td style="text-align: center">注意sar需要加上-r选项，而/proc/meminfo是其他工具的数据来源，也常用于监控</td>
-<td></td>
-</tr>
-<tr>
-<td style="text-align: center">缓冲区</td>
-<td style="text-align: center">同上</td>
-<td style="text-align: center">同上</td>
-<td></td>
-</tr>
-<tr>
-<td style="text-align: center">目录项，索引节点以及文件系统的缓存</td>
-<td style="text-align: center">/proc/slabinfo  slabtop</td>
-<td style="text-align: center">slabtop更直观，而/proc/slabinfo常用于监控</td>
-<td></td>
-</tr>
-<tr>
-<td style="text-align: center">磁盘I/O使用率，iops，吞吐量，响应时间，I/O平均大小以有等待队列长度</td>
-<td style="text-align: center">iostat sar dstat /proc/diskstats</td>
-<td style="text-align: center">iostat是常用，注意使用iostat -d -x或sar -d选项；/proc/diskstat则是其他工具数据来源，也常用于监控</td>
-<td></td>
-</tr>
-<tr>
-<td style="text-align: center">进程I/O大小以及I/O延迟</td>
-<td style="text-align: center">pidstat iotop</td>
-<td style="text-align: center">注意使用pidstat -d选项</td>
-<td></td>
-</tr>
-<tr>
-<td style="text-align: center">块设备I/O事件跟踪</td>
-<td style="text-align: center">bltrace</td>
-<td style="text-align: center">需要跟blkparse配合使用，比如bltrace -d /dev/sda -o                             bltrace -i</td>
-<td></td>
-</tr>
-<tr>
-<td style="text-align: center">进程I/O系统调用跟踪</td>
-<td style="text-align: center">strace perf trace</td>
-<td style="text-align: center">strace只可以跟踪单个进程，而perf trace还可以跟踪所有进程的系统调用</td>
-<td></td>
-</tr>
-<tr>
-<td style="text-align: center">进程块设备I/O大小跟踪</td>
-<td style="text-align: center">biosnoop biotop</td>
-<td style="text-align: center">安装bcc</td>
-<td></td>
-</tr>
-<tr>
-<td style="text-align: center">动态追踪</td>
-<td style="text-align: center">ftrace bcc systemtap</td>
-<td style="text-align: center">ftrace用户跟踪内核函数调用栈，而bcc和systemtap则用于跟踪内核或应用程序的执行过程（注意bcc要求内核版本&gt;=4.1)</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-
-<h2 id="toc_3">网络性能工具</h2>
-
-<table>
-<thead>
-<tr>
-<th>性能指标</th>
-<th>性能工具</th>
-<th>说明</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>吞吐量（BPS）</td>
-<td>sar nethogs iftop /proc/net/dev</td>
-<td>分别可以查看网络接口，进程以及IP地址的网络吞吐量；/proc/net/dev常用于监控</td>
-</tr>
-<tr>
-<td>吞吐量（PPS）</td>
-<td>sar /proc/net/dev</td>
-<td>注意使用sar -n DEV选项</td>
-</tr>
-<tr>
-<td>网络连接数</td>
-<td>netstat ss</td>
-<td>ss速度更快</td>
-</tr>
-<tr>
-<td>网络错误数</td>
-<td>netsta sar</td>
-<td>注意使用netstat -s或者sar -n EDEV/EIP选项</td>
-</tr>
-<tr>
-<td>网络延迟</td>
-<td>Ping hping3</td>
-<td>ping基于ICMP 而hping3则基于TCP协议</td>
-</tr>
-<tr>
-<td>连接跟踪数</td>
-<td>conntrack /proc/sys/net/netfilter/nf_conntrack_count  /proc/sys/net/netfilter/nf_conntrack_max</td>
-<td>Conntrack可用来查看所有连接跟踪的相关信息 Nf_conntrack_count只是连接跟踪的数量，而nf_conntrack_max则限制了总的连接跟踪数量</td>
-</tr>
-<tr>
-<td>路由</td>
-<td>mtr traceroute route</td>
-<td>route用于查询路由表，而mtr和traceroute则用来排查和定位网络链路中的路由问题</td>
-</tr>
-<tr>
-<td>DNS</td>
-<td>dig nslookup</td>
-<td>用于排查DNS解析的问题</td>
-</tr>
-<tr>
-<td>防火墙和NAT</td>
-<td>iptables</td>
-<td>用于排查防火墙及NAT的问题</td>
-</tr>
-<tr>
-<td>网卡选项</td>
-<td>ethtool</td>
-<td>用于查看和配置网络接口的项目选项</td>
-</tr>
-<tr>
-<td>网络抓包</td>
-<td>tcpdump wireshark</td>
-<td>通常在服务器中使用tcpdump抓包后再复制出来用wireshark的图形界面分析</td>
-</tr>
-<tr>
-<td>动态追踪</td>
-<td>Ftrace bcc systemtap</td>
-<td>ftrace用于跟踪内核函数调用栈，而bcc和systemtap则用于跟踪或应用程序的执行过程（注意bcc要求内核&gt;=4.1)</td>
-</tr>
-</tbody>
-</table>
-
-<h1 id="toc_4">总结</h1>
-
-<p>记录一下常用的linux工具</p>
 
 ]]></content>
   </entry>
