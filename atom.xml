@@ -4,13 +4,61 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-05-25T18:52:36+08:00</updated>
+  <updated>2020-05-28T22:39:45+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[mysql联合索引]]></title>
+    <link href="http://www.shengsheng.net/15906766604133.html"/>
+    <updated>2020-05-28T22:37:40+08:00</updated>
+    <id>http://www.shengsheng.net/15906766604133.html</id>
+    <content type="html"><![CDATA[
+<h1 id="toc_0">查询一张表的索引</h1>
+
+<p><code><br/>
+SHOW INDEX FROM T <br/>
+</code><br/>
+查询表 T 所有索引。</p>
+
+<p>MySQL 中最多可以创建 16 个索引列。</p>
+
+<h1 id="toc_1">联合索引</h1>
+
+<p>联合索引又叫复合索引，MySQL 中的联合索引，遵循最左匹配原则，比如，联合索引为 key(a,b,c)，则能触发索引的搜索组合是 a|ab|abc 这三种查询。</p>
+
+<pre><code class="language-text">where a=1 只使用了索引 a；
+where a=1 and b=2 只使用了索引 a,b；
+where a=1 and b=2 and c=3 使用a,b,c；
+where b=1 or where c=1 不使用索引；
+where a=1 and c=3 只使用了索引 a；
+where a=3 and b like &#39;xx%&#39; and c=3 只使用了索引 a,b。
+
+</code></pre>
+
+<p><code><br/>
+select * from t where year(date)&gt;2018;<br/>
+</code><br/>
+不会，因为在索引列上涉及到了运算。</p>
+
+<h1 id="toc_2">InnoDB 为什么要使用 B+ 树，而不是 B 树、Hash、红黑树或二叉树？</h1>
+
+<p>因为 B 树、Hash、红黑树或二叉树存在以下问题：</p>
+
+<p>B 树：不管叶子节点还是非叶子节点，都会保存数据，这样导致在非叶子节点中能保存的指针数量变少（有些资料也称为扇出），指针少的情况下要保存大量数据，只能增加树的高度，导致IO操作变多，查询性能变低；<br/>
+Hash：虽然可以快速定位，但是没有顺序，IO 复杂度高；<br/>
+二叉树：树的高度不均匀，不能自平衡，查找效率跟数据有关（树的高度），并且 IO 代价高；<br/>
+红黑树：树的高度随着数据量增加而增加，IO 代价高。</p>
+
+<p>为什么 InnoDB 要使用 B+ 树来存储索引？<br/>
+B+Tree 中的 B 是 Balance，是平衡的意思，它在经典 B Tree 的基础上进行了优化，增加了顺序访问指针，在B+Tree 的每个叶子节点增加一个指向相邻叶子节点的指针，就形成了带有顺序访问指针的 B+Tree，这样就提高了区间访问性能：如果要查询 key 为从 18 到 49 的所有数据记录，当找到 18 后，只需顺着节点和指针顺序遍历就可以一次性访问到所有数据节点，极大提到了区间查询效率（无需返回上层父节点重复遍历查找减少 IO 操作）。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[workerman ip的获取]]></title>
@@ -1679,62 +1727,6 @@ mysqldump  --column-statistics=0 --host=127.0.0.1 --port=3306  -uroot -proot dbn
 <p>例导出指定库，每个表格前100条数据，可以使用 --where参数，limit 100条</p>
 
 <p>mysqldump导出的时候会锁表，还有比较好的工具，后更新。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[免费域名证书的申请]]></title>
-    <link href="http://www.shengsheng.net/15874683984714.html"/>
-    <updated>2020-04-21T19:26:38+08:00</updated>
-    <id>http://www.shengsheng.net/15874683984714.html</id>
-    <content type="html"><![CDATA[
-<p>对于ssl，我们经常会用到，但对于我们这种贫穷人家，只能通过各种方式来获取免费的ssl。<br/>
-ssl证书好处，这里不多说，有疑问请度娘。<br/>
-比较折腾的是，免费的都不支持泛解析。</p>
-
-<h1 id="toc_0">测评</h1>
-
-<h2 id="toc_1">certbot</h2>
-
-<p>业内比较大的免费证书机构是certbot,<br/>
-certbot支持强度高，但限制也大，需域名先进行解析才能使用。<br/>
-<img src="media/15874683984714/15874686027554.jpg" alt=""/></p>
-
-<h2 id="toc_2">freessl.cn</h2>
-
-<p>操作简单，快捷，打开freessl.cn注册邮箱即可。<br/>
-<img src="media/15874683984714/15874687480297.jpg" alt=""/></p>
-
-<p>域名认证方面，使用txt作为解析，解析成功即可获得证书。<br/>
-需注意，申请好之后，要保存好私钥。</p>
-
-<h2 id="toc_3">其它</h2>
-
-<h3 id="toc_4">腾讯云导入证书</h3>
-
-<p><img src="media/15874683984714/15874698281428.jpg" alt=""/><br/>
-下载之后有两个文件<br/>
-private.key为私钥<br/>
-full_chain.pem为公钥</p>
-
-<p><img src="media/15874683984714/15874699416978.jpg" alt=""/></p>
-
-<p>复制私钥的内容到私钥栏<br/>
-full_chain.pem复制上半部分即可<br/>
-<img src="media/15874683984714/15874700104254.jpg" alt=""/></p>
-
-<h3 id="toc_5">证书格式转换:</h3>
-
-<p><a href="https://cloud.tencent.com/document/product/228/41686">https://cloud.tencent.com/document/product/228/41686</a></p>
-
-<h3 id="toc_6">p12,pem,key</h3>
-
-<p>这部分度娘了解一下证书原理即可。</p>
-
-<h2 id="toc_7">结伦</h2>
-
-<p>相对来讲，本人较喜欢freessl.cn，不用解析ip即可申请。</p>
 
 ]]></content>
   </entry>
