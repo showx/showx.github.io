@@ -4,7 +4,7 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-06-01T18:51:24+08:00</updated>
+  <updated>2020-06-01T18:53:51+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -24,7 +24,8 @@
 
 <p>使用php为例</p>
 
-<pre><code class="language-text">$time = time();
+<pre><code class="language-text">$i = 1;
+$time = time();
 while(1)
 {
     if($time != time())
