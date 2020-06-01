@@ -4,13 +4,66 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-05-28T22:39:45+08:00</updated>
+  <updated>2020-05-28T22:40:24+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[while(true)的思考]]></title>
+    <link href="http://www.shengsheng.net/15910082719284.html"/>
+    <updated>2020-06-01T18:44:31+08:00</updated>
+    <id>http://www.shengsheng.net/15910082719284.html</id>
+    <content type="html"><![CDATA[
+<p>其实我们更多时候使用while(1)作为守护进程，帮我们处理更多的事情</p>
+
+<h1 id="toc_0">测试while(1)</h1>
+
+<p>使用php为例</p>
+
+<pre><code class="language-text">$time = time();
+while(1)
+{
+    if($time != time())
+    {
+        echo &#39;ok|&#39;.$i.&quot;|&quot;.time().&quot;\n&quot;;
+        $time = time();
+        echo &quot;end\n&quot;;
+        $i = 0;
+    // break;
+    }
+    $i++;
+}
+</code></pre>
+
+<p><img src="media/15910082719284/15910083567909.jpg" alt=""/><br/>
+简单的操作的函数，每秒其实可以运算千万次的。<br/>
+这时候我们查看一下top命令<br/>
+<img src="media/15910082719284/15910084114815.jpg" alt=""/></p>
+
+<p>实际cpu一直维持在98%左右。<br/>
+我们去掉相关代码</p>
+
+<pre><code class="language-text">while(1)
+{
+}
+</code></pre>
+
+<p>只保留while(true)，查看结果得知，cpu还是很高的状态。这是因为while(1)一直在进行着运算。<br/>
+接着我们在while(1)里面增加sleep(1)函数,让他休息一下再执行下面的逻辑<br/>
+<img src="media/15910082719284/15910085839165.jpg" alt=""/></p>
+
+<p>可以看到cpu已经降下来了，因为有sleep停顿的操作，使代码不用一直不停地执行，所以cpu降了下来。</p>
+
+<h1 id="toc_1">总结</h1>
+
+<p>我们自己写守护进程的时候，要考虑一下放在进程里，程序里消耗有多少，甚至new一个mysql对象一直保持的状态下有没问题，都是要考虑的。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[mysql联合索引]]></title>
@@ -1703,30 +1756,6 @@ shift &quot;\(((\)OPTIND - 1))&quot;</p>
 -n：不运行脚本，只检查是否有语法错误。<br/>
 -v：输出每一行语句运行结果前，会先输出该行语句。<br/>
 -x：每一个命令处理完以后，先输出该命令，再进行下一个命令的处理。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[mysql导出指定条数的数据]]></title>
-    <link href="http://www.shengsheng.net/15875516508594.html"/>
-    <updated>2020-04-22T18:34:10+08:00</updated>
-    <id>http://www.shengsheng.net/15875516508594.html</id>
-    <content type="html"><![CDATA[
-<p>平时习惯了使用navicat for mysql来复制数据到本地数据库</p>
-
-<p><img src="media/15875516508594/15875517328254.jpg" alt=""/></p>
-
-<p>数据多的时候，复制会很慢，而且某些hash的索引会变成btree。<br/>
-为了使本地测试机有线上部分数据库，故使用mysqldump导出指定条数。</p>
-
-<p><code><br/>
-mysqldump  --column-statistics=0 --host=127.0.0.1 --port=3306  -uroot -proot dbname --where=&quot; 1=1 limit 100&quot;&gt; db.sql <br/>
-</code></p>
-
-<p>例导出指定库，每个表格前100条数据，可以使用 --where参数，limit 100条</p>
-
-<p>mysqldump导出的时候会锁表，还有比较好的工具，后更新。</p>
 
 ]]></content>
   </entry>
