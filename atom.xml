@@ -4,13 +4,90 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-06-01T19:07:59+08:00</updated>
+  <updated>2020-06-10T18:56:26+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[php之redis队列]]></title>
+    <link href="http://www.shengsheng.net/15936998383453.html"/>
+    <updated>2020-07-02T22:23:58+08:00</updated>
+    <id>http://www.shengsheng.net/15936998383453.html</id>
+    <content type="html"><![CDATA[
+<p>php redis队列的使用,记录一下常用代码。</p>
+
+<h1 id="toc_0">redis常用方法</h1>
+
+<p>通常使用redis作为缓存使用<br/>
+例如：</p>
+
+<h2 id="toc_1">字符串缓存</h2>
+
+<pre><code class="language-text">// 设置缓存数据
+redis::set(Report::$cache_key.&quot;init_&quot;.$initkey,$dataJson);
+// 设置过期时间 
+redis::expire(Report::$cache_key.&quot;init_&quot;.$initkey,3600);
+// 获取缓存数据
+redis::get(Report::$cache_key.&quot;init_&quot;.$initkey);
+
+</code></pre>
+
+<h2 id="toc_2">hash字典缓存</h2>
+
+<pre><code class="language-text">$setArr = [
+    &#39;putType&#39; =&gt; $result[&#39;putType&#39;],
+    &#39;timestamp&#39; =&gt; $time,
+    &#39;date&#39; =&gt; date(&#39;Ymd&#39;,$time),
+    &#39;clickid&#39; =&gt; $result[&#39;click_id&#39;],
+    &#39;putType&#39; =&gt; $result[&#39;putType&#39;],
+    &#39;reg&#39; =&gt; 1
+];
+// 设置字典
+redis::hmset($userkey,$setArr);
+// 设置字典指定字段
+redis::hset($userkey,&#39;pay&#39;,1);
+// 获取字典所有字段
+$put = redis::hgetall($userkey);
+</code></pre>
+
+<h1 id="toc_3">列表队列</h1>
+
+<p>简单的队列操作，先进先出，出可以先进后出</p>
+
+<pre><code class="language-text">// 放入列表
+$status = redis::lpush(&quot;webSend&quot;,$dataJson);
+// 获取队列列表
+while($result = redis::rpop(&quot;webSend&quot;))
+{
+    // 获取数据之后的处理
+}
+</code></pre>
+
+<h1 id="toc_4">延迟队列</h1>
+
+<p>使用集合来作为延迟队列</p>
+
+<pre><code class="language-text">// 添加数据
+$second = 15; //延迟15秒之后执行
+redis::zadd(&#39;test&#39;,time()+$second,json_encode([&#39;1&#39;,&#39;3&#39;,&#39;2&#39;]));
+// 获取1个数据 limit即限制的条数
+$tmp = redis::zRangeByScore(&#39;test&#39;, 0, time(), [&#39;limit&#39; =&gt; [0, 1]]);
+var_dump($tmp);
+// 删除指定数据
+$tm = redis::zRem(&#39;test&#39;,$tmp[0]);
+var_dump($tm);  //1成功 2失败
+</code></pre>
+
+<h1 id="toc_5">其它</h1>
+
+<p>自从redis火起之后，memcache越来越少人用啦。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[sql语句笔记]]></title>
@@ -1839,44 +1916,6 @@ response.addHeader( &quot;Access-Control-Max-Age&quot;, &quot;2592000&quot; )<br
 <h3 id="toc_4">cors漏洞</h3>
 
 <p><a href="https://www.freebuf.com/column/194652.html">https://www.freebuf.com/column/194652.html</a></p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[docker发布hub过程]]></title>
-    <link href="http://www.shengsheng.net/15877286658619.html"/>
-    <updated>2020-04-24T19:44:25+08:00</updated>
-    <id>http://www.shengsheng.net/15877286658619.html</id>
-    <content type="html"><![CDATA[
-<p>其实不少人会制作docker镜像，但重新pull的时候，在本地没镜像，环境搭起来就浪费不少时间了，所以把自己常用的镜像推送到云端是比较有必要的。</p>
-
-<h1 id="toc_0">推送hub</h1>
-
-<p>docker官方提供的hub地址：<a href="https://hub.docker.com/">https://hub.docker.com/</a><br/>
-没账号的先在上面申请好账号哈。hub.docker的账号注册就略过啦。<sup>_^</sup></p>
-
-<p><img src="media/15877286658619/15877288006092.jpg" alt=""/></p>
-
-<p>注册好之后，有个创建仓库的按钮。<br/>
-进入容器，修改好容之后<br/>
-把容器提交到镜像<br/>
-<code><br/>
-docker commit container [repository:tag]<br/>
-</code><br/>
-<img src="media/15877286658619/15877290189087.jpg" alt=""/><br/>
-这时候内容已经更新到本地的镜像指定的tag中了</p>
-
-<p><code><br/>
-docker push show/php:7.2.6<br/>
-</code><br/>
-输入相关账号密码，即可提交到云端</p>
-
-<p>去另外一台电脑上愉快的docker pull 自己的镜像吧。</p>
-
-<h1 id="toc_1">后记</h1>
-
-<p>理解好微服务，就知道使用docker是如何的方便的啦。</p>
 
 ]]></content>
   </entry>
