@@ -4,13 +4,26 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-06-10T18:56:26+08:00</updated>
+  <updated>2020-07-02T22:36:21+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[JetBrains免费获取]]></title>
+    <link href="http://www.shengsheng.net/15946911363103.html"/>
+    <updated>2020-07-14T09:45:36+08:00</updated>
+    <id>http://www.shengsheng.net/15946911363103.html</id>
+    <content type="html"><![CDATA[
+<p>使用开源项目，免费撸了一个一年的序列号,想要的朋友自己去撸一下<a href="https://www.jetbrains.com/shop/eform/opensource">https://www.jetbrains.com/shop/eform/opensource</a></p>
+
+<p><img src="media/15946911363103/15946911383285.jpg" alt=""/></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[php之redis队列]]></title>
@@ -1852,70 +1865,6 @@ const template = require(&#39;@babel/template&#39;).default;</p></li>
 <p>最后网友说你不用输出json格式啊，输出xml或二进制，再反解释不就行了。<br/>
 前提是只能输出json格式呢？嘿嘿<br/>
 最后还得使用node.js来解析，不过node.js解析大json还是快，而且内存占用也不晓得太多。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[cors跨域失败的问题]]></title>
-    <link href="http://www.shengsheng.net/15877943484342.html"/>
-    <updated>2020-04-25T13:59:08+08:00</updated>
-    <id>http://www.shengsheng.net/15877943484342.html</id>
-    <content type="html"><![CDATA[
-<p>通常前后端分离或某些跨域请求，我们会用到cors来控制<br/>
-以下是php代码示例，nginx、java等其它都可以实现</p>
-
-<pre><code class="language-text">header(&#39;Access-Control-Allow-Origin: *&#39;);  
-header(&#39;Access-Control-Allow-Credentials: true&#39;); //是否允许后续请求携带认证信息（cookies）,该值只能是true,否则不返回
-header(&#39;Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS&#39;); //允许的请求类型
-header(&quot;Access-Control-Allow-Headers: Accept,AUTHORIZATION,DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization&quot;); 
-header(&quot;Access-Control-Allow-Headers: *&quot;);
-</code></pre>
-
-<h1 id="toc_0">问题</h1>
-
-<p>在搭建的过程中，会遇到失效的问题。<br/>
-查看了一下<br/>
-<code><br/>
-Access-Control-Allow-Origin: *<br/>
-</code><br/>
-设置为*即允许所有，但登录成功之后获取信息有错。<br/>
-<img src="media/15877943484342/15877944590386.jpg" alt=""/></p>
-
-<p>改变一下Access-Control-Allow-Origin测试<br/>
-<code><br/>
-Access-Control-Allow-Origin: http://test<br/>
-</code><br/>
-<img src="media/15877943484342/15877945540038.jpg" alt=""/><br/>
-发现不是Access-Control-Allow-Origin的问题。</p>
-
-<p>使用Charles抓包查看一下<br/>
-<img src="media/15877943484342/15877974328399.jpg" alt=""/></p>
-
-<p>每次请求cors前都有个OPTIONS方法，里面没有任何的参数内容<br/>
-<img src="media/15877943484342/15877975157214.jpg" alt=""/><br/>
-由于框架每次都会验证一下jwt权限，遇到没内容直接返回401状态码。</p>
-
-<p><img src="media/15877943484342/15877977625055.jpg" alt=""/></p>
-
-<p>改写一下代码即可。</p>
-
-<h1 id="toc_1">结论</h1>
-
-<p>查阅相关资料，得出如下提醒：<br/>
-跨域资源共享标准新增了一组 HTTP 首部字段，允许服务器声明哪些源站通过浏览器有权限访问哪些资源。另外，规范要求，对那些可能对服务器数据产生副作用的 HTTP 请求方法（特别是 GET 以外的 HTTP 请求，或者搭配某些 MIME 类型的 POST 请求），浏览器必须首先使用 OPTIONS 方法发起一个预检请求（preflight request），从而获知服务端是否允许该跨域请求。服务器确认允许之后，才发起实际的 HTTP 请求。在预检请求的返回中，服务器端也可以通知客户端，是否需要携带身份凭证（包括 Cookies 和 HTTP 认证相关数据）</p>
-
-<h1 id="toc_2">其它</h1>
-
-<h3 id="toc_3">怎样避免CORS跨域发出OPTIONS请求？</h3>
-
-<p>// 后端设置，2592000，单位秒，也就是30天，如果是一天，就是86400<br/>
-response.addHeader( &quot;Access-Control-Max-Age&quot;, &quot;2592000&quot; )<br/>
-注意，后端只需要处理OPTIONS请求，不要改正常的GET、POST请求。</p>
-
-<h3 id="toc_4">cors漏洞</h3>
-
-<p><a href="https://www.freebuf.com/column/194652.html">https://www.freebuf.com/column/194652.html</a></p>
 
 ]]></content>
   </entry>
