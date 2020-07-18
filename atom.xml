@@ -4,13 +4,47 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-07-14T09:47:12+08:00</updated>
+  <updated>2020-07-14T10:17:56+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[php composer应该注意的点]]></title>
+    <link href="http://www.shengsheng.net/15950818535796.html"/>
+    <updated>2020-07-18T22:17:33+08:00</updated>
+    <id>http://www.shengsheng.net/15950818535796.html</id>
+    <content type="html"><![CDATA[
+<h2 id="toc_0">phpcomposer的安装方式</h2>
+
+<pre><code class="language-text">php -r &quot;copy(&#39;https://install.phpcomposer.com/installer&#39;, &#39;composer-setup.php&#39;);&quot;
+php composer-setup.php
+mv composer.phar /usr/local/bin/composer
+</code></pre>
+
+<h2 id="toc_1">查看镜像源等配置</h2>
+
+<p>composer config -l -g<br/>
+<img src="media/15950818535796/15950818960608.jpg" alt=""/></p>
+
+<p>设定阿里源站</p>
+
+<pre><code class="language-text">composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
+</code></pre>
+
+<h2 id="toc_2">要安装的php扩展</h2>
+
+<p>一定要安装php的zip扩展，不然走github下载就更慢了<br/>
+<img src="media/15950818535796/15950819597920.jpg" alt=""/></p>
+
+<p>走国内源也就几秒的事情<br/>
+<img src="media/15950818535796/15950820367441.jpg" alt=""/></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[JetBrains免费获取]]></title>
@@ -1833,40 +1867,6 @@ const t = require(&#39;@babel/types&#39;);<br/>
 const generate = require(&#39;@babel/generator&#39;).default;<br/>
 const template = require(&#39;@babel/template&#39;).default;</p></li>
 </ol>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[php读写大的json文件]]></title>
-    <link href="http://www.shengsheng.net/15877987592934.html"/>
-    <updated>2020-04-25T15:12:39+08:00</updated>
-    <id>http://www.shengsheng.net/15877987592934.html</id>
-    <content type="html"><![CDATA[
-<p>用js生成了个大的ast文件，内容为json格式，打算输出给php处理<br/>
-由于内存用得很满，所以一直解析不了大json,大概大概150MB。</p>
-
-<h1 id="toc_0">使用php读取文件的方式</h1>
-
-<ol>
-<li>file_get_contents(); <br/>
-直接读取文件到内存，大文件使不得</li>
-<li>file<br/>
-读取文件内容，并将内容按行成数组。</li>
-<li>fopen<br/>
-按流的方式读取</li>
-</ol>
-
-<h1 id="toc_1">使用php开源组件</h1>
-
-<p><img src="media/15877987592934/15877989637144.jpg" alt=""/><br/>
-最后还是崩在内存上了。</p>
-
-<h1 id="toc_2">寻找大神的帮助</h1>
-
-<p>最后网友说你不用输出json格式啊，输出xml或二进制，再反解释不就行了。<br/>
-前提是只能输出json格式呢？嘿嘿<br/>
-最后还得使用node.js来解析，不过node.js解析大json还是快，而且内存占用也不晓得太多。</p>
 
 ]]></content>
   </entry>
