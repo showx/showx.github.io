@@ -4,13 +4,235 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-07-14T10:17:56+08:00</updated>
+  <updated>2020-07-18T22:21:59+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[k8s使用笔记]]></title>
+    <link href="http://www.shengsheng.net/15951637392913.html"/>
+    <updated>2020-07-19T21:02:19+08:00</updated>
+    <id>http://www.shengsheng.net/15951637392913.html</id>
+    <content type="html"><![CDATA[
+<p>k8s全称kerbernets，docker集群的工具</p>
+
+<h2 id="toc_0">安装k8s</h2>
+
+<p>首先得有docker环境，安装完之后继续下一步</p>
+
+<pre><code class="language-text">cat &lt;&lt;EOF &gt; /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=http://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64
+enabled=1
+gpgcheck=0
+repo_gpgcheck=0
+gpgkey=http://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg http://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
+EOF
+</code></pre>
+
+<p>设置好数据源之后<br/>
+安装指定的</p>
+
+<pre><code class="language-text"> yum -y install kubelet-1.17.0 kubeadm-1.17.0
+</code></pre>
+
+<p>以上操作，从机也要进行下载</p>
+
+<pre><code class="language-text">systemctl enable docker &amp;&amp; systemctl start docker
+systemctl enable kubelet &amp;&amp; systemctl start kubelet
+</code></pre>
+
+<p>启动docker与kubelet服务</p>
+
+<h3 id="toc_1">每个机器设置一下hostname</h3>
+
+<p>hostnamectl set-hostname k8s-master<br/>
+hostnamectl set-hostname k8s-slave01<br/>
+hostnamectl set-hostname k8s-slave02<br/>
+有便于后面的区分</p>
+
+<h2 id="toc_2">k8s的核心思想</h2>
+
+<p>node pods deployment service</p>
+
+<h3 id="toc_3">新建命令空间</h3>
+
+<p>新建namespce.yaml文件</p>
+
+<pre><code class="language-text">apiVersion: v1
+kind: Namespace
+metadata:
+  name: work
+
+</code></pre>
+
+<h2 id="toc_4">deployment</h2>
+
+<p>搭建swagger-ui作演示<br/>
+swagger-ui-deployment</p>
+
+<pre><code class="language-text">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: swagger-ui
+  name: swagger-ui
+  namespace: work
+spec:
+  selector:
+    matchLabels:
+      app: swagger-ui
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: swagger-ui
+    spec:
+      containers:
+      - env:
+        image: swaggerapi/swagger-ui
+        name: swagger-ui
+        volumeMounts:
+          - mountPath: /usr/share/nginx/html/config
+            name: doc-volume
+        ports:
+        - containerPort: 8080
+      volumes:
+        - name: doc-volume
+          hostPath:
+            # directory location on host
+            path: /webwww/swagger
+            # this field is optional
+            type: Directory
+
+</code></pre>
+
+<h2 id="toc_5">service</h2>
+
+<p>以swagger作演示<br/>
+swagger-ui-service.yaml</p>
+
+<pre><code class="language-text">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: swagger-ui
+  name: swagger-ui
+  namespace: work
+spec:
+  selector:
+    matchLabels:
+      app: swagger-ui
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: swagger-ui
+    spec:
+      containers:
+      - env:
+        image: swaggerapi/swagger-ui
+        name: swagger-ui
+        volumeMounts:
+          - mountPath: /usr/share/nginx/html/config
+            name: doc-volume
+        ports:
+        - containerPort: 8080
+      volumes:
+        - name: doc-volume
+          hostPath:
+            # directory location on host
+            path: /webwww/swagger
+            # this field is optional
+            type: Directory
+</code></pre>
+
+<h2 id="toc_6">相关命令</h2>
+
+<p>查看work命令空间所有的pods<br/>
+kubectl get pods -n work</p>
+
+<p>查看相关节点<br/>
+kubectl get nodes</p>
+
+<p>制作pods集<br/>
+kubectl create -f swagger-ui-deployment.yaml</p>
+
+<p>查看指定pod相关信息<br/>
+kubectl describe pods swagger-ui-c69f9f4cf-kbft9 -n work<br/>
+查看指定pod详细信息<br/>
+kubectl describe pods swagger-ui-c69f9f4cf-kbft9 -n work</p>
+
+<p>制作service暴露外部<br/>
+kubectl apply -f swagger-ui-service.yaml</p>
+
+<p>删除指定的service<br/>
+kubectl delete -f swagger-ui-service.yaml</p>
+
+<p>查看有哪些service<br/>
+kubectl get svc -n work</p>
+
+<p>更新相关配置<br/>
+kubectl replace -f nginx.yaml</p>
+
+<p>进入指定pods<br/>
+kubectl -n work exec -it gitlab-67f74459f4-qdqtf /bin/bash</p>
+
+<h2 id="toc_7">注意点</h2>
+
+<p>Pod并非一个持久化的东西，很有可能突然挂了，并且没有能力自我修复，这就是为啥我们把它们和controller一起用，这样可以来控制pod的replica，容错，自我修复等等。比较有名的例子比如Deployments，ReplicaSets等。我们通过把Pod的定义（specification，也就是spec）附加到别的对象（也就是之前用的template.spec）来完成。</p>
+
+<p>k8s会有两个默认Namespace：kube-system和default。kube-system一般会用来放一些Kubernetes系统的组件，default会用来放一些属于其它Namespace的对象。我们默认情况下是会连接到default命名空间。kube-public是一个特殊的namespace，可以被所有的用户读，一般用于特殊情况比如初始化一个集群。</p>
+
+<p>Docker 启动时可以用 --publish/-p 参数配置端口映射规则，Pod 的定义设置容器的映射规则如：</p>
+
+<p>apiVersion: v1<br/>
+kind: Pod<br/>
+metadata:<br/>
+  name: nginx<br/>
+spec:<br/>
+  containers:<br/>
+  - name: nginx<br/>
+    image: &quot;nginx:1.11&quot;<br/>
+    ports:<br/>
+    - name: web<br/>
+      containerPort: 80<br/>
+      protocol: TCP<br/>
+      hostIP: 0.0.0.0<br/>
+      hostPort: 80<br/>
+name：设置端口名称，必须 Pod 内唯一，当只配置一个端口的时候，这是一个可选项，当配置多个端口的时候，这是一个必须项。<br/>
+containerPort：必须项，设置在容器内的端口，有效范围 1 ~ 65535。<br/>
+protocol：可选项，设置端口的协议，TCP 或者 UDP，默认是 TCP。<br/>
+hostIP：可选项，是指在宿主机上的IP，默认绑定到所有可用的 IP 上，即 0.0.0.0 。<br/>
+hostPort：可选项，设置在宿主机上的端口，如果设置则进行端口映射，有效范围 1 ~ 65535。</p>
+
+<h2 id="toc_8">总结</h2>
+
+<p>总的来说相对复制，生产上使用必须要把核心理解清楚。</p>
+
+<h2 id="toc_9">相关阅读</h2>
+
+<p><a href="https://blog.csdn.net/fanren224/article/details/86610799%0Ahttps://zdyxry.github.io/2019/08/01/Kubernetes-%E5%AE%9E%E6%88%98-%E5%B9%B3%E6%BB%91%E7%A7%BB%E9%99%A4%E8%8A%82%E7%82%B9/">k8s增减node</a></p>
+
+<p><a href="https://www.jianshu.com/p/70e9c0b5fd25">kubectl delete pod 后又创建了一个新的pod</a></p>
+
+<p>1 node(s) had taints that the pod didn&#39;t tolerate.<br/>
+有时候一个pod创建之后一直是pending，没有日志，也没有pull镜像，describe的时候发现里面有一句话： 1 node(s) had taints that the pod didn&#39;t tolerate.</p>
+
+<p>直译意思是节点有了污点无法容忍，执行 kubectl get no -o yaml | grep taint -A 5 之后发现该节点是不可调度的。这是因为kubernetes出于安全考虑默认情况下无法在master节点上部署pod，于是用下面方法解决：</p>
+
+<p>kubectl taint nodes --all node-role.kubernetes.io/master-<br/>
+<a href="https://my.oschina.net/eima/blog/1860598">https://my.oschina.net/eima/blog/1860598</a><br/>
+<a href="https://kubernetes.io/zh/docs/concepts/services-networking/connect-applications-service/">https://kubernetes.io/zh/docs/concepts/services-networking/connect-applications-service/<br/>
+</a></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[php composer应该注意的点]]></title>
@@ -1715,158 +1937,6 @@ adb logcat | findstr com.abc.package
 <p><img src="media/15880420318169/15880421212309.jpg" alt=""/></p>
 
 <p>后续更新相关教程。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[绕过微信小程序机审]]></title>
-    <link href="http://www.shengsheng.net/15879530916080.html"/>
-    <updated>2020-04-27T10:04:51+08:00</updated>
-    <id>http://www.shengsheng.net/15879530916080.html</id>
-    <content type="html"><![CDATA[
-<p>其实小程序都是ecmascript写的，了解一下运行机制，改写一下ast即可。<br/>
-例如：静态扫描，静态分析，都是大概分析出结果。</p>
-
-<h1 id="toc_0">何为ast</h1>
-
-<p>示例代码：<br/>
-<code><br/>
-var a = 1;<br/>
-</code><br/>
-ast分析网站：<br/>
-<a href="https://astexplorer.net/">https://astexplorer.net/</a></p>
-
-<pre><code class="language-text">{
-  &quot;type&quot;: &quot;File&quot;,
-  &quot;start&quot;: 0,
-  &quot;end&quot;: 10,
-  &quot;loc&quot;: {
-    &quot;start&quot;: {
-      &quot;line&quot;: 1,
-      &quot;column&quot;: 0
-    },
-    &quot;end&quot;: {
-      &quot;line&quot;: 1,
-      &quot;column&quot;: 10
-    }
-  },
-  &quot;errors&quot;: [],
-  &quot;program&quot;: {
-    &quot;type&quot;: &quot;Program&quot;,
-    &quot;start&quot;: 0,
-    &quot;end&quot;: 10,
-    &quot;loc&quot;: {
-      &quot;start&quot;: {
-        &quot;line&quot;: 1,
-        &quot;column&quot;: 0
-      },
-      &quot;end&quot;: {
-        &quot;line&quot;: 1,
-        &quot;column&quot;: 10
-      }
-    },
-    &quot;sourceType&quot;: &quot;module&quot;,
-    &quot;interpreter&quot;: null,
-    &quot;body&quot;: [
-      {
-        &quot;type&quot;: &quot;VariableDeclaration&quot;,
-        &quot;start&quot;: 0,
-        &quot;end&quot;: 10,
-        &quot;loc&quot;: {
-          &quot;start&quot;: {
-            &quot;line&quot;: 1,
-            &quot;column&quot;: 0
-          },
-          &quot;end&quot;: {
-            &quot;line&quot;: 1,
-            &quot;column&quot;: 10
-          }
-        },
-        &quot;declarations&quot;: [
-          {
-            &quot;type&quot;: &quot;VariableDeclarator&quot;,
-            &quot;start&quot;: 4,
-            &quot;end&quot;: 9,
-            &quot;loc&quot;: {
-              &quot;start&quot;: {
-                &quot;line&quot;: 1,
-                &quot;column&quot;: 4
-              },
-              &quot;end&quot;: {
-                &quot;line&quot;: 1,
-                &quot;column&quot;: 9
-              }
-            },
-            &quot;id&quot;: {
-              &quot;type&quot;: &quot;Identifier&quot;,
-              &quot;start&quot;: 4,
-              &quot;end&quot;: 5,
-              &quot;loc&quot;: {
-                &quot;start&quot;: {
-                  &quot;line&quot;: 1,
-                  &quot;column&quot;: 4
-                },
-                &quot;end&quot;: {
-                  &quot;line&quot;: 1,
-                  &quot;column&quot;: 5
-                },
-                &quot;identifierName&quot;: &quot;a&quot;
-              },
-              &quot;name&quot;: &quot;a&quot;
-            },
-            &quot;init&quot;: {
-              &quot;type&quot;: &quot;NumericLiteral&quot;,
-              &quot;start&quot;: 8,
-              &quot;end&quot;: 9,
-              &quot;loc&quot;: {
-                &quot;start&quot;: {
-                  &quot;line&quot;: 1,
-                  &quot;column&quot;: 8
-                },
-                &quot;end&quot;: {
-                  &quot;line&quot;: 1,
-                  &quot;column&quot;: 9
-                }
-              },
-              &quot;extra&quot;: {
-                &quot;rawValue&quot;: 1,
-                &quot;raw&quot;: &quot;1&quot;
-              },
-              &quot;value&quot;: 1
-            }
-          }
-        ],
-        &quot;kind&quot;: &quot;var&quot;
-      }
-    ],
-    &quot;directives&quot;: []
-  },
-  &quot;comments&quot;: []
-}
-</code></pre>
-
-<p>即可分析出相关运行结构</p>
-
-<h1 id="toc_1">改写ast工具</h1>
-
-<ol>
-<li><p>est家族<br/>
-const esprima = require(&quot;esprima&quot;);<br/>
-const estraverse = require(&quot;estraverse&quot;);<br/>
-const escodegen = require(&quot;escodegen&quot;);<br/>
-const escope = require(&#39;escope&#39;);</p></li>
-<li><p>acorn<br/>
-const acorn = require(&quot;acorn&quot;);</p></li>
-<li><p>recast解析器，可另选择ast<br/>
-const recast = require(&quot;recast&quot;);</p></li>
-<li><p>babel-parser babel家族<br/>
-const babel = require(&#39;@babel/parser&#39;);<br/>
-const babeltraverse = require(&#39;@babel/traverse&#39;).default;<br/>
-const t = require(&#39;@babel/types&#39;);<br/>
-const generate = require(&#39;@babel/generator&#39;).default;<br/>
-const template = require(&#39;@babel/template&#39;).default;</p></li>
-</ol>
 
 ]]></content>
   </entry>
