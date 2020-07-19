@@ -4,7 +4,7 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-07-19T21:33:52+08:00</updated>
+  <updated>2020-07-19T21:34:34+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -235,7 +235,8 @@ hostPort：可选项，设置在宿主机上的端口，如果设置则进行端
 
 <h2 id="toc_9">相关阅读</h2>
 
-<p><a href="https://blog.csdn.net/fanren224/article/details/86610799%0Ahttps://zdyxry.github.io/2019/08/01/Kubernetes-%E5%AE%9E%E6%88%98-%E5%B9%B3%E6%BB%91%E7%A7%BB%E9%99%A4%E8%8A%82%E7%82%B9/">k8s增减node</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/94628967">安装k8s</a><br/>
+<a href="https://blog.csdn.net/fanren224/article/details/86610799%0Ahttps://zdyxry.github.io/2019/08/01/Kubernetes-%E5%AE%9E%E6%88%98-%E5%B9%B3%E6%BB%91%E7%A7%BB%E9%99%A4%E8%8A%82%E7%82%B9/">k8s增减node</a></p>
 
 <p><a href="https://www.jianshu.com/p/70e9c0b5fd25">kubectl delete pod 后又创建了一个新的pod</a></p>
 
