@@ -4,13 +4,31 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-07-19T21:24:56+08:00</updated>
+  <updated>2020-07-19T21:33:52+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[safari阻止cookie写入]]></title>
+    <link href="http://www.shengsheng.net/15951652105930.html"/>
+    <updated>2020-07-19T21:26:50+08:00</updated>
+    <id>http://www.shengsheng.net/15951652105930.html</id>
+    <content type="html"><![CDATA[
+<p>今天在某个网站里iframe另一个网站的地址<br/>
+发现手机safari不同域的情况下，另一个网站老是写不下cookie。<br/>
+只有关闭safari里的阻止跨网站跟踪才行。<br/>
+so,尽量不要使用cookie通讯了，如果想运行得更好，那使用localstorage吧</p>
+
+<p><img src="media/15951652105930/15951655340274.jpg" alt=""/></p>
+
+<p><img src="media/15951652105930/15951653541414.jpg" alt=""/></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[k8s使用笔记]]></title>
@@ -1918,25 +1936,6 @@ adb logcat | grep -F &quot;`adb shell ps | grep com.abc.package | cut -c10-15`&q
 windows:
 adb logcat | findstr com.abc.package
 </code></pre>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[超高性能的php框架之phpshow]]></title>
-    <link href="http://www.shengsheng.net/15880420318169.html"/>
-    <updated>2020-04-28T10:47:11+08:00</updated>
-    <id>http://www.shengsheng.net/15880420318169.html</id>
-    <content type="html"><![CDATA[
-<p>基于workerman撸了个比较好性能的轻量级php框架。已得到官方收录，经实际项目实践。</p>
-
-<p><img src="media/15880420318169/15880421689585.jpg" alt=""/></p>
-
-<p>搭建比较简单，代码里都有示例app</p>
-
-<p><img src="media/15880420318169/15880421212309.jpg" alt=""/></p>
-
-<p>后续更新相关教程。</p>
 
 ]]></content>
   </entry>
