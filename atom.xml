@@ -4,13 +4,85 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-07-19T21:34:34+08:00</updated>
+  <updated>2020-07-19T21:35:37+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[运营后台相关参数]]></title>
+    <link href="http://www.shengsheng.net/15983439644690.html"/>
+    <updated>2020-08-25T16:26:04+08:00</updated>
+    <id>http://www.shengsheng.net/15983439644690.html</id>
+    <content type="html"><![CDATA[
+<p>整理一下通用后台用到的统计标准，一文说清所有的指标。</p>
+
+<h2 id="toc_0">实用指标</h2>
+
+<p>日期<br/>
+区服<br/>
+新增注册数：规定区服条件下的新增注册玩家数<br/>
+老用户：规定区服条件下的非当日新增注册的登陆玩家数<br/>
+DAU：新增注册数+老用户 （日活跃用户）<br/>
+新用户付费金额：新增注册玩家的总付费金额 （新总）<br/>
+总付费金额：新增注册玩家+老用户产生的总充值金额 （新+老）<br/>
+新用户付费人数：新增注册玩家中充值玩家总数 （新付人数）<br/>
+新增付费率：新用户付费数/新增注册数 （新付数/新)<br/>
+总付费人数：新增注册玩家+老用户产生的总充值人数 (新付+老付)<br/>
+注册ARPPU：新用户付费金额/新用户付费人数 （新付/新付数）<br/>
+活跃ARPPU：总付费金额/总付费人数  （总付/总付人）<br/>
+活跃付费率：总付费人数/DAU  (总付数/活跃人数)<br/>
+活跃ARPU：活跃ARPPU<em>活跃付费率 (arppu</em>付费率，也可以= 总付金额/dau)<br/>
+至今（LTV和充值类型数据 可加入）<br/>
+活跃ARPU：活跃ARPPU*活跃付费率 （同上，很好理解，反过来的逻辑）<br/>
+新增付费率 = （新增付费人数 / 新增注册数) <br/>
+活跃付费率 = 付费用户数 / 总用户数<br/>
+注册ARPU = 新增人数付费金额 / 新增注册数<br/>
+注册ARPPU = 新增人数付费金额 / 新增付费人数<br/>
+活跃ARPU = 付费金额 / 总用户数<br/>
+活跃ARPPU = 付费金额 / 付费人数<br/>
+活跃付费率 = 付费用户 / 总用户数<br/>
+注册成本 = 成本 / 新增注册数 <br/>
+激活注册率 = 注册 / 激活数  （这个要创角上传的情况下）<br/>
+激活成本 = 成本 / 激活数     （激活看是否注册还是创角）<br/>
+创角率 = 创角数 / 新增注册数<br/><br/>
+DNU（Daily New Users）： 每日游戏中的新登入用户数量<br/>
+AU（Active Users）：活跃用户，统计周期内，登录过游戏的用户数<br/>
+相应的，根据统计周期，有DAU(日活跃用户)，WAU(周活跃用户),MAU(月活跃用户)等。<br/>
+PU ( Paying User）：付费用户<br/>
+APA（Active Payment Account）：活跃付费用户数<br/>
+这里我们要注意“用户”和“付费用户”的区分，这也将影响收入的计算。<br/>
+ARPU(Average Revenue Per User) ：平均每用户收入，即可通过 总收入/AU 计算得出。(平均收入每个用户)<br/>
+ARPPU (Average Revenue Per Paying User)： 平均每付费用户收入，可通过 总收入/APA 计算得出。（平均收入每个付费用户)<br/>
+PUR(Pay User Rate)：付费比率，可通过 APA/AU 计算得出。<br/>
+LTV(Lift Time Value)：生命周期价值，即平均一个用户在首次登录游戏到最后一次登录游戏内，为该游戏创造的收入总计<br/>
+投资回报率（ROI）=产出（销售收入）/ 投入（成本<br/>
+至今LTV = 累积金额 / 总人数<br/>
+苹果至今=苹果内购累积金额/注册数<br/>
+苹果付费金额</p>
+
+<h2 id="toc_1">其它</h2>
+
+<p>CPA：<br/>
+Cost Per Action 每效果成本——即按照效果付费。</p>
+
+<p>CPC：<br/>
+Cost Per Click;Cost Per Thousand Click-Through 每点击成本。</p>
+
+<p>CPT：<br/>
+Cost Per Time，CPT 是一种以时间来计费的广告。</p>
+
+<p>CPS：<br/>
+英文全称 Cost Per Sales。CPS 是一种以实际销售产品数量来计算广告费用的广告。</p>
+
+<p>CPPA：<br/>
+按照到达用户付费。既不是按照浏览量（PV）付费，也不是按照实际效果付费，而是按照到达的用户那个付费，在网站上等同于 UV，在手机端是新增用户上游数据（例如用户已下载安装还未打开激活 APP 的数量即为到达用户）</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[safari阻止cookie写入]]></title>
@@ -1871,72 +1943,6 @@ final private __clone ( void ) : void
 <h1 id="toc_1">结论</h1>
 
 <p>提高效率，写好异常类是很有必要的！</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[android常用工具]]></title>
-    <link href="http://www.shengsheng.net/15881725421998.html"/>
-    <updated>2020-04-29T23:02:22+08:00</updated>
-    <id>http://www.shengsheng.net/15881725421998.html</id>
-    <content type="html"><![CDATA[
-<h2 id="toc_0">反编译与打包</h2>
-
-<h3 id="toc_1">打包</h3>
-
-<pre><code class="language-text">apktool b /Users/pengyongsheng/Downloads/UF -o /Users/pengyongsheng/Downloads/UF.apk
-apktool b {$dapk_path} -o {$apk}.apk
-</code></pre>
-
-<p>没-o参数输出在dist文件夹</p>
-
-<h3 id="toc_2">反编译</h3>
-
-<pre><code class="language-text">apktool d /Users/pengyongsheng/Downloads/hjjd.apk -o /Users/pengyongsheng/Downloads/hjjd/hjjd
-</code></pre>
-
-<h2 id="toc_3">签名</h2>
-
-<h3 id="toc_4">方式1</h3>
-
-<p>使用pem,pk8文件进行签名</p>
-
-<pre><code class="language-text">java -jar signapk.jar test.pem test.pk8 a.apk a_sign.apk
-</code></pre>
-
-<h3 id="toc_5">方式2</h3>
-
-<p>使用keystore</p>
-
-<pre><code class="language-text">jarsigner -verbose -keystore /code/android/package/test.keystore -signedjar /code/android/package/500_sign.apk /code/android/package/500.apk  test.keystore
-</code></pre>
-
-<h2 id="toc_6">查看包名</h2>
-
-<ol>
-<li><p>adb shell am monitor -&gt; 打开应用</p></li>
-<li><p>安装了的包名<br/>
-adb shell pm list packages -3</p></li>
-<li><p>将apk包反编译后，打开AndroidManifest.xml，搜索package获取包名</p></li>
-<li><p>安卓系统中：设置——应用——正在运行 查看</p></li>
-</ol>
-
-<h2 id="toc_7">查看签名</h2>
-
-<pre><code class="language-text">keytool -printcert -jarfile xxx.apk
-jarsigner -verify /code/android/package/5yyb/dist/5yyb.apk
-</code></pre>
-
-<h2 id="toc_8">adb logcat</h2>
-
-<p>通过过滤包名+过滤进程ID</p>
-
-<pre><code class="language-text">Linux or Mac:
-adb logcat | grep -F &quot;`adb shell ps | grep com.abc.package | cut -c10-15`&quot;
-windows:
-adb logcat | findstr com.abc.package
-</code></pre>
 
 ]]></content>
   </entry>
