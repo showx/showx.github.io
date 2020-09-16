@@ -4,13 +4,29 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-07-19T21:35:37+08:00</updated>
+  <updated>2020-08-25T16:29:44+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[php微服务的分享]]></title>
+    <link href="http://www.shengsheng.net/16002662215905.html"/>
+    <updated>2020-09-16T22:23:41+08:00</updated>
+    <id>http://www.shengsheng.net/16002662215905.html</id>
+    <content type="html"><![CDATA[
+<p>几分钟写的ppt，讲了一小时。<br/>
+<img src="media/16002662215905/16002662808301.jpg" alt=""/></p>
+
+<p><img src="media/16002662215905/16002663188569.jpg" alt=""/></p>
+
+<p>多交流交流！</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[运营后台相关参数]]></title>
@@ -1840,109 +1856,6 @@ command + alt + b：快照回放。很有意思的功能，你可以对你的操
 <h1 id="toc_2">后记</h1>
 
 <p>陆续会更新常用工具的快捷键</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[php自定义异常类]]></title>
-    <link href="http://www.shengsheng.net/15882435726461.html"/>
-    <updated>2020-04-30T18:46:12+08:00</updated>
-    <id>http://www.shengsheng.net/15882435726461.html</id>
-    <content type="html"><![CDATA[
-<p>工作中会经常用到异常的调试<br/>
-所以会用到异常类</p>
-
-<pre><code class="language-text">&lt;?php
-Exception implements Throwable {
-/* Properties */
-protected string $message ;
-protected int $code ;
-protected string $file ;
-protected int $line ;
-/* Methods */
-public __construct ([ string $message = &quot;&quot; [, int $code = 0 [, Throwable $previous = NULL ]]] )
-final public getMessage ( void ) : string
-final public getPrevious ( void ) : Throwable
-final public getCode ( void ) : mixed
-final public getFile ( void ) : string
-final public getLine ( void ) : int
-final public getTrace ( void ) : array
-final public getTraceAsString ( void ) : string
-public __toString ( void ) : string
-final private __clone ( void ) : void
-}
-</code></pre>
-
-<p>结合实际我们会自定义一些异常类来处理特定的事情</p>
-
-<h1 id="toc_0">自定义异常类的编写</h1>
-
-<pre><code class="language-text">Class dbException extends \Exception
-{
-    private $errorCode;
-    private $sql;
-
-    /**
-     * 初始化异常
-     */
-    public function __construct($code = &quot;&quot;, $message = &quot;&quot;,  $sql = &quot;&quot;)
-    {
-        parent::__construct($message, 0);
-        $this-&gt;errorCode = $code;
-        $this-&gt;sql = $sql;
-    }
-
-    /**
-     *  获取错误码
-     */
-    public function getErrorCode()
-    {
-        return $this-&gt;errorCode;
-    }
-
-    /**
-     * 获取错误的sql语句
-     */
-    public function getSql():string
-    {
-        return $this-&gt;sql;
-    }
-    
-    /**
-     * 格式化输出异常码，异常信息，请求id
-     * @return string
-     */
-    public function __toString()
-    {
-        return &quot;[&quot;.__CLASS__.&quot;]&quot;.&quot; code:&quot;.$this-&gt;errorCode.
-            &quot; message:&quot;.$this-&gt;getMessage().
-            &quot; sql:&quot;.$this-&gt;sql;
-    }
-
-}
-</code></pre>
-
-<p><img src="media/15882435726461/15882443213130.jpg" alt=""/></p>
-
-<p>我们简单测试一下自定义的异常类</p>
-
-<p><img src="media/15882435726461/15882441893437.jpg" alt=""/></p>
-
-<p><img src="media/15882435726461/15882442464889.jpg" alt=""/></p>
-
-<p>运行一下我们只走到了Exception,但我们不是没结果的时候拋出dbException么？<br/>
-其实是没走到throw new dbException，语句已经有错，直接底层拋出Exception</p>
-
-<p>改写一下函数<br/>
-<img src="media/15882435726461/15882443985466.jpg" alt=""/></p>
-
-<p>这样就捕获到异常了<br/>
-<img src="media/15882435726461/15882444468903.jpg" alt=""/></p>
-
-<h1 id="toc_1">结论</h1>
-
-<p>提高效率，写好异常类是很有必要的！</p>
 
 ]]></content>
   </entry>
