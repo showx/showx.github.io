@@ -4,13 +4,120 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-11-05T14:50:00+08:00</updated>
+  <updated>2020-12-07T09:31:25+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[node.js web框架]]></title>
+    <link href="http://www.shengsheng.net/16081725657882.html"/>
+    <updated>2020-12-17T10:36:05+08:00</updated>
+    <id>http://www.shengsheng.net/16081725657882.html</id>
+    <content type="html"><![CDATA[
+<p>有个小服务，需要使用node.js运行，需要提供一个后台给运营人员使用，故使用node web框架来搭建。Egg.js是不错的选择，不过服务不需要那么大型，所以采用koa快速开发</p>
+
+<h1 id="toc_0">使用到的node.js扩展</h1>
+
+<pre><code class="language-text">// web框架
+const Koa = require(&#39;koa&#39;);
+// 路由
+const router = require(&#39;koa-router&#39;)();
+// 运行系统shell脚本
+const shelljs = require(&#39;shelljs&#39;);
+// http请求
+const koaBody = require(&#39;koa-body&#39;);
+// 文件操作
+const fs = require(&#39;fs&#39;);
+// 路径相关
+const path = require(&quot;path&quot;);
+// 静态资源服务器
+const static = require(&#39;koa-static&#39;);
+// zip压缩与解压
+// const AdmZip = require(&#39;adm-zip&#39;);
+// 支付中文版的adm-zip
+const AdmZip = require(&#39;adm-zip-iconv&#39;);
+</code></pre>
+
+<h1 id="toc_1">router路由</h1>
+
+<pre><code class="language-text">router.get(&#39;/test&#39;, async (ctx, next) =&gt; {
+    console.log(ctx.response);
+    ctx.response.body = &#39;&lt;h1&gt;test&lt;/h1&gt;&#39;;
+});
+
+// 导航
+router.post(&#39;/nav&#39;, async (ctx, next) =&gt; {
+    ctx.response.body = Nav;
+});
+</code></pre>
+
+<h1 id="toc_2">核心功能</h1>
+
+<pre><code class="language-text">function extractfile(filePath,filename)
+{
+    console.log(&#39;开始解压:&#39;+filePath);
+    // 停两秒才继续上传
+    sleep(2000);
+    // 要上传完才能进行处理
+    const filetmp = new AdmZip(filePath,&#39;GBK&#39;);
+    filetmp.extractAllTo(&#39;./js3/&#39;+filename,true);  // output | js3
+}
+
+router.post(&#39;/upload&#39;, async (ctx, next) =&gt; {
+    const file = ctx.request.files.gamezip; // 获取上传文件
+    console.log(file.name);
+    let filePath = path.join(__dirname, &#39;/zipupload/&#39;) + `${file.name}`;
+    // 这里设置了异步
+    console.log(&#39;开始上传&#39;);
+    const reader = fs.createReadStream(file.path);
+    const writer = fs.createWriteStream(filePath);
+    reader.pipe(writer);
+    reader.on(&#39;end&#39;, () =&gt; {
+        console.log(&#39;上传成功&#39;);
+        extractfile(filePath,file.name);
+        var p1 = new Promise((resolve, reject) =&gt; {
+            resolve(&#39;成功&#39;);
+        });
+        p1.then(function(){
+            console.log(&quot; 【执行】：zsh obf_terser_dir.sh &quot; + &quot; auto&quot;+ctx.request.body.mixtype + &quot; &quot;+ctx.request.body.gameid);
+            shelljs.exec( &quot; zsh obf_terser_dir.sh &quot; + &quot; auto&quot;+ctx.request.body.mixtype + &quot; &quot;+ctx.request.body.gameid, { async : true } ) ;
+        })
+        .then(
+            console.log(&quot;end!&quot;)
+        );
+    });
+    return ctx.body = Nav+&quot;&lt;p&gt;正在执行任务!&lt;/p&gt;&quot;;
+});
+</code></pre>
+
+<h1 id="toc_3">运行程序</h1>
+
+<pre><code class="language-text">const staticPath = &#39;/zip&#39;
+const main2 = static(path.join(__dirname,staticPath));
+
+// 查看静态文件
+app.use(main2);
+// 验证登录
+app.use(authlogin);
+// 操作相关
+app.use(router.routes());
+
+// app.use(main);
+// 监听3000端口
+app.listen(3000);
+console.log(&#39;app started at port 3000...&#39;);
+</code></pre>
+
+<h1 id="toc_4">总结</h1>
+
+<p>总的来说入门理解比较容易，能快速开发，基本完成这个项目只花了两天时间。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[华为hcip证书]]></title>
@@ -1479,62 +1586,6 @@ Gitlab Hook、Build Authorization Token Root、Publish Over SSH、Gitlab Authent
 <li>Generator</li>
 <li>WeakReference</li>
 </ol>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[linux权限和组]]></title>
-    <link href="http://www.shengsheng.net/15887614689176.html"/>
-    <updated>2020-05-06T18:37:48+08:00</updated>
-    <id>http://www.shengsheng.net/15887614689176.html</id>
-    <content type="html"><![CDATA[
-<p>最近都是想写写linux基础为主</p>
-
-<h1 id="toc_0">group</h1>
-
-<p>/etc/group<br/>
-我们以root:x:0:root,linuxsir 为例： 用户组root，x是密码段，表示没有设置密码，GID是0,root用户组下包括root、linuxsir以及GID为0的其它用户。</p>
-
-<h1 id="toc_1">用户</h1>
-
-<p>/etc/passwd<br/>
-用户名:口令:用户标识号:组标识号:注释性描述:主目录:登录Shell</p>
-
-<h1 id="toc_2">权限命令</h1>
-
-<p>chown 修改文件或文件夹的归属用户和归属组 <br/>
-chmod 修改权限属性</p>
-
-<h1 id="toc_3">权限组成</h1>
-
-<p><img src="media/15887614689176/15887617349056.jpg" alt=""/></p>
-
-<p>前在的d代表文件夹的意思<br/>
-r 代表读取 read<br/>
-w 写  write<br/>
-x 执行 execute</p>
-
-<p>一共有三段 <br/>
-即<br/>
-用户|组|其它</p>
-
-<p>这里可以看出jar文件夹的用户是pengyongsheng,组是staff<br/>
-pengyongsheng对应的权限是读写执行<br/>
-staff对应的权限只有读和执行<br/>
-其它的用户只有执行的权限</p>
-
-<p>r=4，w=2，x=1<br/>
-想修改jar的组权限为可写，即该组下的用户都有写的功能<br/>
-4+2+1=7<br/>
-所以我们修改成<br/>
-<code><br/>
-chmod jar 771<br/>
-</code></p>
-
-<h1 id="toc_4">其它</h1>
-
-<p>root是终极用户，可以理解为super用户</p>
 
 ]]></content>
   </entry>
