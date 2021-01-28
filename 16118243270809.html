@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>
       
-    android常用工具 - shengsheng的博客
+    php composer加载过慢处理 - shengsheng的博客
     
     </title>
     
@@ -83,7 +83,7 @@
                   <div class="post-body single-content">
                     
                     <h1 class="title">
-                            android常用工具   
+                            php composer加载过慢处理   
                       </h1>
                      
                     
@@ -100,7 +100,7 @@
                             <div class="media-content">
                               <div class="content">
                                 <p>
-                                 <span class="date">2020/04/29</span>
+                                 <span class="date">2021/01/28</span>
                                   <span class="tran-posted-in">posted in</span>&nbsp; 
                                   
                                       <span class="posted-in"><a href='client.html'>客户端</a></span>
@@ -112,7 +112,7 @@
                                   <br />
                                   <span class="tran-tags">Tags:</span>&nbsp;
                                   
-                                    <a class="tag is-link is-light" href='tag_android.html'>#android</a>
+                                    <a class="tag is-link is-light" href='tag_php.html'>#php</a>
                                      
 
                                 </p>
@@ -122,66 +122,38 @@
                     </div>
                 </div>
                   <article class="markdown-body single-content">
-                    <h2 id="toc_0">反编译与打包</h2>
+                    <p>因为本地镜像切换了阿里镜像，但某些库加载特别慢，故排查一下</p>
 
-<h3 id="toc_1">打包</h3>
+<p>composer install的时候，看到获取github.com过慢的库</p>
 
-<pre><code class="language-text">apktool b /Users/pengyongsheng/Downloads/UF -o /Users/pengyongsheng/Downloads/UF.apk
-apktool b {$dapk_path} -o {$apk}.apk
+<p>然后在composer.lock文件查看相关的配置<br/>
+<img src="media/16118243270809/16118244379356.jpg" alt=""/></p>
+
+<p>拼接之后得到镜像地址<br/>
+<a href="https://mirrors.aliyun.com/composer/dists/nesbot/carbon/930ae59aea86acd6abba2ab9c84bcfe41b1b7eec.zip">https://mirrors.aliyun.com/composer/dists/nesbot/carbon/930ae59aea86acd6abba2ab9c84bcfe41b1b7eec.zip</a><br/>
+点击确实下载不了，默认用回了github的源。</p>
+
+<p>因为composer.json默认使用最小等级为dev<br/>
+&quot;minimum-stability&quot;: &quot;dev&quot;<br/>
+<img src="media/16118243270809/16118245304391.jpg" alt=""/></p>
+
+<p>使用这个范围的时候会加载2-dev或dev-master版本，但国内的镜像源对dev版本并没有同步</p>
+
+<p>所以去掉&quot;minimum-stability&quot;: &quot;dev&quot;配置和输入指定版本即可。</p>
+
+<h1 id="toc_0">其它</h1>
+
+<p>查看配置 </p>
+
+<pre><code class="language-text">composer config -l -g 
 </code></pre>
 
-<p>没-o参数输出在dist文件夹</p>
+<p>如果不是使用阿里镜像源，可以切换一下</p>
 
-<h3 id="toc_2">反编译</h3>
-
-<pre><code class="language-text">apktool d /Users/pengyongsheng/Downloads/hjjd.apk -o /Users/pengyongsheng/Downloads/hjjd/hjjd
+<pre><code class="language-text">composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 </code></pre>
 
-<h2 id="toc_3">生成keystore</h2>
-
-<p>keytool -genkey -alias sl -keyalg RSA -keysize 2048 -validity 36500 -keystore silang.keystore</p>
-
-<h2 id="toc_4">签名</h2>
-
-<h3 id="toc_5">方式1</h3>
-
-<p>使用pem,pk8文件进行签名</p>
-
-<pre><code class="language-text">java -jar signapk.jar test.pem test.pk8 a.apk a_sign.apk
-</code></pre>
-
-<h3 id="toc_6">方式2</h3>
-
-<p>使用keystore</p>
-
-<pre><code class="language-text">jarsigner -verbose -keystore /code/android/package/test.keystore -signedjar /code/android/package/500_sign.apk /code/android/package/500.apk  test.keystore
-</code></pre>
-
-<h2 id="toc_7">查看包名</h2>
-
-<ol>
-<li><p>adb shell am monitor -&gt; 打开应用</p></li>
-<li><p>安装了的包名<br/>
-adb shell pm list packages -3</p></li>
-<li><p>将apk包反编译后，打开AndroidManifest.xml，搜索package获取包名</p></li>
-<li><p>安卓系统中：设置——应用——正在运行 查看</p></li>
-</ol>
-
-<h2 id="toc_8">查看签名</h2>
-
-<pre><code class="language-text">keytool -printcert -jarfile xxx.apk
-jarsigner -verify /code/android/package/5yyb/dist/5yyb.apk
-</code></pre>
-
-<h2 id="toc_9">adb logcat</h2>
-
-<p>通过过滤包名+过滤进程ID</p>
-
-<pre><code class="language-text">Linux or Mac:
-adb logcat | grep -F &quot;`adb shell ps | grep com.abc.package | cut -c10-15`&quot;
-windows:
-adb logcat | findstr com.abc.package
-</code></pre>
+<p>暂时觉得阿里云的最好用，镜像60秒同步一次。</p>
 
                   </article>
                   <div class="comments-wrap">

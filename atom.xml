@@ -4,13 +4,55 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-12-07T09:31:25+08:00</updated>
+  <updated>2020-12-17T10:41:39+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[php composer加载过慢处理]]></title>
+    <link href="http://www.shengsheng.net/16118243270809.html"/>
+    <updated>2021-01-28T16:58:47+08:00</updated>
+    <id>http://www.shengsheng.net/16118243270809.html</id>
+    <content type="html"><![CDATA[
+<p>因为本地镜像切换了阿里镜像，但某些库加载特别慢，故排查一下</p>
+
+<p>composer install的时候，看到获取github.com过慢的库</p>
+
+<p>然后在composer.lock文件查看相关的配置<br/>
+<img src="media/16118243270809/16118244379356.jpg" alt=""/></p>
+
+<p>拼接之后得到镜像地址<br/>
+<a href="https://mirrors.aliyun.com/composer/dists/nesbot/carbon/930ae59aea86acd6abba2ab9c84bcfe41b1b7eec.zip">https://mirrors.aliyun.com/composer/dists/nesbot/carbon/930ae59aea86acd6abba2ab9c84bcfe41b1b7eec.zip</a><br/>
+点击确实下载不了，默认用回了github的源。</p>
+
+<p>因为composer.json默认使用最小等级为dev<br/>
+&quot;minimum-stability&quot;: &quot;dev&quot;<br/>
+<img src="media/16118243270809/16118245304391.jpg" alt=""/></p>
+
+<p>使用这个范围的时候会加载2-dev或dev-master版本，但国内的镜像源对dev版本并没有同步</p>
+
+<p>所以去掉&quot;minimum-stability&quot;: &quot;dev&quot;配置和输入指定版本即可。</p>
+
+<h1 id="toc_0">其它</h1>
+
+<p>查看配置 </p>
+
+<pre><code class="language-text">composer config -l -g 
+</code></pre>
+
+<p>如果不是使用阿里镜像源，可以切换一下</p>
+
+<pre><code class="language-text">composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
+</code></pre>
+
+<p>暂时觉得阿里云的最好用，镜像60秒同步一次。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[node.js web框架]]></title>
@@ -1554,38 +1596,6 @@ Gitlab Hook、Build Authorization Token Root、Publish Over SSH、Gitlab Authent
 <p><img src="media/15899883082622/15899890745327.jpg" alt=""/></p>
 
 <p>每次更新好项目，按一下构建即马上发布代码到线上。当然也可以同步到测试机。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[php之JsonSerializable]]></title>
-    <link href="http://www.shengsheng.net/15887625331484.html"/>
-    <updated>2020-05-06T18:55:33+08:00</updated>
-    <id>http://www.shengsheng.net/15887625331484.html</id>
-    <content type="html"><![CDATA[
-<p>有时候我们的类是一个Model,但为了快速输出序列化格式，例如json,我们可以使用jsonSerialize</p>
-
-<p><img src="media/15887625331484/15887626368131.jpg" alt=""/></p>
-
-<p>class implements 一下JsonSerializable接口，每次json_encode就会把类内的jsonSerialize函数里返回的数据进行json格式化。</p>
-
-<h1 id="toc_0">类似的接口</h1>
-
-<p>其它更有趣的处理接口如下<br/>
-<a href="https://www.php.net/manual/en/reserved.interfaces.php">https://www.php.net/manual/en/reserved.interfaces.php</a></p>
-
-<ol>
-<li>Traversable</li>
-<li>Iterator</li>
-<li>IteratorAggregate</li>
-<li>Throwable</li>
-<li>ArrayAccess</li>
-<li>Serializable</li>
-<li>Closure</li>
-<li>Generator</li>
-<li>WeakReference</li>
-</ol>
 
 ]]></content>
   </entry>
