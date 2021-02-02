@@ -4,13 +4,101 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2020-12-17T10:41:39+08:00</updated>
+  <updated>2021-01-28T17:04:51+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[处理caid启发的php-rsa]]></title>
+    <link href="http://www.shengsheng.net/16122577703139.html"/>
+    <updated>2021-02-02T17:22:50+08:00</updated>
+    <id>http://www.shengsheng.net/16122577703139.html</id>
+    <content type="html"><![CDATA[
+<p>一直觉得rsa无非就是私钥加解密，公钥加解密。<br/>
+过长的字符串公钥加解密是要做处理的</p>
+
+<h1 id="toc_0">加密</h1>
+
+<pre><code class="language-text">public function EncryptData($source)
+{
+    $pub_key_string = &#39;-----BEGIN PUBLIC KEY-----
+xx省略
+-----END PUBLIC KEY-----&#39;;
+    $t = openssl_get_publickey($pub_key_string);
+    $crypttext = &#39;&#39;;
+    foreach (str_split($source, 117) as $chunk) {
+        openssl_public_encrypt($chunk, $encryptData, $t);
+        $crypttext .= $encryptData;
+    }
+    return(base64_encode($crypttext));
+}
+</code></pre>
+
+<p>按117长度划分加密</p>
+
+<h1 id="toc_1">解密</h1>
+
+<pre><code class="language-text">public function decrypt($encryptData){
+
+        $pub_key_string = &#39;-----BEGIN PUBLIC KEY-----
+省略php-pcks公钥
+-----END PUBLIC KEY-----&#39;;
+$t = openssl_pkey_get_public($pub_key_string);
+        $crypttext = &#39;&#39;;
+        $source = base64_decode($encryptData);
+        foreach (str_split($source, 128) as $chunk) {
+            openssl_public_decrypt($chunk, $dd, $pub_key_string);
+            $crypttext .= $dd;
+        }
+        return trim($crypttext);
+    }
+</code></pre>
+
+<p>按128长度划分解密</p>
+
+<h1 id="toc_2">caid示例</h1>
+
+<pre><code class="language-text">$json = [
+    &#39;bootTimeInSec&#39; =&gt; &#39;1595643553&#39;,
+    &#39;countryCode&#39; =&gt; &#39;CN&#39;,
+    &#39;language&#39; =&gt; &#39;zh-Hans-CN&#39;,
+    &#39;deviceName&#39; =&gt; &#39;e910dddb2748c36b47fcde5dd720eec1&#39;,
+    &#39;systemVersion&#39; =&gt; &#39;14.0&#39;,
+    &#39;machine&#39; =&gt; &#39;iPhone10,3&#39;,
+    &#39;carrierInfo&#39; =&gt; &#39;中国移动&#39;,
+    &#39;memory&#39; =&gt; &#39;3955589120&#39;,
+    &#39;disk&#39; =&gt; &#39;63900340224&#39;,
+    &#39;sysFileTime&#39; =&gt; &#39;1595214620.383940&#39;,
+    &#39;model&#39; =&gt; &#39;D22AP&#39;,
+    &#39;timeZone&#39; =&gt; &#39;28800&#39;,
+];
+$json = json_encode($json,JSON_UNESCAPED_UNICODE);
+$result = $this-&gt;EncryptData($json);
+$param = [
+    &#39;dev_id&#39; =&gt; &#39;省略dev_id配置&#39;,
+    &#39;encrypted_device_info&#39; =&gt; $result
+];
+// caid测试地址
+$url = &quot;https://caid.china-caa.org/test/v1.0/get&quot;;
+$result = http::postjson($url,$param);
+</code></pre>
+
+<h1 id="toc_3">总结</h1>
+
+<p>值得注意的是，如果选择密钥是1024bit长的（openssl genrsa -out rsa_private_key.pem 1024），那么支持加密的明文长度字节最多只能是1024/8=128byte；<br/>
+如果加密的padding填充方式选择的是OPENSSL_PKCS1_PADDING（这个要占用11个字节），那么明文长度最多只能就是128-11=117字节。如果超出，那么这些openssl加解密函数会返回false。<br/>
+这时有个解决办法，把需要加密的源字符串按少于117个长度分开为几组，在解密的时候以172个字节分为几组。</p>
+
+<h2 id="toc_4">参考链接</h2>
+
+<p><a href="https://blog.csdn.net/leedaning/article/details/51780511">https://blog.csdn.net/leedaning/article/details/51780511</a></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[php composer加载过慢处理]]></title>
@@ -1515,87 +1603,6 @@ net.netfilter.nf_conntrack_max = 2621440
 </code></pre>
 
 <p>sysctl -p即可生效。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[CI/CD构建利器 Jenkins]]></title>
-    <link href="http://www.shengsheng.net/15899883082622.html"/>
-    <updated>2020-05-20T23:25:08+08:00</updated>
-    <id>http://www.shengsheng.net/15899883082622.html</id>
-    <content type="html"><![CDATA[
-<p>传统的ftp上传，或通过svn hook提交，显得效率太慢，而且不太靠谱。<br/>
-之前写了个gitlab 发布脚本。</p>
-
-<pre><code class="language-text">echo &#39;pull project:&#39;$1
-gitBasePath=&#39;/show/gitBase/&#39;
-cd $gitBasePath$1
-git pull
-
-message=$(git log --pretty=format:&quot;%s&quot; -1)
-isRedeploy=false
-#检测到RELEASE，即发布项目
-[[ $message =~ &quot;[RELEASE]&quot; ]] &amp;&amp; isRedeploy=true
-echo &quot;是否可发布版本：&quot;$isRedeploy;
-
-#一定要传git项目名
-if [[ $isRedeploy = true &amp;&amp; $1 ]]
-then
-    #判断$2, 有可能$1 与实际环境名不一样
-    if [[ -n $2 ]];then
-        webAppPath=$2
-    else
-        webAppPath=&#39;/webwww/www/&#39;$1&#39;/&#39;
-    fi
-    #git 基础路径保持不变
-    gitBasePath=&#39;/show/gitBase/&#39;$1&#39;/&#39;
-    echo &quot;git:&quot;.$gitBasePath;
-    echo &quot;web:&quot;.$webAppPath;
-    cp -r -f -v $gitBasePath* $webAppPath
-    echo &quot;success&quot;;
-else
-    echo &quot;fail&quot;;
-fi;
-</code></pre>
-
-<p>通过提交检测到[RELEASE]关键词即提交。</p>
-
-<p>但未免还是会发生构建没记录，没权限的事情。故研究玩一下jenkins</p>
-
-<h1 id="toc_0">安装</h1>
-
-<p>使用docker顺带搭建出来<br/>
-<code><br/>
-docker run -it -d -u root -p 8090:8080 -v jenkins-data:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock -v &quot;$HOME&quot;:/home --name jenkins -v /webwww:/webwww jenkinsci/blueocean<br/>
-</code><br/>
-<img src="media/15899883082622/15899886195287.jpg" alt=""/></p>
-
-<p>需安装以下扩展<br/>
-Gitlab Hook、Build Authorization Token Root、Publish Over SSH、Gitlab Authentication、Gitlab、Git Parameter</p>
-
-<p><img src="media/15899883082622/15899887426504.jpg" alt=""/></p>
-
-<p>通过Publicsh over SSH我们创建与系统相关的通讯key</p>
-
-<h1 id="toc_1">构建项目</h1>
-
-<p><img src="media/15899883082622/15899887889342.jpg" alt=""/></p>
-
-<p><img src="media/15899883082622/15899888131244.jpg" alt=""/></p>
-
-<p><img src="media/15899883082622/15899888451155.jpg" alt=""/></p>
-
-<p>输入需要获取的gitlab地址，需先配置通讯key</p>
-
-<p><img src="media/15899883082622/15899888947470.jpg" alt=""/></p>
-
-<p>构建选择send files去指定服务器<br/>
-<img src="media/15899883082622/15899890185872.jpg" alt=""/></p>
-
-<p><img src="media/15899883082622/15899890745327.jpg" alt=""/></p>
-
-<p>每次更新好项目，按一下构建即马上发布代码到线上。当然也可以同步到测试机。</p>
 
 ]]></content>
   </entry>
