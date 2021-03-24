@@ -4,13 +4,49 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2021-03-24T16:15:03+08:00</updated>
+  <updated>2021-03-24T16:19:23+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[sftp 连接不了]]></title>
+    <link href="http://www.shengsheng.net/16165973270206.html"/>
+    <updated>2021-03-24T22:48:47+08:00</updated>
+    <id>http://www.shengsheng.net/16165973270206.html</id>
+    <content type="html"><![CDATA[
+<p>给特定的人开通指定的sftp权限<br/>
+账号验证成功，但一直提示connection loast due to error 54</p>
+
+<p><img src="media/16165973270206/16165977578327.jpg" alt=""/></p>
+
+<p>使用命令行工具调试也是报连接不了<br/>
+<img src="media/16165973270206/16165976290823.jpg" alt=""/></p>
+
+<p>故查看/etc/ssh/sshd_config的配置</p>
+
+<pre><code class="language-text"># Subsystem sftp        /usr/libexec/openssh/sftp-server
+Subsystem sftp    internal-sftp
+# Match可User和Group
+Match Group sftp
+        ChrootDirectory /webwww/ftpmwp
+        X11Forwarding no
+        AllowTcpForwarding no
+        PasswordAuthentication yes
+#       PermitTTY no
+#       ForceCommand cvs server
+        ForceCommand internal-sftp
+</code></pre>
+
+<p>配置也是没问题，翻阅资料之后，问题主要出在ChrootDirectory<br/>
+在ftp目前之前都要root权限，共享文件夹修改成chown root:sftp /webwww/ftpmwp即可访问<br/>
+<img src="media/16165973270206/16165976990376.jpg" alt=""/></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[更改iview Select组件]]></title>
@@ -1367,46 +1403,6 @@ $connection-&gt;header()-&gt;[&#39;x-real-ip&#39;];
 <h1 id="toc_4">总结</h1>
 
 <p>测试过\(_SERVER和getRemoteIP拿到的ip并不正常，使用\)connection-&gt;header()的方式能顺利拿到x-real-ip。查看资料后是workerman4.1和3.x的区别，4.1加强了http方面。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[ssh公钥与私钥注意事项]]></title>
-    <link href="http://www.shengsheng.net/15903327039833.html"/>
-    <updated>2020-05-24T23:05:03+08:00</updated>
-    <id>http://www.shengsheng.net/15903327039833.html</id>
-    <content type="html"><![CDATA[
-<p>公钥与私钥都是为了保障我们信息安全</p>
-
-<h2 id="toc_0">linux下生成rsa匙</h2>
-
-<pre><code class="language-text">ssh-keygen -t rsa -C &quot;your_email@youremail.com&quot;
-</code></pre>
-
-<p>-t  表示私钥类型<br/>
--C 表示注释，一般为自己的邮箱地址<br/>
-记住生成的私钥一定要644权限，不然连接的时候会提示</p>
-
-<pre><code class="language-text">Permissions 0644 for &#39;/Users/pengyongsheng/.ssh/yongsheng_qcloud_rsa&#39; are too open.
-It is required that your private key files are NOT accessible by others.
-</code></pre>
-
-<h2 id="toc_1">目标服务器添加公钥登录</h2>
-
-<p>将生成的公钥添加到目标服务器的~/.ssh/authorized_keys上即可使用相应的用户登录<br/>
-例如~指/home/ubuntu,即可获得ubuntu权限</p>
-
-<h2 id="toc_2">使用命令登录</h2>
-
-<p>默认本地会读取id_rsa.pem作为私钥<br/>
-sftp -oIdentityFile=私钥地址 -oPort=端口 用户名@ip<br/>
-ssh <a href="mailto:root@xx.xx.xx.xx">root@xx.xx.xx.xx</a> -p 22 -i 本地私钥地址</p>
-
-<h2 id="toc_3">软件类使用ssh</h2>
-
-<p>软件类默认也是读取本地的id_rsa.pem,如有不同也要指定相应的即s<br/>
-<img src="media/15903327039833/15903331776616.jpg" alt="" style="width:563px;"/></p>
 
 ]]></content>
   </entry>
