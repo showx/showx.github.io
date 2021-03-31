@@ -4,13 +4,38 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2021-03-30T11:23:26+08:00</updated>
+  <updated>2021-03-30T11:23:40+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[记录外部跳转微信小程序]]></title>
+    <link href="http://www.shengsheng.net/16172050445392.html"/>
+    <updated>2021-03-31T23:37:24+08:00</updated>
+    <id>http://www.shengsheng.net/16172050445392.html</id>
+    <content type="html"><![CDATA[
+<p>有个需求是通过短信，点击http自动跳转到微信小游戏<br/>
+查阅相关资料<br/>
+<code><br/>
+weixin://dl/business/?<br/>
+</code><br/>
+主要使用/dl/bussiness来实现跳转，搜索之后很多收费的跳转服务。其实大不必使用收费的<br/>
+<img src="media/16172050445392/16172053107904.jpg" alt=""/></p>
+
+<h1 id="toc_0">微信官方功能</h1>
+
+<p><a href="https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/url-scheme/urlscheme.generate.html">https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/url-scheme/urlscheme.generate.html</a></p>
+
+<p><img src="media/16172050445392/16172053877136.jpg" alt=""/></p>
+
+<p>使用应用的acess_token访问即可生成永久的openlink,可以跳转到指定path和query。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[上传大文件关键分析]]></title>
@@ -1305,54 +1330,6 @@ while(1)
 <h1 id="toc_1">总结</h1>
 
 <p>我们自己写守护进程的时候，要考虑一下放在进程里，程序里消耗有多少，甚至new一个mysql对象一直保持的状态下有没问题，都是要考虑的。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[mysql联合索引]]></title>
-    <link href="http://www.shengsheng.net/15906766604133.html"/>
-    <updated>2020-05-28T22:37:40+08:00</updated>
-    <id>http://www.shengsheng.net/15906766604133.html</id>
-    <content type="html"><![CDATA[
-<h1 id="toc_0">查询一张表的索引</h1>
-
-<p><code><br/>
-SHOW INDEX FROM T <br/>
-</code><br/>
-查询表 T 所有索引。</p>
-
-<p>MySQL 中最多可以创建 16 个索引列。</p>
-
-<h1 id="toc_1">联合索引</h1>
-
-<p>联合索引又叫复合索引，MySQL 中的联合索引，遵循最左匹配原则，比如，联合索引为 key(a,b,c)，则能触发索引的搜索组合是 a|ab|abc 这三种查询。</p>
-
-<pre><code class="language-text">where a=1 只使用了索引 a；
-where a=1 and b=2 只使用了索引 a,b；
-where a=1 and b=2 and c=3 使用a,b,c；
-where b=1 or where c=1 不使用索引；
-where a=1 and c=3 只使用了索引 a；
-where a=3 and b like &#39;xx%&#39; and c=3 只使用了索引 a,b。
-
-</code></pre>
-
-<p><code><br/>
-select * from t where year(date)&gt;2018;<br/>
-</code><br/>
-不会，因为在索引列上涉及到了运算。</p>
-
-<h1 id="toc_2">InnoDB 为什么要使用 B+ 树，而不是 B 树、Hash、红黑树或二叉树？</h1>
-
-<p>因为 B 树、Hash、红黑树或二叉树存在以下问题：</p>
-
-<p>B 树：不管叶子节点还是非叶子节点，都会保存数据，这样导致在非叶子节点中能保存的指针数量变少（有些资料也称为扇出），指针少的情况下要保存大量数据，只能增加树的高度，导致IO操作变多，查询性能变低；<br/>
-Hash：虽然可以快速定位，但是没有顺序，IO 复杂度高；<br/>
-二叉树：树的高度不均匀，不能自平衡，查找效率跟数据有关（树的高度），并且 IO 代价高；<br/>
-红黑树：树的高度随着数据量增加而增加，IO 代价高。</p>
-
-<p>为什么 InnoDB 要使用 B+ 树来存储索引？<br/>
-B+Tree 中的 B 是 Balance，是平衡的意思，它在经典 B Tree 的基础上进行了优化，增加了顺序访问指针，在B+Tree 的每个叶子节点增加一个指向相邻叶子节点的指针，就形成了带有顺序访问指针的 B+Tree，这样就提高了区间访问性能：如果要查询 key 为从 18 到 49 的所有数据记录，当找到 18 后，只需顺着节点和指针顺序遍历就可以一次性访问到所有数据节点，极大提到了区间查询效率（无需返回上层父节点重复遍历查找减少 IO 操作）。</p>
 
 ]]></content>
   </entry>
