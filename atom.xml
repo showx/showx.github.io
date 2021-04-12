@@ -4,13 +4,27 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2021-03-30T11:23:40+08:00</updated>
+  <updated>2021-04-12T22:40:44+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[试用NIID R1单肩包]]></title>
+    <link href="http://www.shengsheng.net/16182383814337.html"/>
+    <updated>2021-04-12T22:39:41+08:00</updated>
+    <id>http://www.shengsheng.net/16182383814337.html</id>
+    <content type="html"><![CDATA[
+<p>从抖音看到一款比较好的单肩包，然后入手了,说明书如下<br/>
+<img src="media/16182383814337/16182384216839.jpg" alt=""/></p>
+
+<p>体验待更新</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[记录外部跳转微信小程序]]></title>
@@ -1276,60 +1290,6 @@ $spider-&gt;crawl();
 <h1 id="toc_2">文档说明</h1>
 
 <p>后续再更新！</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[while(true)的思考]]></title>
-    <link href="http://www.shengsheng.net/15910082719284.html"/>
-    <updated>2020-06-01T18:44:31+08:00</updated>
-    <id>http://www.shengsheng.net/15910082719284.html</id>
-    <content type="html"><![CDATA[
-<p>其实我们更多时候使用while(1)作为守护进程，帮我们处理更多的事情</p>
-
-<h1 id="toc_0">测试while(1)</h1>
-
-<p>使用php为例</p>
-
-<pre><code class="language-text">$i = 1;
-$time = time();
-while(1)
-{
-    if($time != time())
-    {
-        echo &#39;ok|&#39;.$i.&quot;|&quot;.time().&quot;\n&quot;;
-        $time = time();
-        echo &quot;end\n&quot;;
-        $i = 0;
-    // break;
-    }
-    $i++;
-}
-</code></pre>
-
-<p><img src="media/15910082719284/15910083567909.jpg" alt=""/><br/>
-简单的操作的函数，每秒其实可以运算千万次的。<br/>
-这时候我们查看一下top命令<br/>
-<img src="media/15910082719284/15910084114815.jpg" alt=""/></p>
-
-<p>实际cpu一直维持在98%左右。<br/>
-我们去掉相关代码</p>
-
-<pre><code class="language-text">while(1)
-{
-}
-</code></pre>
-
-<p>只保留while(true)，查看结果得知，cpu还是很高的状态。这是因为while(1)一直在进行着运算。<br/>
-接着我们在while(1)里面增加sleep(1)函数,让他休息一下再执行下面的逻辑<br/>
-<img src="media/15910082719284/15910085839165.jpg" alt=""/></p>
-
-<p>可以看到cpu已经降下来了，因为有sleep停顿的操作，使代码不用一直不停地执行，所以cpu降了下来。</p>
-
-<h1 id="toc_1">总结</h1>
-
-<p>我们自己写守护进程的时候，要考虑一下放在进程里，程序里消耗有多少，甚至new一个mysql对象一直保持的状态下有没问题，都是要考虑的。</p>
 
 ]]></content>
   </entry>
