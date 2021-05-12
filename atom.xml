@@ -4,13 +4,28 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2021-04-12T22:40:44+08:00</updated>
+  <updated>2021-04-12T22:40:58+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[关于doge]]></title>
+    <link href="http://www.shengsheng.net/16207910317257.html"/>
+    <updated>2021-05-12T11:43:51+08:00</updated>
+    <id>http://www.shengsheng.net/16207910317257.html</id>
+    <content type="html"><![CDATA[
+<p>其实并没有很多人口中实现了财务自由，只是2017年的时候买了些狗币，忘记售出去了，刚好这段时间火，上去看了一下。倒是有台思域车。<br/>
+<img src="media/16207910317257/4701620791137_.pic.jpg" alt="4701620791137_.pic"/><br/>
+<img src="media/16207910317257/4711620791138_.pic.jpg" alt="4711620791138_.pic"/></p>
+
+<p>马克斯的神助攻，动物币都有所上升。<sup>_^</sup></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[试用NIID R1单肩包]]></title>
@@ -1188,108 +1203,6 @@ BEGIN
 END
 
 </code></pre>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[php爬虫]]></title>
-    <link href="http://www.shengsheng.net/15910095044784.html"/>
-    <updated>2020-06-01T19:05:04+08:00</updated>
-    <id>http://www.shengsheng.net/15910095044784.html</id>
-    <content type="html"><![CDATA[
-<p>基于swoole多进程与协程，撸了一下网络爬虫库。</p>
-
-<h1 id="toc_0">demo</h1>
-
-<p>快手后台</p>
-
-<pre><code class="language-text">&lt;?php
-/**
- * 跑取快手数据示例
- * https://k.kuaishou.com/#/index
- */
-namespace demo;
-// 引入composer加载
-require_once dirname(__FILE__).&quot;/../vendor/autoload.php&quot;;
-use \phpspiderman\phpspiderman;
-$config = require_once &quot;config.php&quot;;
-$mysqldb = $config[&#39;db&#39;];
-
-$spider = new phpspiderman([
-    &quot;type&quot; =&gt; 2,
-    //数据库配置
-    &quot;mysqlconfig&quot; =&gt; $mysqldb,
-    &quot;worker_num&quot; =&gt; 4,
-    &quot;totalSumField&quot; =&gt; &quot;total&quot;,
-    &quot;totalPageField&quot; =&gt; &#39;&#39;,
-    &quot;PageField&quot; =&gt; &#39;currentPage&#39;,
-    &quot;table&quot; =&gt; &quot;spider_kuaishou&quot;,
-    &quot;PageSize&quot; =&gt; 20,
-    &quot;ProxyUrl&quot; =&gt; &#39;&#39;,
-    &quot;url&quot; =&gt; &#39;k.kuaishou.com&#39;,
-    &quot;urlport&quot; =&gt; 443,
-    &quot;list&quot; =&gt; &quot;/rest/web/star/list&quot;,
-    &quot;cookie&quot; =&gt; &quot;&quot;,
-    &quot;body&quot; =&gt; [
-        &#39;liveAvgPeopleMinNum&#39; =&gt; &#39;0&#39;,
-        &#39;currentPage&#39; =&gt; 1,
-        &#39;starOrderTag&#39; =&gt; 3,
-        &#39;liveAvgPeopleMaxNum&#39; =&gt; null,
-        &#39;starMaxPrice&#39; =&gt; null,
-        &#39;ugcTag&#39; =&gt; &#39;&#39;,
-        &#39;mmuStarTagIds&#39; =&gt; [
-            12,3  //搞笑和游戏
-        ],
-        &#39;fansMinNum&#39; =&gt; 0,  //最低粉丝数
-        &#39;taskType&#39; =&gt; 1,  //1 4 1视频 4直播
-        &#39;cityCode&#39; =&gt; 0,
-        &#39;fansMaxNum&#39; =&gt; null,
-        &#39;userName&#39; =&gt; &#39;&#39;,
-        &#39;provinceCode&#39; =&gt; 0,
-        &#39;starOrderType&#39; =&gt; 0,
-        &#39;isAppWithLink&#39; =&gt; null,
-        &#39;starMinPrice&#39; =&gt; 0,
-        &#39;gender&#39; =&gt; &#39;&#39;
-        ],
-]);
-
-$spider-&gt;handleList = function($spider,$header,$json_array)
-{
-    $list = $spider-&gt;Http-&gt;getContent2($spider-&gt;urlconfig[&#39;list&#39;],$header,$json_array);
-    $list = \phpspiderman\content\json::decode($list);
-    return $list[&#39;starList&#39;];
-};
-
-//获取到内容的处理
-$spider-&gt;handleContent = function($val = null)
-{
-    $data[&#39;userId&#39;] = $val[&#39;userId&#39;];
-    $data[&#39;starId&#39;] = $val[&#39;starId&#39;];
-    $data[&#39;name&#39;] = $val[&#39;name&#39;];
-    $data[&#39;kwaiId&#39;] = $val[&#39;kwaiId&#39;];
-    $data[&#39;gender&#39;] = $val[&#39;gender&#39;]==&#39;男&#39;?&#39;0&#39;:&#39;1&#39;;
-    $data[&#39;fansNumber&#39;] = $val[&#39;fansNumber&#39;];
-    $data[&#39;areaTag&#39;] = $val[&#39;areaTag&#39;];
-    $data[&#39;headUrl&#39;] = $val[&#39;headUrl&#39;];
-
-    $data[&#39;liveQuotedPrice&#39;] = $val[&#39;liveQuotedPrice&#39;];
-    $data[&#39;oneDaysOrderBid&#39;] = $val[&#39;oneDaysOrderBid&#39;];
-    $data[&#39;threeDaysOrderBid&#39;] = $val[&#39;threeDaysOrderBid&#39;];
-    $data[&#39;sevenDaysOrderBid&#39;] = $val[&#39;sevenDaysOrderBid&#39;];
-    return $data;
-
-};
-$spider-&gt;crawl();
-</code></pre>
-
-<h1 id="toc_1">安装</h1>
-
-<p>composer install showx/phpspiderman</p>
-
-<h1 id="toc_2">文档说明</h1>
-
-<p>后续再更新！</p>
 
 ]]></content>
   </entry>
