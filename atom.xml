@@ -4,13 +4,98 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2021-04-12T22:40:58+08:00</updated>
+  <updated>2021-05-12T11:47:28+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[elasticsearch做服务端监控]]></title>
+    <link href="http://www.shengsheng.net/16217265079986.html"/>
+    <updated>2021-05-23T07:35:07+08:00</updated>
+    <id>http://www.shengsheng.net/16217265079986.html</id>
+    <content type="html"><![CDATA[
+<p>在kibana里其实很容易查看到具体的使用情况<br/>
+<img src="media/16217265079986/9490AE60-49A0-4DBE-98A1-ADBA30DC3944.png" alt="9490AE60-49A0-4DBE-98A1-ADBA30D"/></p>
+
+<p>但发觉没报警机制，例如发送短信和钉钉报警(钉钉主要拉机器人，这里不做详细介绍)。</p>
+
+<p><code><br/>
+&quot;elasticsearch/elasticsearch&quot;: &quot;^7.0&quot;<br/>
+</code><br/>
+首先在composer里加载elasticsearch的开源组件</p>
+
+<p>核心代码如下：</p>
+
+<pre><code class="language-text"> public static function getSearch($type = &#39;&#39;, $hostname = &#39;k8s-slave02&#39;)
+    {
+        $searchtype = &#39;&#39;;
+        switch($type)
+        {
+            case &#39;diskio&#39;:
+                $searchtype = &#39;system.diskio&#39;;
+                break;
+            case &#39;network&#39;:
+                $searchtype = &#39;system.network&#39;;
+                break;
+            case &#39;cpu&#39;:
+                $searchtype = &#39;system.cpu&#39;;
+                break;
+            case &#39;memory&#39;:
+                $searchtype = &#39;system.memory&#39;;
+                break;
+            case &#39;filesystem&#39;:
+                $searchtype = &#39;system.filesystem&#39;;
+                break;
+            default:
+                $searchtype = &#39;&#39;;
+                break;
+        }
+        if(empty($client))
+        {
+            $hosts = \SilangPHP\Config::get(&quot;Db.elasticsearch&quot;);
+            self::$client = ClientBuilder::create()-&gt;setHosts($hosts)-&gt;build();
+        }
+        $params = [
+            &#39;index&#39; =&gt; &#39;metricbeat-7.5.1&#39;,
+            &#39;type&#39; =&gt; &#39;_doc&#39;,
+            &#39;sort&#39; =&gt; &#39;@timestamp:desc&#39;,
+            &#39;size&#39; =&gt; 1,
+            &#39;body&#39; =&gt; [
+                &#39;query&#39; =&gt; [
+                    &#39;bool&#39; =&gt; [
+                        &#39;must&#39; =&gt; [
+                            [ &#39;match&#39; =&gt; [ &#39;host.hostname&#39; =&gt; $hostname ] ],
+                            // system.diskio | docker.cpu system.network load  system.cpu system.process.summary system.process.summary
+                            [ &#39;match&#39; =&gt; [ &#39;event.dataset&#39; =&gt; $searchtype ] ],
+                        ]
+                    ]
+                ]
+            ]
+        ];
+        $results = self::$client-&gt;search($params);
+        $milliseconds = $results[&#39;took&#39;];
+        $maxScore     = $results[&#39;hits&#39;][&#39;max_score&#39;];
+        $score = $results[&#39;hits&#39;][&#39;hits&#39;][0][&#39;_score&#39;];
+        $doc   = $results[&#39;hits&#39;][&#39;hits&#39;][0][&#39;_source&#39;];
+        return $doc;
+    }
+</code></pre>
+
+<p>主要通过匹配搜索host.hostname主机名称和event.dataset事件来获取相关信息，为了获取最新的来报警，排序使用@timestamp:desc时间倒序来获取。</p>
+
+<p>汇总发送效果<br/>
+<img src="media/16217265079986/16217269052143.jpg" alt=""/></p>
+
+<p>规则报警得大家自己去定义，例如内存高于80%的时候触发报警。<br/>
+使用过某些开源的监控工具，其实也没精力去学习更多，也相对复杂，简单有简单的好处。<br/>
+相比第一版报警系统，现在的其实可观很多<sup>_^</sup></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[关于doge]]></title>
@@ -979,230 +1064,6 @@ var_dump($tm);  //1成功 2失败
 <h1 id="toc_5">其它</h1>
 
 <p>自从redis火起之后，memcache越来越少人用啦。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[sql语句笔记]]></title>
-    <link href="http://www.shengsheng.net/15917864708307.html"/>
-    <updated>2020-06-10T18:54:30+08:00</updated>
-    <id>http://www.shengsheng.net/15917864708307.html</id>
-    <content type="html"><![CDATA[
-<p>SELECT * FROM A WHERE cc IN (SELECT cc FROM B)</p>
-
-<p>SELECT * FROM A WHERE EXIST (SELECT cc FROM B WHERE B.cc=A.cc)</p>
-
-<p>SQL: SELECT player_id, player_name, height FROM player WHERE height &gt; ANY (SELECT height FROM player WHERE team_id = 1002)</p>
-
-<p>笛卡尔面积：<br/>
-SQL: SELECT * FROM player, team</p>
-
-<p>等值相连：<br/>
-SQL: SELECT player_id, player.team_id, player_name, height, team_name FROM player, team WHERE player.team_id = team.team_id</p>
-
-<p>SELECT player_id, a.team_id, player_name, height, team_name FROM player AS a, team AS b WHERE a.team_id = b.team_id</p>
-
-<p>非等值相连：<br/>
-SQL：SELECT p.player_name, p.height, h.height_level<br/>
-FROM player AS p, height_grades AS h<br/>
-WHERE p.height BETWEEN h.height_lowest AND h.height_highest</p>
-
-<p>外连接：<br/>
-左链接：(sql92(+)代表从表)<br/>
-SQL：SELECT * FROM player, team where player.team_id = team.team_id(+)<br/>
-SQL：SELECT * FROM player LEFT JOIN team on player.team_id = team.team_id</p>
-
-<p>SQL：SELECT * FROM player RIGHT JOIN team on player.team_id = team.team_id</p>
-
-<p>自连接：<br/>
-SQL：SELECT b.player_name, b.height FROM player as a , player as b WHERE a.player_name = &#39;布雷克 - 格里芬&#39; and a.height &lt; b.height</p>
-
-<p>交叉连接：<br/>
-实际就是笛卡尔面积：<br/>
-SQL: SELECT * FROM player CROSS JOIN team</p>
-
-<p>SQL: SELECT * FROM t1 CROSS JOIN t2 CROSS JOIN t3</p>
-
-<p>SELECT player_id, a.team_id, player_name, height, team_name FROM player as a, team as b WHERE a.team_id = b.team_id<br/>
-SELECT player_id, team_id, player_name, height, team_name FROM player NATURAL JOIN team </p>
-
-<p>ON:<br/>
-SQL99：SELECT p.player_name, p.height, h.height_level<br/>
-FROM player as p JOIN height_grades as h<br/>
-ON height BETWEEN h.height_lowest AND h.height_highest</p>
-
-<p>using:<br/>
-等名等值连接:<br/>
-SELECT player_id, team_id, player_name, height, team_name FROM player JOIN team USING(team_id)</p>
-
-<p>left join = left outer join<br/>
-right join = right outer join<br/>
-full join = full outer join</p>
-
-<p>全外连接：<br/>
-实际就是左右连接的结合：<br/>
-full join <br/>
-SELECT * FROM player FULL JOIN team ON player.team_id = team.team_id</p>
-
-<p>SELECT b.player_name, b.height FROM player as a , player as b WHERE a.player_name = &#39;布雷克 - 格里芬&#39; and a.height &lt; b.height</p>
-
-<p>SELECT b.player_name, b.height FROM player as a JOIN player as b ON a.player_name = &#39;布雷克 - 格里芬&#39; and a.height &lt; b.height</p>
-
-<p>交叉连接：也称为笛卡尔积，返回左表中每一行与右表中每一行的组合。在 SQL99 中使用的 CROSS JOIN。</p>
-
-<p>视图：<br/>
-简化复杂的sql<br/>
-CREATE VIEW view_name AS<br/>
-SELECT column1, column2<br/>
-FROM table<br/>
-WHERE condition</p>
-
-<p>修改视图：<br/>
-ALTER VIEW view_name AS<br/>
-SELECT column1, column2<br/>
-FROM table<br/>
-WHERE condition</p>
-
-<p>删除视图：<br/>
-DROP VIEW view_name</p>
-
-<p>存储过程：</p>
-
-<pre><code class="language-text">CREATE PROCEDURE `add_num`(IN n INT)
-BEGIN
-       DECLARE i INT;
-       DECLARE sum INT;
-       
-       SET i = 1;
-       SET sum = 0;
-       WHILE i &lt;= n DO
-              SET sum = sum + i;
-              SET i = i +1;
-       END WHILE;
-       SELECT sum;
-END
-
-
-
-DELIMITER //
-CREATE PROCEDURE `add_num`(IN n INT)
-BEGIN
-       DECLARE i INT;
-       DECLARE sum INT;
-       
-       SET i = 1;
-       SET sum = 0;
-       WHILE i &lt;= n DO
-              SET sum = sum + i;
-              SET i = i +1;
-       END WHILE;
-       SELECT sum;
-END //
-DELIMITER ;
-
-CREATE PROCEDURE `get_hero_scores`(
-       OUT max_max_hp FLOAT,
-       OUT min_max_mp FLOAT,
-       OUT avg_max_attack FLOAT,  
-       s VARCHAR(255)
-       )
-BEGIN
-       SELECT MAX(hp_max), MIN(mp_max), AVG(attack_max) FROM heros WHERE role_main = s INTO max_max_hp, min_max_mp, avg_max_attack;
-END
-
-</code></pre>
-
-<p>out 返回的值<br/>
-in 传入参数<br/>
-inout 即可传入参数，又可返回的值</p>
-
-<p>事务：<br/>
-acid:<br/>
-a 原子性<br/>
-c 一致性<br/>
-i 隔离性<br/>
-d 持久性</p>
-
-<p>mysql&gt; set autocommit =0;  // 关闭自动提交<br/>
-mysql&gt; set autocommit =1;  // 开启自动提交</p>
-
-<p>你有没有发现什么异常？这个时候小张还没有提交事务，但是小李却读到了小张还没有提交的数据，这种现象我们称之为“脏读”。</p>
-
-<p>这个时候你会发现，两次查询的结果并不一样。小张会想这是怎么回事呢？他明明刚执行了一次查询，马上又进行了一次查询，结果两次的查询结果不同。实际上小张遇到的情况我们称之为“不可重复读”，也就是同一条记录，两次读取的结果不同。</p>
-
-<p>他发现这一次查询多了一个英雄，原来只有 3 个，现在变成了 4 个。这种异常情况我们称之为“幻读”。</p>
-
-<p>脏读：读到了其他事务还没有提交的数据。</p>
-
-<p>不可重复读：对某数据进行读取，发现两次读取的结果不同，也就是说没有读到相同的内容。这是因为有其他事务对这个数据同时进行了修改或删除。</p>
-
-<p>幻读：事务 A 根据条件查询得到了 N 条数据，但此时事务 B 更改或者增加了 M 条符合事务 A 查询条件的数据，这样当事务 A 再次进行查询的时候发现会有 N+M 条数据，产生了幻读。</p>
-
-<p>读未提交，也就是允许读到未提交的数据，这种情况下查询是不会使用锁的，可能会产生脏读、不可重复读、幻读等情况。</p>
-
-<p>读已提交就是只能读到已经提交的内容，可以避免脏读的产生，属于 RDBMS 中常见的默认隔离级别（比如说 Oracle 和 SQL Server），但如果想要避免不可重复读或者幻读，就需要我们在 SQL 查询的时候编写带加锁的 SQL 语句（我会在进阶篇里讲加锁）。</p>
-
-<p>可重复读，保证一个事务在相同查询条件下两次查询得到的数据结果是一致的，可以避免不可重复读和脏读，但无法避免幻读。MySQL 默认的隔离级别就是可重复读。</p>
-
-<p>可串行化，将事务进行串行化，也就是在一个队列中按照顺序执行，可串行化是最高级别的隔离等级，可以解决事务读取中所有可能出现的异常情况，但是它牺牲了系统的并发性。</p>
-
-<p>mysql&gt; SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;</p>
-
-<p>游标：</p>
-
-<pre><code class="language-text">DECLARE cur_hero CURSOR FOR 
-    SELECT hp_max FROM heros;
-
-FETCH cursor_name INTO var_name ...
-
-CLOSE cursor_name
-</code></pre>
-
-<p>释放游标：</p>
-
-<pre><code class="language-text">DEALLOCATE PREPARE
-
-
-CREATE PROCEDURE `alter_attack_growth`()
-BEGIN
-       -- 创建接收游标的变量
-       DECLARE temp_id INT;  
-       DECLARE temp_growth, temp_max, temp_start, temp_diff FLOAT;  
-
-       -- 创建结束标志变量  
-       DECLARE done INT DEFAULT false;
-       -- 定义游标     
-       DECLARE cur_hero CURSOR FOR SELECT id, attack_growth, attack_max, attack_start FROM heros;
-       -- 指定游标循环结束时的返回值  
-       DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = true;  
-       
-       OPEN cur_hero;  
-       FETCH cur_hero INTO temp_id, temp_growth, temp_max, temp_start;
-       REPEAT
-                     IF NOT done THEN
-                            SET temp_diff = temp_max - temp_start;
-                            IF temp_growth &lt; 5 THEN
-                                   IF temp_diff &gt; 200 THEN
-                                          SET temp_growth = temp_growth * 1.1;
-                                   ELSEIF temp_diff &gt;= 150 AND temp_diff &lt;=200 THEN
-                                          SET temp_growth = temp_growth * 1.08;
-                                   ELSEIF temp_diff &lt; 150 THEN
-                                          SET temp_growth = temp_growth * 1.07;
-                                   END IF;                       
-                            ELSEIF temp_growth &gt;=5 AND temp_growth &lt;=10 THEN
-                                   SET temp_growth = temp_growth * 1.05;
-                            END IF;
-                            UPDATE heros SET attack_growth = ROUND(temp_growth,3) WHERE id = temp_id;
-                     END IF;
-       FETCH cur_hero INTO temp_id, temp_growth, temp_max, temp_start;
-       UNTIL done = true END REPEAT;
-       
-       CLOSE cur_hero;
-       DEALLOCATE PREPARE cur_hero;
-END
-
-</code></pre>
 
 ]]></content>
   </entry>
