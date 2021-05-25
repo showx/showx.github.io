@@ -4,13 +4,34 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2021-05-23T07:43:59+08:00</updated>
+  <updated>2021-05-23T07:47:02+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[git管理迁移]]></title>
+    <link href="http://www.shengsheng.net/16219577161349.html"/>
+    <updated>2021-05-25T23:48:36+08:00</updated>
+    <id>http://www.shengsheng.net/16219577161349.html</id>
+    <content type="html"><![CDATA[
+<p>由于之前gitlab管理是使用k8s来弄，但没把数据挂载在本地硬盘，所以可能会有故障，因此为了减了运维压力。<br/>
+jenkins采用腾讯去的cloudbase。<br/>
+git管理由私有gitlab改到gitee上。</p>
+
+<p>cloudbase jenkins应用:<br/>
+<img src="media/16219577161349/0D79715F-C247-43F0-AD38-80FF7B0E94A8.png" alt="0D79715F-C247-43F0-AD38-80FF7B0E94A8"/></p>
+
+<p>gitee:<br/>
+<img src="media/16219577161349/80F68D19-D3F6-4A5A-874E-9AF1329FEC79.png" alt="80F68D19-D3F6-4A5A-874E-9AF1329FE"/></p>
+
+<p><img src="media/16219577161349/16219577181650.jpg" alt=""/></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[现有安卓手机]]></title>
@@ -986,21 +1007,6 @@ mv composer.phar /usr/local/bin/composer
 
 <p>走国内源也就几秒的事情<br/>
 <img src="media/15950818535796/15950820367441.jpg" alt=""/></p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[JetBrains免费获取]]></title>
-    <link href="http://www.shengsheng.net/15946911363103.html"/>
-    <updated>2020-07-14T09:45:36+08:00</updated>
-    <id>http://www.shengsheng.net/15946911363103.html</id>
-    <content type="html"><![CDATA[
-<p>使用开源项目，免费撸了一个一年的序列号,想要的朋友自己去撸一下<a href="https://www.jetbrains.com/shop/eform/opensource">https://www.jetbrains.com/shop/eform/opensource</a></p>
-
-<p><img src="media/15946911363103/15946911383285.jpg" alt=""/></p>
-
-<p><img src="media/15946911363103/15946930504171.jpg" alt=""/></p>
 
 ]]></content>
   </entry>
