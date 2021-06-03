@@ -4,13 +4,101 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2021-05-23T07:47:02+08:00</updated>
+  <updated>2021-06-03T23:54:08+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[laravel database源码分析]]></title>
+    <link href="http://www.shengsheng.net/16227343785198.html"/>
+    <updated>2021-06-03T23:32:58+08:00</updated>
+    <id>http://www.shengsheng.net/16227343785198.html</id>
+    <content type="html"><![CDATA[
+<p>公司框架采用了laravel的Eloquent用为数据库的orm</p>
+
+<pre><code class="language-text">// 使用Manager管理数据库
+use Illuminate\Database\Capsule\Manager as Db;
+self::$db = new Db;
+            foreach($dbconfig as $connection_name =&gt; $config)
+            {
+                $db_arr = [
+                    &#39;driver&#39;    =&gt; $config[&#39;dbtype&#39;] ?? &#39;mysql&#39;, 
+                    &#39;host&#39;      =&gt; $config[&#39;host&#39;],
+                    &#39;port&#39;      =&gt; $config[&#39;port&#39;],
+                    &#39;database&#39;  =&gt; $config[&#39;dbname&#39;],
+                    &#39;username&#39;  =&gt; $config[&#39;username&#39;],
+                    &#39;password&#39;  =&gt; $config[&#39;password&#39;],
+                    &#39;charset&#39;   =&gt; $config[&#39;charset&#39;] ?? &#39;utf8&#39;,
+                    &#39;collation&#39; =&gt; $config[&#39;collation&#39;] ?? &#39;utf8_general_ci&#39;,
+                    &#39;prefix&#39;    =&gt; &#39;&#39;,
+                ];
+                self::$db-&gt;addConnection($db_arr,$connection_name);
+            }
+            // self::$db-&gt;setEventDispatcher(new Dispatcher(new Container));
+            // 设置fetch的方式
+            self::$db-&gt;setFetchMode(\PDO::FETCH_ASSOC);
+            self::$db-&gt;setAsGlobal();
+            self::$db-&gt;bootEloquent();
+</code></pre>
+
+<p><img src="media/16227343785198/D74AAFF0-9A24-4363-A137-1DE400BDAAC2.png" alt="D74AAFF0-9A24-4363-A137-1DE400BDAA"/></p>
+
+<p>setAsGlobal更新instance对象<br/>
+bootEloquent开始启用。</p>
+
+<p>常用原生用法，使用connection类<br/>
+query()<br/>
+select()<br/>
+cursor()<br/>
+prepared()<br/>
+getPdoForSelect()<br/>
+unprepared()<br/>
+run()<br/>
+runQueryCallback()<br/>
+logQuery()<br/>
+getQueryLog()</p>
+
+<p><img src="media/16227343785198/16227346790325.jpg" alt=""/></p>
+
+<p>Manger作为facade Db的使用<br/>
+调用conneciton()</p>
+
+<p>Manager::connection(&#39;default&#39;)-&gt;select(&quot;select * from test&quot;);<br/>
+<img src="media/16227343785198/9EA336CE-166B-46F9-94A9-BFC18FB5CB04.png" alt="9EA336CE-166B-46F9-94A9-BFC18FB5CB04"/><br/>
+查看databae\PDO\Connection.php和databse\Conneciton查看实现的方法。</p>
+
+<p><img src="media/16227343785198/6B3646A2-BEA9-4479-888A-BEC4976E11CB.png" alt="6B3646A2-BEA9-4479-888A-BEC4976E11CB"/></p>
+
+<p><img src="media/16227343785198/62B486D9-97E8-4605-A65E-71FB73D4AC4A.png" alt="62B486D9-97E8-4605-A65E-71FB73D4AC4A"/></p>
+
+<p>其实比较好用的游标，使用原生协程来跟进多数据fetch</p>
+
+<p>另一个值得学习的databse\Eloquent\Model类，orm神器<br/>
+<img src="media/16227343785198/9164A66F-0560-4CC0-AA23-BB36CF094644.png" alt="9164A66F-0560-4CC0-AA23-BB36CF094644"/></p>
+
+<p>可以查看出优美地调用__call和__callStatic</p>
+
+<p>在databse\Eloquent\Builder可以发现更多orm的使用方法<br/>
+例如<br/>
+updateOrCreate<br/>
+firstOrFail<br/>
+<img src="media/16227343785198/90CAC82C-CC07-4E6D-82FE-24B30AEB6F51.png" alt="90CAC82C-CC07-4E6D-82FE-24B30AEB6F51"/></p>
+
+<p>查看源码，值得学习大神处理的逻辑。<br/>
+基本上都是静态的方式调用</p>
+
+<p><img src="media/16227343785198/68ED5D5A-2B51-4A67-99DC-5B806E956D1A.png" alt="68ED5D5A-2B51-4A67-99DC-5B806E956D1A"/></p>
+
+<p>相对应有些失败之后还有重连的机制。</p>
+
+<p>大概源码查看到此，基本上学习此源码，orm足够使用的了。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[git管理迁移]]></title>
@@ -973,40 +1061,6 @@ hostPort：可选项，设置在宿主机上的端口，如果设置则进行端
 <a href="https://my.oschina.net/eima/blog/1860598">https://my.oschina.net/eima/blog/1860598</a><br/>
 <a href="https://kubernetes.io/zh/docs/concepts/services-networking/connect-applications-service/">https://kubernetes.io/zh/docs/concepts/services-networking/connect-applications-service/<br/>
 </a></p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[php composer应该注意的点]]></title>
-    <link href="http://www.shengsheng.net/15950818535796.html"/>
-    <updated>2020-07-18T22:17:33+08:00</updated>
-    <id>http://www.shengsheng.net/15950818535796.html</id>
-    <content type="html"><![CDATA[
-<h2 id="toc_0">phpcomposer的安装方式</h2>
-
-<pre><code class="language-text">php -r &quot;copy(&#39;https://install.phpcomposer.com/installer&#39;, &#39;composer-setup.php&#39;);&quot;
-php composer-setup.php
-mv composer.phar /usr/local/bin/composer
-</code></pre>
-
-<h2 id="toc_1">查看镜像源等配置</h2>
-
-<p>composer config -l -g<br/>
-<img src="media/15950818535796/15950818960608.jpg" alt=""/></p>
-
-<p>设定阿里源站</p>
-
-<pre><code class="language-text">composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
-</code></pre>
-
-<h2 id="toc_2">要安装的php扩展</h2>
-
-<p>一定要安装php的zip扩展，不然走github下载就更慢了<br/>
-<img src="media/15950818535796/15950819597920.jpg" alt=""/></p>
-
-<p>走国内源也就几秒的事情<br/>
-<img src="media/15950818535796/15950820367441.jpg" alt=""/></p>
 
 ]]></content>
   </entry>
