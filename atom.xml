@@ -4,13 +4,103 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2021-06-03T23:54:08+08:00</updated>
+  <updated>2021-06-16T19:19:42+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[websocket踩坑记]]></title>
+    <link href="http://www.shengsheng.net/16238418040587.html"/>
+    <updated>2021-06-16T19:10:04+08:00</updated>
+    <id>http://www.shengsheng.net/16238418040587.html</id>
+    <content type="html"><![CDATA[
+<h2 id="toc_0">基本配置</h2>
+
+<p>为了解决知道用户时长，我们采用了websocket作为通讯,php采用了swoole的websocket功能。<br/>
+<img src="media/16238418040587/16238419003179.jpg" alt=""/></p>
+
+<p>主要有三个事件<br/>
+Open 建立链接的处理<br/>
+Message 收到客户端的处理<br/>
+Close 关闭与客户端的处理</p>
+
+<p>前端配置基本和后端一样, http页面能访问ws和wss,但https只能访问wss。</p>
+
+<pre><code class="language-text">var ws = new WebSocket(&quot;wss://xxx/websocket&quot;)
+ws.onopen = function () { 
+    ws.send(&quot;hello&quot;); 
+}; 
+ws.onmessage = function (resp) { 
+    document.getElementById(&#39;total&#39;).innerHTML = resp.data; 
+};
+ws.onclose = function () {}; 
+</code></pre>
+
+<p>nginx配置：</p>
+
+<pre><code class="language-text">upstream websocket {
+    server 172.17.0.2:9507; # 如果只有一条可以直接放在proxy_pass里
+}
+location /websocket {
+          proxy_pass http://websocket;
+          proxy_read_timeout 60s;
+          proxy_send_timeout 60s;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection &quot;upgrade&quot;;
+}
+</code></pre>
+
+<p>链接的时候可以可以参数放在后面，服务器能从get里获取token参数进行鉴权<br/>
+wss://test.com/websocket?token=abcdefg</p>
+
+<p><img src="media/16238418040587/16238421223263.jpg" alt=""/></p>
+
+<p>需要注意，如果是启用swoole里面的ssl功能，需将proxy_pass的 http://websocket 改成https://websocket</p>
+
+<p>因为我们默认wss走443端口，而我们443端口已经有配置证书，故直接走http://websocket即可。</p>
+
+<h2 id="toc_1">心跳</h2>
+
+<p>因为我们默认服务器配置是60秒时候，所以前端或后端定时发送数据来维护链接即可。</p>
+
+<pre><code class="language-text"> proxy_read_timeout 60s;
+ proxy_send_timeout 60s;
+</code></pre>
+
+<p>前端</p>
+
+<pre><code class="language-text">setInterval(wx.send(&#39;1&#39;),100000); 
+</code></pre>
+
+<h2 id="toc_2">腾讯云的坑</h2>
+
+<p>如果是从CDN走websocket,默认也是支持的，默认根据源站的配置，走80端口。<br/>
+链接是能链接，但是wss的时候会出现ws.send不了数据。 如果要使用websocket建议使用ECDN(全站加速）</p>
+
+<h3 id="toc_3">官方说明</h3>
+
+<p>cdn是提供网站静态内容的加速分发处理能力，ECDN 为纯动态网站与动静态混合型网站提供高可靠、低延时一站式加速服务。具体您可以了解下对应产品的功能介绍<br/>
+CDN的应用场景：<a href="https://cloud.tencent.com/document/product/228/37846">https://cloud.tencent.com/document/product/228/37846</a><br/>
+ECDN的功能介绍：<a href="https://cloud.tencent.com/document/product/570/10359">https://cloud.tencent.com/document/product/570/10359</a></p>
+
+<h3 id="toc_4">其它</h3>
+
+<p>附：<br/>
+cdn的协议跟随引发的问题<br/>
+WARNING ssl_accept: bad SSL client[127.0.0.1:35418], reason=156, error_string=http request #4068<br/>
+这个错误说明有明文 HTTP 请求发送到了 SSL 的 HTTPS 端口。<br/>
+<a href="https://github.com/swoole/swoole-src/issues/4068#event-4585154187">https://github.com/swoole/swoole-src/issues/4068#event-4585154187</a></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[laravel database源码分析]]></title>
@@ -838,229 +928,6 @@ so,尽量不要使用cookie通讯了，如果想运行得更好，那使用local
 <p><img src="media/15951652105930/15951655340274.jpg" alt=""/></p>
 
 <p><img src="media/15951652105930/15951653541414.jpg" alt=""/></p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[k8s使用笔记]]></title>
-    <link href="http://www.shengsheng.net/15951637392913.html"/>
-    <updated>2020-07-19T21:02:19+08:00</updated>
-    <id>http://www.shengsheng.net/15951637392913.html</id>
-    <content type="html"><![CDATA[
-<p>k8s全称kerbernets，docker集群的工具</p>
-
-<h2 id="toc_0">安装k8s</h2>
-
-<p>首先得有docker环境，安装完之后继续下一步</p>
-
-<pre><code class="language-text">cat &lt;&lt;EOF &gt; /etc/yum.repos.d/kubernetes.repo
-[kubernetes]
-name=Kubernetes
-baseurl=http://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64
-enabled=1
-gpgcheck=0
-repo_gpgcheck=0
-gpgkey=http://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg http://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
-EOF
-</code></pre>
-
-<p>设置好数据源之后<br/>
-安装指定的</p>
-
-<pre><code class="language-text"> yum -y install kubelet-1.17.0 kubeadm-1.17.0
-</code></pre>
-
-<p>以上操作，从机也要进行下载</p>
-
-<pre><code class="language-text">systemctl enable docker &amp;&amp; systemctl start docker
-systemctl enable kubelet &amp;&amp; systemctl start kubelet
-</code></pre>
-
-<p>启动docker与kubelet服务</p>
-
-<h3 id="toc_1">每个机器设置一下hostname</h3>
-
-<p>hostnamectl set-hostname k8s-master<br/>
-hostnamectl set-hostname k8s-slave01<br/>
-hostnamectl set-hostname k8s-slave02<br/>
-有便于后面的区分</p>
-
-<h2 id="toc_2">k8s的核心思想</h2>
-
-<p>node pods deployment service</p>
-
-<h3 id="toc_3">新建命令空间</h3>
-
-<p>新建namespce.yaml文件</p>
-
-<pre><code class="language-text">apiVersion: v1
-kind: Namespace
-metadata:
-  name: work
-
-</code></pre>
-
-<h2 id="toc_4">deployment</h2>
-
-<p>搭建swagger-ui作演示<br/>
-swagger-ui-deployment</p>
-
-<pre><code class="language-text">apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: swagger-ui
-  name: swagger-ui
-  namespace: work
-spec:
-  selector:
-    matchLabels:
-      app: swagger-ui
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: swagger-ui
-    spec:
-      containers:
-      - env:
-        image: swaggerapi/swagger-ui
-        name: swagger-ui
-        volumeMounts:
-          - mountPath: /usr/share/nginx/html/config
-            name: doc-volume
-        ports:
-        - containerPort: 8080
-      volumes:
-        - name: doc-volume
-          hostPath:
-            # directory location on host
-            path: /webwww/swagger
-            # this field is optional
-            type: Directory
-
-</code></pre>
-
-<h2 id="toc_5">service</h2>
-
-<p>以swagger作演示<br/>
-swagger-ui-service.yaml</p>
-
-<pre><code class="language-text">apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: swagger-ui
-  name: swagger-ui
-  namespace: work
-spec:
-  selector:
-    matchLabels:
-      app: swagger-ui
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: swagger-ui
-    spec:
-      containers:
-      - env:
-        image: swaggerapi/swagger-ui
-        name: swagger-ui
-        volumeMounts:
-          - mountPath: /usr/share/nginx/html/config
-            name: doc-volume
-        ports:
-        - containerPort: 8080
-      volumes:
-        - name: doc-volume
-          hostPath:
-            # directory location on host
-            path: /webwww/swagger
-            # this field is optional
-            type: Directory
-</code></pre>
-
-<h2 id="toc_6">相关命令</h2>
-
-<p>查看work命令空间所有的pods<br/>
-kubectl get pods -n work</p>
-
-<p>查看相关节点<br/>
-kubectl get nodes</p>
-
-<p>制作pods集<br/>
-kubectl create -f swagger-ui-deployment.yaml</p>
-
-<p>查看指定pod相关信息<br/>
-kubectl describe pods swagger-ui-c69f9f4cf-kbft9 -n work<br/>
-查看指定pod详细信息<br/>
-kubectl describe pods swagger-ui-c69f9f4cf-kbft9 -n work</p>
-
-<p>制作service暴露外部<br/>
-kubectl apply -f swagger-ui-service.yaml</p>
-
-<p>删除指定的service<br/>
-kubectl delete -f swagger-ui-service.yaml</p>
-
-<p>查看有哪些service<br/>
-kubectl get svc -n work</p>
-
-<p>更新相关配置<br/>
-kubectl replace -f nginx.yaml</p>
-
-<p>进入指定pods<br/>
-kubectl -n work exec -it gitlab-67f74459f4-qdqtf /bin/bash</p>
-
-<h2 id="toc_7">注意点</h2>
-
-<p>Pod并非一个持久化的东西，很有可能突然挂了，并且没有能力自我修复，这就是为啥我们把它们和controller一起用，这样可以来控制pod的replica，容错，自我修复等等。比较有名的例子比如Deployments，ReplicaSets等。我们通过把Pod的定义（specification，也就是spec）附加到别的对象（也就是之前用的template.spec）来完成。</p>
-
-<p>k8s会有两个默认Namespace：kube-system和default。kube-system一般会用来放一些Kubernetes系统的组件，default会用来放一些属于其它Namespace的对象。我们默认情况下是会连接到default命名空间。kube-public是一个特殊的namespace，可以被所有的用户读，一般用于特殊情况比如初始化一个集群。</p>
-
-<p>Docker 启动时可以用 --publish/-p 参数配置端口映射规则，Pod 的定义设置容器的映射规则如：</p>
-
-<p>apiVersion: v1<br/>
-kind: Pod<br/>
-metadata:<br/>
-  name: nginx<br/>
-spec:<br/>
-  containers:<br/>
-  - name: nginx<br/>
-    image: &quot;nginx:1.11&quot;<br/>
-    ports:<br/>
-    - name: web<br/>
-      containerPort: 80<br/>
-      protocol: TCP<br/>
-      hostIP: 0.0.0.0<br/>
-      hostPort: 80<br/>
-name：设置端口名称，必须 Pod 内唯一，当只配置一个端口的时候，这是一个可选项，当配置多个端口的时候，这是一个必须项。<br/>
-containerPort：必须项，设置在容器内的端口，有效范围 1 ~ 65535。<br/>
-protocol：可选项，设置端口的协议，TCP 或者 UDP，默认是 TCP。<br/>
-hostIP：可选项，是指在宿主机上的IP，默认绑定到所有可用的 IP 上，即 0.0.0.0 。<br/>
-hostPort：可选项，设置在宿主机上的端口，如果设置则进行端口映射，有效范围 1 ~ 65535。</p>
-
-<h2 id="toc_8">总结</h2>
-
-<p>总的来说相对复制，生产上使用必须要把核心理解清楚。</p>
-
-<h2 id="toc_9">相关阅读</h2>
-
-<p><a href="https://zhuanlan.zhihu.com/p/94628967">安装k8s</a><br/>
-<a href="https://blog.csdn.net/fanren224/article/details/86610799%0Ahttps://zdyxry.github.io/2019/08/01/Kubernetes-%E5%AE%9E%E6%88%98-%E5%B9%B3%E6%BB%91%E7%A7%BB%E9%99%A4%E8%8A%82%E7%82%B9/">k8s增减node</a></p>
-
-<p><a href="https://www.jianshu.com/p/70e9c0b5fd25">kubectl delete pod 后又创建了一个新的pod</a></p>
-
-<p>1 node(s) had taints that the pod didn&#39;t tolerate.<br/>
-有时候一个pod创建之后一直是pending，没有日志，也没有pull镜像，describe的时候发现里面有一句话： 1 node(s) had taints that the pod didn&#39;t tolerate.</p>
-
-<p>直译意思是节点有了污点无法容忍，执行 kubectl get no -o yaml | grep taint -A 5 之后发现该节点是不可调度的。这是因为kubernetes出于安全考虑默认情况下无法在master节点上部署pod，于是用下面方法解决：</p>
-
-<p>kubectl taint nodes --all node-role.kubernetes.io/master-<br/>
-<a href="https://my.oschina.net/eima/blog/1860598">https://my.oschina.net/eima/blog/1860598</a><br/>
-<a href="https://kubernetes.io/zh/docs/concepts/services-networking/connect-applications-service/">https://kubernetes.io/zh/docs/concepts/services-networking/connect-applications-service/<br/>
-</a></p>
 
 ]]></content>
   </entry>
