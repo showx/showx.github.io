@@ -4,13 +4,124 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2021-06-16T19:22:38+08:00</updated>
+  <updated>2021-06-16T19:23:50+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[nginx前后端分离的一些配置]]></title>
+    <link href="http://www.shengsheng.net/16240150077955.html"/>
+    <updated>2021-06-18T19:16:47+08:00</updated>
+    <id>http://www.shengsheng.net/16240150077955.html</id>
+    <content type="html"><![CDATA[
+<p>之前的都是多个域名，现在打算采用分离的形式</p>
+
+<h2 id="toc_0">fpm模式</h2>
+
+<pre><code class="language-text">server {
+        index index.html index.htm index.php;
+        root /webwww/www/landpage/Public/dist;
+        server_name landpage.xx.com;
+  listen 443;
+  listen 80;
+  ssl on;
+  ssl_certificate /webwww/ssl/1_.cn_bundle.crt;
+  ssl_certificate_key /webwww/ssl/2_.cn.key;
+  ssl_session_timeout 5m;
+  ssl_protocols TLSv1 TLSv1.1 TLSv1.2; #按照这个协议配置
+  ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;#按照这个套件配置
+  ssl_prefer_server_ciphers on;
+        location  / {
+                #alias /webwww/www/landpage/Public/dist;             #项目路径
+                index index.html;
+                try_files $uri $uri/ /index.html;
+        }
+        location /api {
+          root /webwww/www/landpage/Public;
+          if (!-e $request_filename){
+             rewrite ^/(.*)$ /index.php?s=$1 last;
+             break;
+          }
+          try_files $uri $uri/ /index.php;
+        }
+        location ~ [^/]\.php(/|$) {
+                root  /webwww/www/landpage/Public;
+                fastcgi_split_path_info ^(.+\.php)(/.+)$;
+                fastcgi_pass 172.17.0.7:9000;
+                fastcgi_index index.php;
+                include fastcgi_params;
+                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                #fastcgi_param   SCRIPT_FILENAME         $request_filename;
+                fastcgi_param PATH_INFO       $fastcgi_path_info;
+        }
+}
+</code></pre>
+
+<h1 id="toc_1">nginx查看php-fpm状态</h1>
+
+<p>php-fpm需要配置一下</p>
+
+<pre><code class="language-text">[www]
+user = www-data
+group = www-data
+listen = 127.0.0.1:9000
+pm = dynamic
+pm.max_children = 20
+pm.start_servers = 5
+pm.min_spare_servers = 5
+pm.max_spare_servers = 10
+;pm.process_idle_timeout = 300
+pm.max_requests = 10000
+pm.status_path = /status_show
+slowlog = /webwww/log/php-fpm-slow.log
+</code></pre>
+
+<p>nginx增加location</p>
+
+<pre><code class="language-text">location ~^/status_show$ {
+        fastcgi_param SCRIPT_FILENAME $fastcgi_script_name;
+        include fastcgi_params;
+        fastcgi_pass 172.17.0.2:9000;
+}
+</code></pre>
+
+<p>查看本域名/status_show?full即所有连接<br/>
+/status_show还可以指定json、html和xml的方式显示</p>
+
+<p><img src="media/16240150077955/16240153140050.jpg" alt=""/></p>
+
+<h1 id="toc_2">proxy模式</h1>
+
+<pre><code class="language-text">server {
+        listen 443;
+        listen 80;
+        ssl on;
+        ssl_certificate /webwww/ssl/1_.cn_bundle.crt;
+        ssl_certificate_key /webwww/ssl/2_.cn.key;
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2; #按照这个协议配置
+        server_name jumpuser.xxx.cn;
+        root /webwww/www/jumpuser/Public/dist;
+        location  / {
+                index index.html;
+                try_files $uri $uri/ /index.html;
+        }
+       location /api {
+                proxy_pass http://172.19.0.2:8080;
+                proxy_http_version 1.1;
+                proxy_set_header X-Real-IP $remote_addr;
+        }
+        index index.html index;
+}
+</code></pre>
+
+<p>以上配置都是访问/api开头走后台，默认其它路径走前端， 后端项目必须使用强路由的形式。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[websocket踩坑记]]></title>
@@ -910,24 +1021,6 @@ Cost Per Time，CPT 是一种以时间来计费的广告。</p>
 
 <p>CPPA：<br/>
 按照到达用户付费。既不是按照浏览量（PV）付费，也不是按照实际效果付费，而是按照到达的用户那个付费，在网站上等同于 UV，在手机端是新增用户上游数据（例如用户已下载安装还未打开激活 APP 的数量即为到达用户）</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[safari阻止cookie写入]]></title>
-    <link href="http://www.shengsheng.net/15951652105930.html"/>
-    <updated>2020-07-19T21:26:50+08:00</updated>
-    <id>http://www.shengsheng.net/15951652105930.html</id>
-    <content type="html"><![CDATA[
-<p>今天在某个网站里iframe另一个网站的地址<br/>
-发现手机safari不同域的情况下，另一个网站老是写不下cookie。<br/>
-只有关闭safari里的阻止跨网站跟踪才行。<br/>
-so,尽量不要使用cookie通讯了，如果想运行得更好，那使用localstorage吧</p>
-
-<p><img src="media/15951652105930/15951655340274.jpg" alt=""/></p>
-
-<p><img src="media/15951652105930/15951653541414.jpg" alt=""/></p>
 
 ]]></content>
   </entry>
