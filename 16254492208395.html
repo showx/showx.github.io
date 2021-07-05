@@ -170,174 +170,191 @@ X-MicrosoftAjax: Delta=true
 <pre><code class="language-text">docker run --cap-add=SYS_PTRACE -it -v ~/code:/webwww --name php-fpm-8033 show/php-fpm:8.0.3
 </code></pre>
 
-<p>进入docker里查看 ```<br/>
-strace -tt -p 对应进程端口<br/>
-可使用php job.php status查看workerman的worker端口</p>
+<p>进入docker里查看</p>
 
-<pre><code class="language-text">可以监测到连接8089的时候是-1
+<pre><code class="language-text">strace -tt -p 对应进程端口
+可使用php job.php status查看workerman的worker端口
 </code></pre>
 
-<p>socket(AF_INET, SOCK_STREAM, IPPROTO_IP) = 8</p>
+<p>可以监测到连接8089的时候是-1</p>
 
-<p>connect(8, {sa_family=AF_INET, sin_port=htons(8089), sin_addr=inet_addr(&quot;127.0.0.1&quot;)}, 16) = -1 EINPROGRESS (Operation now in progress)</p>
+<pre><code class="language-text">socket(AF_INET, SOCK_STREAM, IPPROTO_IP) = 8
 
-<p>getpeername(8, {sa_family=AF_INET, sin_port=htons(8089), sin_addr=inet_addr(&quot;127.0.0.1&quot;)}, [128-&gt;16]) = 0<br/>
-getsockname(8, {sa_family=AF_INET, sin_port=htons(53752), sin_addr=inet_addr(&quot;127.0.0.1&quot;)}, [128-&gt;16]) = 0</p>
+connect(8, {sa_family=AF_INET, sin_port=htons(8089), sin_addr=inet_addr(&quot;127.0.0.1&quot;)}, 16) = -1 EINPROGRESS (Operation now in progress)
 
-<pre><code class="language-text">正常的情况下是0
+getpeername(8, {sa_family=AF_INET, sin_port=htons(8089), sin_addr=inet_addr(&quot;127.0.0.1&quot;)}, [128-&gt;16]) = 0
+getsockname(8, {sa_family=AF_INET, sin_port=htons(53752), sin_addr=inet_addr(&quot;127.0.0.1&quot;)}, [128-&gt;16]) = 0
+
 </code></pre>
 
-<p>connect(9, {sa_family=AF_INET, sin_port=htons(53), sin_addr=inet_addr(&quot;192.168.65.1&quot;)}, 16) = 0</p>
+<p>正常的情况下是0</p>
 
-<pre><code class="language-text">
-这时候思考到workerman的count参数只开启了一个阻塞进程，故而改成3个进程即可。
+<pre><code class="language-text">connect(9, {sa_family=AF_INET, sin_port=htons(53), sin_addr=inet_addr(&quot;192.168.65.1&quot;)}, 16) = 0
 
-通过这个事故，下定决定分析workerman源码
-
-## 分析
-我们先查看一下workerman的目录
 </code></pre>
 
-<p>.<br/>
-├── _webwww_y_cronshow_job.php.pid<br/>
-├── workerman<br/>
-│   ├── Autoloader.php<br/>
-│   ├── Connection<br/>
-│   │   ├── AsyncTcpConnection.php<br/>
-│   │   ├── AsyncUdpConnection.php<br/>
-│   │   ├── ConnectionInterface.php<br/>
-│   │   ├── TcpConnection.php<br/>
-│   │   └── UdpConnection.php<br/>
-│   ├── Events<br/>
-│   │   ├── Ev.php<br/>
-│   │   ├── Event.php<br/>
-│   │   ├── EventInterface.php<br/>
-│   │   ├── Libevent.php<br/>
-│   │   ├── React<br/>
-│   │   │   ├── Base.php<br/>
-│   │   │   ├── ExtEventLoop.php<br/>
-│   │   │   ├── ExtLibEventLoop.php<br/>
-│   │   │   └── StreamSelectLoop.php<br/>
-│   │   ├── Select.php<br/>
-│   │   └── Swoole.php<br/>
-│   ├── Lib<br/>
-│   │   ├── Constants.php<br/>
-│   │   └── Timer.php<br/>
-│   ├── MIT-LICENSE.txt<br/>
-│   ├── Protocols<br/>
-│   │   ├── Frame.php<br/>
-│   │   ├── Http<br/>
-│   │   │   ├── Chunk.php<br/>
-│   │   │   ├── Request.php<br/>
-│   │   │   ├── Response.php<br/>
-│   │   │   ├── ServerSentEvents.php<br/>
-│   │   │   ├── Session<br/>
-│   │   │   │   ├── FileSessionHandler.php<br/>
-│   │   │   │   └── RedisSessionHandler.php<br/>
-│   │   │   ├── Session.php<br/>
-│   │   │   └── mime.types<br/>
-│   │   ├── Http.php<br/>
-│   │   ├── ProtocolInterface.php<br/>
-│   │   ├── Text.php<br/>
-│   │   ├── Websocket.php<br/>
-│   │   └── Ws.php<br/>
-│   ├── README.md<br/>
-│   ├── Timer.php<br/>
-│   ├── Worker.php<br/>
-│   └── composer.json<br/>
-└── workerman.log</p>
+<p>这时候思考到workerman的count参数只开启了一个阻塞进程，故而改成3个进程即可。</p>
 
-<pre><code class="language-text">上来来说
-Connection 连接类
-Events 网络事件类
-Protocols 请求协议类
-主要这三部分组成
-核心文件主要是Worker.php，不得不佩服workerman作者，简单即精华。
-所以我们从Worker.php文件开始说起
+<p>通过这个事故，下定决定分析workerman源码</p>
 
-![](media/16254492208395/16254501275579.jpg)
-其实我们所有服务都是从runAll开始
-![](media/16254492208395/16254501531720.jpg)
+<h2 id="toc_0">分析</h2>
 
-一层层来分析一下runAll所做的事
-## checkSapiEnv 
-主要是检查环境符不符合要求
-## init 
-初始化主要生成master的pid文件和对应的log文件
-Timer::init(); 初始化事件
-![](media/16254492208395/16254503025591.jpg)
-注册并signal事件
-这里要了解一下php的pcntl库
+<p>我们先查看一下workerman的目录</p>
 
-## parseCommand
-主要解析命令行的输入
-登录php job.php start 
-即对&#39;start&#39;,&#39;stop&#39;,&#39;restart&#39;,&#39;reload&#39;,&#39;status&#39;,&#39;connections&#39;等做接收处理 
+<pre><code class="language-text">.
+├── _webwww_y_cronshow_job.php.pid
+├── workerman
+│   ├── Autoloader.php
+│   ├── Connection
+│   │   ├── AsyncTcpConnection.php
+│   │   ├── AsyncUdpConnection.php
+│   │   ├── ConnectionInterface.php
+│   │   ├── TcpConnection.php
+│   │   └── UdpConnection.php
+│   ├── Events
+│   │   ├── Ev.php
+│   │   ├── Event.php
+│   │   ├── EventInterface.php
+│   │   ├── Libevent.php
+│   │   ├── React
+│   │   │   ├── Base.php
+│   │   │   ├── ExtEventLoop.php
+│   │   │   ├── ExtLibEventLoop.php
+│   │   │   └── StreamSelectLoop.php
+│   │   ├── Select.php
+│   │   └── Swoole.php
+│   ├── Lib
+│   │   ├── Constants.php
+│   │   └── Timer.php
+│   ├── MIT-LICENSE.txt
+│   ├── Protocols
+│   │   ├── Frame.php
+│   │   ├── Http
+│   │   │   ├── Chunk.php
+│   │   │   ├── Request.php
+│   │   │   ├── Response.php
+│   │   │   ├── ServerSentEvents.php
+│   │   │   ├── Session
+│   │   │   │   ├── FileSessionHandler.php
+│   │   │   │   └── RedisSessionHandler.php
+│   │   │   ├── Session.php
+│   │   │   └── mime.types
+│   │   ├── Http.php
+│   │   ├── ProtocolInterface.php
+│   │   ├── Text.php
+│   │   ├── Websocket.php
+│   │   └── Ws.php
+│   ├── README.md
+│   ├── Timer.php
+│   ├── Worker.php
+│   └── composer.json
+└── workerman.log
 
-## daemonize
-判断是否需要守护进程，如约需要pcntl_fork当前一下
-
-## initWorkers
-初始化worker
-如果你定义了三组worker就三次
-例如
 </code></pre>
 
-<p>\(jobworker = new JobWorker();<br/>
-\)cronworker = new CronWorker();<br/>
-$webworker = new WebWorker();</p>
+<p>上来来说<br/>
+Connection 连接类<br/>
+Events 网络事件类<br/>
+Protocols 请求协议类<br/>
+主要这三部分组成<br/>
+核心文件主要是Worker.php，不得不佩服workerman作者，简单即精华。<br/>
+所以我们从Worker.php文件开始说起</p>
 
-<pre><code class="language-text">
-![](media/16254492208395/16254505578046.jpg)
+<p><img src="media/16254492208395/16254501275579.jpg" alt=""/><br/>
+其实我们所有服务都是从runAll开始<br/>
+<img src="media/16254492208395/16254501531720.jpg" alt=""/></p>
 
-最近监听各worker的端口
+<p>一层层来分析一下runAll所做的事</p>
 
-![](media/16254492208395/16254505897418.jpg)
+<h2 id="toc_1">checkSapiEnv</h2>
 
-设置监听端口并设置接收监听resumeAccept
+<p>主要是检查环境符不符合要求</p>
 
-这里主要使用到了php的stream和socket库
+<h2 id="toc_2">init</h2>
 
-![](media/16254492208395/16254506654332.jpg)
-resumeAccept会增加Event事件，监听每个用户请求的connection
+<p>初始化主要生成master的pid文件和对应的log文件<br/>
+Timer::init(); 初始化事件<br/>
+<img src="media/16254492208395/16254503025591.jpg" alt=""/><br/>
+注册并signal事件<br/>
+这里要了解一下php的pcntl库</p>
 
+<h2 id="toc_3">parseCommand</h2>
 
-## installSignal
-注册Signal库，即触发各种网络进程事件
-例如ctrl-c关闭进程，kill -9关闭进程等
-这里要了解每个sig的含义
-SIGINT,SIGTERM,SIGHUP,SIGUSR1,SIGQUIT,SIGUSR2,SIGIO,SIGPIPE
+<p>主要解析命令行的输入<br/>
+登录php job.php start <br/>
+即对&#39;start&#39;,&#39;stop&#39;,&#39;restart&#39;,&#39;reload&#39;,&#39;status&#39;,&#39;connections&#39;等做接收处理 </p>
 
-## saveMasterPid
-保存Master进程的pid
+<h2 id="toc_4">daemonize</h2>
 
-## displayUI
-设置要显示的UI
-运行成功之后会有个界面
-![](media/16254492208395/16254508530042.jpg)
+<p>判断是否需要守护进程，如约需要pcntl_fork当前一下</p>
 
-## forkWorkers
-这里主要是查看定义worker里的个数，例如我们的webworker定义count=3，会生成webworker相关的3个子进程。
+<h2 id="toc_5">initWorkers</h2>
 
-## resetStd
-设置定义的输入输出
+<p>初始化worker<br/>
+如果你定义了三组worker就三次<br/>
+例如</p>
 
-## monitorWorkers
-使用pcntl_signal_dispatch事件，监控每个子进程的情况。
-Worker类就大概这样的情况了
-
-# 网络相关
-因为在stream和socket里，并没有协议做解释，所以协议的处理我们会在Protocols文件夹里做相对就的处理
-![](media/16254492208395/16254511266103.jpg)
-
-例如我们定义的是text://127.0.0.1:123, 就会找到Text做弄对应的处理
-http://0.0.0.0:456,即指定Http.php做相关处理
-协议的定义在workerman手册能找到
-
-# 结尾
-workerman为我们带来了异步，提升并发，这是比php-fpm带来更多的好处。但我们也要了解一下进程内是怎么一回事，因为mysql长链接断开等问题。
-workerman主要的难度是多进程和网络事件，这部分需要我们学习select、poll、epoll等。了解网络解释的一些过程，此篇比较精简说明一下workerman，后续更新每个模块的详解。
+<pre><code class="language-text">$jobworker = new JobWorker();
+$cronworker = new CronWorker();
+$webworker = new WebWorker();
 </code></pre>
+
+<p><img src="media/16254492208395/16254505578046.jpg" alt=""/></p>
+
+<p>最近监听各worker的端口</p>
+
+<p><img src="media/16254492208395/16254505897418.jpg" alt=""/></p>
+
+<p>设置监听端口并设置接收监听resumeAccept</p>
+
+<p>这里主要使用到了php的stream和socket库</p>
+
+<p><img src="media/16254492208395/16254506654332.jpg" alt=""/><br/>
+resumeAccept会增加Event事件，监听每个用户请求的connection</p>
+
+<h2 id="toc_6">installSignal</h2>
+
+<p>注册Signal库，即触发各种网络进程事件<br/>
+例如ctrl-c关闭进程，kill -9关闭进程等<br/>
+这里要了解每个sig的含义<br/>
+SIGINT,SIGTERM,SIGHUP,SIGUSR1,SIGQUIT,SIGUSR2,SIGIO,SIGPIPE</p>
+
+<h2 id="toc_7">saveMasterPid</h2>
+
+<p>保存Master进程的pid</p>
+
+<h2 id="toc_8">displayUI</h2>
+
+<p>设置要显示的UI<br/>
+运行成功之后会有个界面<br/>
+<img src="media/16254492208395/16254508530042.jpg" alt=""/></p>
+
+<h2 id="toc_9">forkWorkers</h2>
+
+<p>这里主要是查看定义worker里的个数，例如我们的webworker定义count=3，会生成webworker相关的3个子进程。</p>
+
+<h2 id="toc_10">resetStd</h2>
+
+<p>设置定义的输入输出</p>
+
+<h2 id="toc_11">monitorWorkers</h2>
+
+<p>使用pcntl_signal_dispatch事件，监控每个子进程的情况。<br/>
+Worker类就大概这样的情况了</p>
+
+<h1 id="toc_12">网络相关</h1>
+
+<p>因为在stream和socket里，并没有协议做解释，所以协议的处理我们会在Protocols文件夹里做相对就的处理<br/>
+<img src="media/16254492208395/16254511266103.jpg" alt=""/></p>
+
+<p>例如我们定义的是text://127.0.0.1:123, 就会找到Text做弄对应的处理<br/>
+<a href="http://0.0.0.0:456,%E5%8D%B3%E6%8C%87%E5%AE%9AHttp.php%E5%81%9A%E7%9B%B8%E5%85%B3%E5%A4%84%E7%90%86">http://0.0.0.0:456,即指定Http.php做相关处理</a><br/>
+协议的定义在workerman手册能找到</p>
+
+<h1 id="toc_13">结尾</h1>
+
+<p>workerman为我们带来了异步，提升并发，这是比php-fpm带来更多的好处。但我们也要了解一下进程内是怎么一回事，因为mysql长链接断开等问题。<br/>
+workerman主要的难度是多进程和网络事件，这部分需要我们学习select、poll、epoll等。了解网络解释的一些过程，此篇比较精简说明一下workerman，后续更新每个模块的详解。</p>
 
                   </article>
                   <div class="comments-wrap">
@@ -367,9 +384,6 @@ workerman主要的难度是多进程和网络事件，这部分需要我们学�
       </footer>
 
 
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script type="text/x-mathjax-config">MathJax.Hub.Config({TeX: { equationNumbers: { autoNumber: "AMS" } }});</script>
 
   
 
