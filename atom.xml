@@ -4,13 +4,237 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2021-06-16T19:23:50+08:00</updated>
+  <updated>2021-07-05T10:14:27+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[workerman源码分析_简略篇]]></title>
+    <link href="http://www.shengsheng.net/16254492208395.html"/>
+    <updated>2021-07-05T09:40:20+08:00</updated>
+    <id>http://www.shengsheng.net/16254492208395.html</id>
+    <content type="html"><![CDATA[
+<p>使用workerman在写一个cronjob项目，出现问题引发的wm分析。</p>
+
+<p><img src="media/16254492208395/16254493083277.jpg" alt=""/><br/>
+配置个web的http worker</p>
+
+<p>在代码里再请求curl 8089端口，即<a href="http://127.0.0.1:8089">http://127.0.0.1:8089</a><br/>
+为了调试，我们开启curl的debug功能</p>
+
+<pre><code class="language-text">curl_setopt($ch, CURLOPT_VERBOSE, true); // curl debug
+curl_setopt($ch, CURLOPT_STDERR, fopen(CRONPATH.&#39;/Application/Log/curl.log&#39;, &#39;w+&#39;));
+$response = curl_getinfo( $ch );
+</code></pre>
+
+<p>测试正常连接百度是正常的，但连接127.0.0.1:8089一直在等待中<br/>
+Warning: file_get_contents(<a href="http://127.0.0.1:8089/?op=cl_list&amp;secret=b61e757422497ccaef7dab5d59b180dd">http://127.0.0.1:8089/?op=cl_list&amp;secret=b61e757422497ccaef7dab5d59b180dd</a>): Failed to open stream: HTTP request failed! in /webwww/y/cronshow/Application/Library/Web.php on line 174</p>
+
+<pre><code class="language-text">curl_start
+exec
+* Expire in 0 ms for 6 (transfer 0x558eac35eb10)
+* Expire in 2000 ms for 8 (transfer 0x558eac35eb10)
+* Expire in 2000 ms for 2 (transfer 0x558eac35eb10)
+*   Trying 127.0.0.1...
+* TCP_NODELAY set
+* Expire in 200 ms for 4 (transfer 0x558eac35eb10)
+* Connected to 127.0.0.1 (127.0.0.1) port 8089 (#0)
+&gt; GET /?op=cl_list&amp;secret=b61e757422497ccaef7dab5d59b180dd HTTP/1.1
+Host: 127.0.0.1:8089
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.5
+Cache-Control: no-cache
+Content-Type: application/x-www-form-urlencoded; charset=utf-8
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:28.0) Gecko/20100101 Firefox/28.0
+X-MicrosoftAjax: Delta=true
+
+* Operation timed out after 2000 milliseconds with 0 bytes received
+* Closing connection 0
+</code></pre>
+
+<p>显示2秒之后断开</p>
+
+<p>docker里开启strace调试</p>
+
+<pre><code class="language-text">docker run --cap-add=SYS_PTRACE -it -v ~/code:/webwww --name php-fpm-8033 show/php-fpm:8.0.3
+</code></pre>
+
+<p>进入docker里查看 ```<br/>
+strace -tt -p 对应进程端口<br/>
+可使用php job.php status查看workerman的worker端口</p>
+
+<pre><code class="language-text">可以监测到连接8089的时候是-1
+</code></pre>
+
+<p>socket(AF_INET, SOCK_STREAM, IPPROTO_IP) = 8</p>
+
+<p>connect(8, {sa_family=AF_INET, sin_port=htons(8089), sin_addr=inet_addr(&quot;127.0.0.1&quot;)}, 16) = -1 EINPROGRESS (Operation now in progress)</p>
+
+<p>getpeername(8, {sa_family=AF_INET, sin_port=htons(8089), sin_addr=inet_addr(&quot;127.0.0.1&quot;)}, [128-&gt;16]) = 0<br/>
+getsockname(8, {sa_family=AF_INET, sin_port=htons(53752), sin_addr=inet_addr(&quot;127.0.0.1&quot;)}, [128-&gt;16]) = 0</p>
+
+<pre><code class="language-text">正常的情况下是0
+</code></pre>
+
+<p>connect(9, {sa_family=AF_INET, sin_port=htons(53), sin_addr=inet_addr(&quot;192.168.65.1&quot;)}, 16) = 0</p>
+
+<pre><code class="language-text">
+这时候思考到workerman的count参数只开启了一个阻塞进程，故而改成3个进程即可。
+
+通过这个事故，下定决定分析workerman源码
+
+## 分析
+我们先查看一下workerman的目录
+</code></pre>
+
+<p>.<br/>
+├── _webwww_y_cronshow_job.php.pid<br/>
+├── workerman<br/>
+│   ├── Autoloader.php<br/>
+│   ├── Connection<br/>
+│   │   ├── AsyncTcpConnection.php<br/>
+│   │   ├── AsyncUdpConnection.php<br/>
+│   │   ├── ConnectionInterface.php<br/>
+│   │   ├── TcpConnection.php<br/>
+│   │   └── UdpConnection.php<br/>
+│   ├── Events<br/>
+│   │   ├── Ev.php<br/>
+│   │   ├── Event.php<br/>
+│   │   ├── EventInterface.php<br/>
+│   │   ├── Libevent.php<br/>
+│   │   ├── React<br/>
+│   │   │   ├── Base.php<br/>
+│   │   │   ├── ExtEventLoop.php<br/>
+│   │   │   ├── ExtLibEventLoop.php<br/>
+│   │   │   └── StreamSelectLoop.php<br/>
+│   │   ├── Select.php<br/>
+│   │   └── Swoole.php<br/>
+│   ├── Lib<br/>
+│   │   ├── Constants.php<br/>
+│   │   └── Timer.php<br/>
+│   ├── MIT-LICENSE.txt<br/>
+│   ├── Protocols<br/>
+│   │   ├── Frame.php<br/>
+│   │   ├── Http<br/>
+│   │   │   ├── Chunk.php<br/>
+│   │   │   ├── Request.php<br/>
+│   │   │   ├── Response.php<br/>
+│   │   │   ├── ServerSentEvents.php<br/>
+│   │   │   ├── Session<br/>
+│   │   │   │   ├── FileSessionHandler.php<br/>
+│   │   │   │   └── RedisSessionHandler.php<br/>
+│   │   │   ├── Session.php<br/>
+│   │   │   └── mime.types<br/>
+│   │   ├── Http.php<br/>
+│   │   ├── ProtocolInterface.php<br/>
+│   │   ├── Text.php<br/>
+│   │   ├── Websocket.php<br/>
+│   │   └── Ws.php<br/>
+│   ├── README.md<br/>
+│   ├── Timer.php<br/>
+│   ├── Worker.php<br/>
+│   └── composer.json<br/>
+└── workerman.log</p>
+
+<pre><code class="language-text">上来来说
+Connection 连接类
+Events 网络事件类
+Protocols 请求协议类
+主要这三部分组成
+核心文件主要是Worker.php，不得不佩服workerman作者，简单即精华。
+所以我们从Worker.php文件开始说起
+
+![](media/16254492208395/16254501275579.jpg)
+其实我们所有服务都是从runAll开始
+![](media/16254492208395/16254501531720.jpg)
+
+一层层来分析一下runAll所做的事
+## checkSapiEnv 
+主要是检查环境符不符合要求
+## init 
+初始化主要生成master的pid文件和对应的log文件
+Timer::init(); 初始化事件
+![](media/16254492208395/16254503025591.jpg)
+注册并signal事件
+这里要了解一下php的pcntl库
+
+## parseCommand
+主要解析命令行的输入
+登录php job.php start 
+即对&#39;start&#39;,&#39;stop&#39;,&#39;restart&#39;,&#39;reload&#39;,&#39;status&#39;,&#39;connections&#39;等做接收处理 
+
+## daemonize
+判断是否需要守护进程，如约需要pcntl_fork当前一下
+
+## initWorkers
+初始化worker
+如果你定义了三组worker就三次
+例如
+</code></pre>
+
+<p>\(jobworker = new JobWorker();<br/>
+\)cronworker = new CronWorker();<br/>
+$webworker = new WebWorker();</p>
+
+<pre><code class="language-text">
+![](media/16254492208395/16254505578046.jpg)
+
+最近监听各worker的端口
+
+![](media/16254492208395/16254505897418.jpg)
+
+设置监听端口并设置接收监听resumeAccept
+
+这里主要使用到了php的stream和socket库
+
+![](media/16254492208395/16254506654332.jpg)
+resumeAccept会增加Event事件，监听每个用户请求的connection
+
+
+## installSignal
+注册Signal库，即触发各种网络进程事件
+例如ctrl-c关闭进程，kill -9关闭进程等
+这里要了解每个sig的含义
+SIGINT,SIGTERM,SIGHUP,SIGUSR1,SIGQUIT,SIGUSR2,SIGIO,SIGPIPE
+
+## saveMasterPid
+保存Master进程的pid
+
+## displayUI
+设置要显示的UI
+运行成功之后会有个界面
+![](media/16254492208395/16254508530042.jpg)
+
+## forkWorkers
+这里主要是查看定义worker里的个数，例如我们的webworker定义count=3，会生成webworker相关的3个子进程。
+
+## resetStd
+设置定义的输入输出
+
+## monitorWorkers
+使用pcntl_signal_dispatch事件，监控每个子进程的情况。
+Worker类就大概这样的情况了
+
+# 网络相关
+因为在stream和socket里，并没有协议做解释，所以协议的处理我们会在Protocols文件夹里做相对就的处理
+![](media/16254492208395/16254511266103.jpg)
+
+例如我们定义的是text://127.0.0.1:123, 就会找到Text做弄对应的处理
+http://0.0.0.0:456,即指定Http.php做相关处理
+协议的定义在workerman手册能找到
+
+# 结尾
+workerman为我们带来了异步，提升并发，这是比php-fpm带来更多的好处。但我们也要了解一下进程内是怎么一回事，因为mysql长链接断开等问题。
+workerman主要的难度是多进程和网络事件，这部分需要我们学习select、poll、epoll等。了解网络解释的一些过程，此篇比较精简说明一下workerman，后续更新每个模块的详解。
+</code></pre>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[nginx前后端分离的一些配置]]></title>
@@ -949,78 +1173,6 @@ systemctl start filebeat
 <p><img src="media/16002662215905/16002663188569.jpg" alt=""/></p>
 
 <p>多交流交流！</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[运营后台相关参数]]></title>
-    <link href="http://www.shengsheng.net/15983439644690.html"/>
-    <updated>2020-08-25T16:26:04+08:00</updated>
-    <id>http://www.shengsheng.net/15983439644690.html</id>
-    <content type="html"><![CDATA[
-<p>整理一下通用后台用到的统计标准，一文说清所有的指标。</p>
-
-<h2 id="toc_0">实用指标</h2>
-
-<p>日期<br/>
-区服<br/>
-新增注册数：规定区服条件下的新增注册玩家数<br/>
-老用户：规定区服条件下的非当日新增注册的登陆玩家数<br/>
-DAU：新增注册数+老用户 （日活跃用户）<br/>
-新用户付费金额：新增注册玩家的总付费金额 （新总）<br/>
-总付费金额：新增注册玩家+老用户产生的总充值金额 （新+老）<br/>
-新用户付费人数：新增注册玩家中充值玩家总数 （新付人数）<br/>
-新增付费率：新用户付费数/新增注册数 （新付数/新)<br/>
-总付费人数：新增注册玩家+老用户产生的总充值人数 (新付+老付)<br/>
-注册ARPPU：新用户付费金额/新用户付费人数 （新付/新付数）<br/>
-活跃ARPPU：总付费金额/总付费人数  （总付/总付人）<br/>
-活跃付费率：总付费人数/DAU  (总付数/活跃人数)<br/>
-活跃ARPU：活跃ARPPU<em>活跃付费率 (arppu</em>付费率，也可以= 总付金额/dau)<br/>
-至今（LTV和充值类型数据 可加入）<br/>
-活跃ARPU：活跃ARPPU*活跃付费率 （同上，很好理解，反过来的逻辑）<br/>
-新增付费率 = （新增付费人数 / 新增注册数) <br/>
-活跃付费率 = 付费用户数 / 总用户数<br/>
-注册ARPU = 新增人数付费金额 / 新增注册数<br/>
-注册ARPPU = 新增人数付费金额 / 新增付费人数<br/>
-活跃ARPU = 付费金额 / 总用户数<br/>
-活跃ARPPU = 付费金额 / 付费人数<br/>
-活跃付费率 = 付费用户 / 总用户数<br/>
-注册成本 = 成本 / 新增注册数 <br/>
-激活注册率 = 注册 / 激活数  （这个要创角上传的情况下）<br/>
-激活成本 = 成本 / 激活数     （激活看是否注册还是创角）<br/>
-创角率 = 创角数 / 新增注册数<br/><br/>
-DNU（Daily New Users）： 每日游戏中的新登入用户数量<br/>
-AU（Active Users）：活跃用户，统计周期内，登录过游戏的用户数<br/>
-相应的，根据统计周期，有DAU(日活跃用户)，WAU(周活跃用户),MAU(月活跃用户)等。<br/>
-PU ( Paying User）：付费用户<br/>
-APA（Active Payment Account）：活跃付费用户数<br/>
-这里我们要注意“用户”和“付费用户”的区分，这也将影响收入的计算。<br/>
-ARPU(Average Revenue Per User) ：平均每用户收入，即可通过 总收入/AU 计算得出。(平均收入每个用户)<br/>
-ARPPU (Average Revenue Per Paying User)： 平均每付费用户收入，可通过 总收入/APA 计算得出。（平均收入每个付费用户)<br/>
-PUR(Pay User Rate)：付费比率，可通过 APA/AU 计算得出。<br/>
-LTV(Lift Time Value)：生命周期价值，即平均一个用户在首次登录游戏到最后一次登录游戏内，为该游戏创造的收入总计<br/>
-投资回报率（ROI）=产出（销售收入）/ 投入（成本<br/>
-至今LTV = 累积金额 / 总人数<br/>
-苹果至今=苹果内购累积金额/注册数<br/>
-苹果付费金额</p>
-
-<h2 id="toc_1">其它</h2>
-
-<p>CPA：<br/>
-Cost Per Action 每效果成本——即按照效果付费。</p>
-
-<p>CPC：<br/>
-Cost Per Click;Cost Per Thousand Click-Through 每点击成本。</p>
-
-<p>CPT：<br/>
-Cost Per Time，CPT 是一种以时间来计费的广告。</p>
-
-<p>CPS：<br/>
-英文全称 Cost Per Sales。CPS 是一种以实际销售产品数量来计算广告费用的广告。</p>
-
-<p>CPPA：<br/>
-按照到达用户付费。既不是按照浏览量（PV）付费，也不是按照实际效果付费，而是按照到达的用户那个付费，在网站上等同于 UV，在手机端是新增用户上游数据（例如用户已下载安装还未打开激活 APP 的数量即为到达用户）</p>
 
 ]]></content>
   </entry>

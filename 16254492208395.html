@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+      
+    workerman源码分析_简略篇 - shengsheng的博客
+    
+    </title>
+    
+
+    
+    
+    <link href="atom.xml" rel="alternate" title="shengsheng的博客" type="application/atom+xml">
+    <link rel="stylesheet" href="asset/css/style.min.css">
+    <link rel="stylesheet" href="asset/css/doc.css">
+    <script src="asset/app.js"></script>
+</head>
+  <body>
+    <section class="hero">
+      <div class="hero-head">
+          <nav class="navbar" role="navigation" aria-label="main navigation">
+              <div class="container">
+              <div class="navbar-brand">
+                
+                <a target="self" class="navbar-item " href="index.html">Home</a>
+                
+                <a target="_self" class="navbar-item " href="archives.html">Archives</a>
+                
+
+                <a role="button" id="navbarSNSRssSwitchBtn" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarSNSRssButtons">
+                  <span aria-hidden="true"></span>
+                  <span aria-hidden="true"></span>
+                  <span aria-hidden="true"></span>
+                </a>
+              </div>
+            
+              <div id="navbarSNSRssButtons" class="navbar-menu">
+                <div class="navbar-start">
+                  
+                </div>
+            
+                <div class="navbar-end">
+                  <div class="navbar-item">
+                    <!--buttons start-->
+                    <div class="buttons">
+                      
+                        
+                        
+                        
+                        <a href="https://github.com/showx" target="_blank" title="github">
+                            <span class="icon is-large has-text-grey-darker">
+                               <svg class="svg-inline--fa fa-github fa-w-16 fa-lg" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="github" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" data-fa-i2svg=""><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg><!-- <i class="fab fa-github fa-lg"></i> -->
+                            </span>
+                          </a>
+                        
+                        
+                      
+                      <a href="atom.xml" target="_blank" title="RSS">
+                          <span class="icon is-large has-text-black-bis">
+                              <svg class="svg-inline--fa fa-rss fa-w-14 fa-lg" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="rss" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M128.081 415.959c0 35.369-28.672 64.041-64.041 64.041S0 451.328 0 415.959s28.672-64.041 64.041-64.041 64.04 28.673 64.04 64.041zm175.66 47.25c-8.354-154.6-132.185-278.587-286.95-286.95C7.656 175.765 0 183.105 0 192.253v48.069c0 8.415 6.49 15.472 14.887 16.018 111.832 7.284 201.473 96.702 208.772 208.772.547 8.397 7.604 14.887 16.018 14.887h48.069c9.149.001 16.489-7.655 15.995-16.79zm144.249.288C439.596 229.677 251.465 40.445 16.503 32.01 7.473 31.686 0 38.981 0 48.016v48.068c0 8.625 6.835 15.645 15.453 15.999 191.179 7.839 344.627 161.316 352.465 352.465.353 8.618 7.373 15.453 15.999 15.453h48.068c9.034-.001 16.329-7.474 16.005-16.504z"></path></svg><!-- <i class="fas fa-rss fa-lg"></i> -->
+                          </span>
+                      </a>
+                    </div>
+                    <!--buttons end-->
+
+                  </div>
+                </div>
+                </div>
+              </div>
+            </nav>
+      </div>
+
+ <div class="hero-body ct-body"></div>
+      
+    </section>
+    <section class="ct-body">
+      <div class="container">
+          <div class="columns is-variable bd-klmn-columns is-4 is-centered">
+              <div class="column is-four-fifths">
+                  <div class="post-body single-content">
+                    
+                    <h1 class="title">
+                            workerman源码分析_简略篇   
+                      </h1>
+                     
+                    
+                      <div class="media">
+                            
+                            <figure class="media-left">
+                              <p class="image is-48x48">
+                                
+                                  <img class="is-rounded" src="https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLNy2NWBlSIIciaVib8aH6QbLrMiaf7BHibFicW4mp1mc3J1HXm3SKRceeJaqeb8oBos98XbMJRYecyPTw/132">
+                                
+                              </p>
+                            </figure>
+                            
+                            <div class="media-content">
+                              <div class="content">
+                                <p>
+                                 <span class="date">2021/07/05</span>
+                                  <span class="tran-posted-in">posted in</span>&nbsp; 
+                                  
+                                      <span class="posted-in"><a href='server.html'>服务端</a></span>
+                                         
+                                  
+
+                                   
+                                      
+                                  <br />
+                                  <span class="tran-tags">Tags:</span>&nbsp;
+                                  
+                                    <a class="tag is-link is-light" href='tag_php.html'>#php</a>
+                                  
+                                    <a class="tag is-link is-light" href='tag_%E7%BD%91%E7%BB%9C.html'>#网络</a>
+                                     
+
+                                </p>
+                              </div>
+                            </div>
+                         
+                    </div>
+                </div>
+                  <article class="markdown-body single-content">
+                    <p>使用workerman在写一个cronjob项目，出现问题引发的wm分析。</p>
+
+<p><img src="media/16254492208395/16254493083277.jpg" alt=""/><br/>
+配置个web的http worker</p>
+
+<p>在代码里再请求curl 8089端口，即<a href="http://127.0.0.1:8089">http://127.0.0.1:8089</a><br/>
+为了调试，我们开启curl的debug功能</p>
+
+<pre><code class="language-text">curl_setopt($ch, CURLOPT_VERBOSE, true); // curl debug
+curl_setopt($ch, CURLOPT_STDERR, fopen(CRONPATH.&#39;/Application/Log/curl.log&#39;, &#39;w+&#39;));
+$response = curl_getinfo( $ch );
+</code></pre>
+
+<p>测试正常连接百度是正常的，但连接127.0.0.1:8089一直在等待中<br/>
+Warning: file_get_contents(<a href="http://127.0.0.1:8089/?op=cl_list&amp;secret=b61e757422497ccaef7dab5d59b180dd">http://127.0.0.1:8089/?op=cl_list&amp;secret=b61e757422497ccaef7dab5d59b180dd</a>): Failed to open stream: HTTP request failed! in /webwww/y/cronshow/Application/Library/Web.php on line 174</p>
+
+<pre><code class="language-text">curl_start
+exec
+* Expire in 0 ms for 6 (transfer 0x558eac35eb10)
+* Expire in 2000 ms for 8 (transfer 0x558eac35eb10)
+* Expire in 2000 ms for 2 (transfer 0x558eac35eb10)
+*   Trying 127.0.0.1...
+* TCP_NODELAY set
+* Expire in 200 ms for 4 (transfer 0x558eac35eb10)
+* Connected to 127.0.0.1 (127.0.0.1) port 8089 (#0)
+&gt; GET /?op=cl_list&amp;secret=b61e757422497ccaef7dab5d59b180dd HTTP/1.1
+Host: 127.0.0.1:8089
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.5
+Cache-Control: no-cache
+Content-Type: application/x-www-form-urlencoded; charset=utf-8
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:28.0) Gecko/20100101 Firefox/28.0
+X-MicrosoftAjax: Delta=true
+
+* Operation timed out after 2000 milliseconds with 0 bytes received
+* Closing connection 0
+</code></pre>
+
+<p>显示2秒之后断开</p>
+
+<p>docker里开启strace调试</p>
+
+<pre><code class="language-text">docker run --cap-add=SYS_PTRACE -it -v ~/code:/webwww --name php-fpm-8033 show/php-fpm:8.0.3
+</code></pre>
+
+<p>进入docker里查看 ```<br/>
+strace -tt -p 对应进程端口<br/>
+可使用php job.php status查看workerman的worker端口</p>
+
+<pre><code class="language-text">可以监测到连接8089的时候是-1
+</code></pre>
+
+<p>socket(AF_INET, SOCK_STREAM, IPPROTO_IP) = 8</p>
+
+<p>connect(8, {sa_family=AF_INET, sin_port=htons(8089), sin_addr=inet_addr(&quot;127.0.0.1&quot;)}, 16) = -1 EINPROGRESS (Operation now in progress)</p>
+
+<p>getpeername(8, {sa_family=AF_INET, sin_port=htons(8089), sin_addr=inet_addr(&quot;127.0.0.1&quot;)}, [128-&gt;16]) = 0<br/>
+getsockname(8, {sa_family=AF_INET, sin_port=htons(53752), sin_addr=inet_addr(&quot;127.0.0.1&quot;)}, [128-&gt;16]) = 0</p>
+
+<pre><code class="language-text">正常的情况下是0
+</code></pre>
+
+<p>connect(9, {sa_family=AF_INET, sin_port=htons(53), sin_addr=inet_addr(&quot;192.168.65.1&quot;)}, 16) = 0</p>
+
+<pre><code class="language-text">
+这时候思考到workerman的count参数只开启了一个阻塞进程，故而改成3个进程即可。
+
+通过这个事故，下定决定分析workerman源码
+
+## 分析
+我们先查看一下workerman的目录
+</code></pre>
+
+<p>.<br/>
+├── _webwww_y_cronshow_job.php.pid<br/>
+├── workerman<br/>
+│   ├── Autoloader.php<br/>
+│   ├── Connection<br/>
+│   │   ├── AsyncTcpConnection.php<br/>
+│   │   ├── AsyncUdpConnection.php<br/>
+│   │   ├── ConnectionInterface.php<br/>
+│   │   ├── TcpConnection.php<br/>
+│   │   └── UdpConnection.php<br/>
+│   ├── Events<br/>
+│   │   ├── Ev.php<br/>
+│   │   ├── Event.php<br/>
+│   │   ├── EventInterface.php<br/>
+│   │   ├── Libevent.php<br/>
+│   │   ├── React<br/>
+│   │   │   ├── Base.php<br/>
+│   │   │   ├── ExtEventLoop.php<br/>
+│   │   │   ├── ExtLibEventLoop.php<br/>
+│   │   │   └── StreamSelectLoop.php<br/>
+│   │   ├── Select.php<br/>
+│   │   └── Swoole.php<br/>
+│   ├── Lib<br/>
+│   │   ├── Constants.php<br/>
+│   │   └── Timer.php<br/>
+│   ├── MIT-LICENSE.txt<br/>
+│   ├── Protocols<br/>
+│   │   ├── Frame.php<br/>
+│   │   ├── Http<br/>
+│   │   │   ├── Chunk.php<br/>
+│   │   │   ├── Request.php<br/>
+│   │   │   ├── Response.php<br/>
+│   │   │   ├── ServerSentEvents.php<br/>
+│   │   │   ├── Session<br/>
+│   │   │   │   ├── FileSessionHandler.php<br/>
+│   │   │   │   └── RedisSessionHandler.php<br/>
+│   │   │   ├── Session.php<br/>
+│   │   │   └── mime.types<br/>
+│   │   ├── Http.php<br/>
+│   │   ├── ProtocolInterface.php<br/>
+│   │   ├── Text.php<br/>
+│   │   ├── Websocket.php<br/>
+│   │   └── Ws.php<br/>
+│   ├── README.md<br/>
+│   ├── Timer.php<br/>
+│   ├── Worker.php<br/>
+│   └── composer.json<br/>
+└── workerman.log</p>
+
+<pre><code class="language-text">上来来说
+Connection 连接类
+Events 网络事件类
+Protocols 请求协议类
+主要这三部分组成
+核心文件主要是Worker.php，不得不佩服workerman作者，简单即精华。
+所以我们从Worker.php文件开始说起
+
+![](media/16254492208395/16254501275579.jpg)
+其实我们所有服务都是从runAll开始
+![](media/16254492208395/16254501531720.jpg)
+
+一层层来分析一下runAll所做的事
+## checkSapiEnv 
+主要是检查环境符不符合要求
+## init 
+初始化主要生成master的pid文件和对应的log文件
+Timer::init(); 初始化事件
+![](media/16254492208395/16254503025591.jpg)
+注册并signal事件
+这里要了解一下php的pcntl库
+
+## parseCommand
+主要解析命令行的输入
+登录php job.php start 
+即对&#39;start&#39;,&#39;stop&#39;,&#39;restart&#39;,&#39;reload&#39;,&#39;status&#39;,&#39;connections&#39;等做接收处理 
+
+## daemonize
+判断是否需要守护进程，如约需要pcntl_fork当前一下
+
+## initWorkers
+初始化worker
+如果你定义了三组worker就三次
+例如
+</code></pre>
+
+<p>\(jobworker = new JobWorker();<br/>
+\)cronworker = new CronWorker();<br/>
+$webworker = new WebWorker();</p>
+
+<pre><code class="language-text">
+![](media/16254492208395/16254505578046.jpg)
+
+最近监听各worker的端口
+
+![](media/16254492208395/16254505897418.jpg)
+
+设置监听端口并设置接收监听resumeAccept
+
+这里主要使用到了php的stream和socket库
+
+![](media/16254492208395/16254506654332.jpg)
+resumeAccept会增加Event事件，监听每个用户请求的connection
+
+
+## installSignal
+注册Signal库，即触发各种网络进程事件
+例如ctrl-c关闭进程，kill -9关闭进程等
+这里要了解每个sig的含义
+SIGINT,SIGTERM,SIGHUP,SIGUSR1,SIGQUIT,SIGUSR2,SIGIO,SIGPIPE
+
+## saveMasterPid
+保存Master进程的pid
+
+## displayUI
+设置要显示的UI
+运行成功之后会有个界面
+![](media/16254492208395/16254508530042.jpg)
+
+## forkWorkers
+这里主要是查看定义worker里的个数，例如我们的webworker定义count=3，会生成webworker相关的3个子进程。
+
+## resetStd
+设置定义的输入输出
+
+## monitorWorkers
+使用pcntl_signal_dispatch事件，监控每个子进程的情况。
+Worker类就大概这样的情况了
+
+# 网络相关
+因为在stream和socket里，并没有协议做解释，所以协议的处理我们会在Protocols文件夹里做相对就的处理
+![](media/16254492208395/16254511266103.jpg)
+
+例如我们定义的是text://127.0.0.1:123, 就会找到Text做弄对应的处理
+http://0.0.0.0:456,即指定Http.php做相关处理
+协议的定义在workerman手册能找到
+
+# 结尾
+workerman为我们带来了异步，提升并发，这是比php-fpm带来更多的好处。但我们也要了解一下进程内是怎么一回事，因为mysql长链接断开等问题。
+workerman主要的难度是多进程和网络事件，这部分需要我们学习select、poll、epoll等。了解网络解释的一些过程，此篇比较精简说明一下workerman，后续更新每个模块的详解。
+</code></pre>
+
+                  </article>
+                  <div class="comments-wrap">
+                    <div class="share-comments">
+                      
+
+                      
+
+                      
+                    </div>
+                  </div><!-- end comments wrap -->
+              </div>
+            </div><!-- end columns -->
+      </div><!-- end container -->
+    </section>
+
+
+
+    <footer class="footer">
+        <div class="content has-text-centered">
+          <p>
+              Copyright &copy; 2019
+              Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a>,&nbsp; 
+              Theme used <a target="_blank" href="https://bulma.io/">Bulma CSS</a>.
+          </p>
+        </div>
+      </footer>
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({TeX: { equationNumbers: { autoNumber: "AMS" } }});</script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="asset/prism.js"></script>
+
+
+
+  
+    
+
+
+
+
+  </body>
+</html>
