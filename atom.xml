@@ -4,13 +4,99 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2021-07-05T10:15:36+08:00</updated>
+  <updated>2021-07-05T10:20:09+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[GatewayWorker源码分析]]></title>
+    <link href="http://www.shengsheng.net/16260545730464.html"/>
+    <updated>2021-07-12T09:49:33+08:00</updated>
+    <id>http://www.shengsheng.net/16260545730464.html</id>
+    <content type="html"><![CDATA[
+<p>GatewayWorker官方介绍是为了开发长连接的应用。<br/>
+<img src="media/16260545730464/16260552306177.jpg" alt=""/></p>
+
+<p>register在worker进程和gateway进程中间</p>
+
+<h1 id="toc_0">运行</h1>
+
+<p>我们下载运行一下<br/>
+<img src="media/16260545730464/16260547552327.jpg" alt=""/></p>
+
+<p>主要由3个worker组成，对应文件里的3个<br/>
+<img src="media/16260545730464/16260548072167.jpg" alt=""/></p>
+
+<p>我们主要将逻辑写在Events.php事件逻辑里即可，其它交给布署的人员。<br/>
+跟websocket三核心方法一样<br/>
+onConnect // 客户连接<br/>
+onMessage // 处理客户消息<br/>
+onClose  // 客户关闭</p>
+
+<h1 id="toc_1">核心文件</h1>
+
+<p>因为GatewayWorker依赖workerman的原因，源码文件并不多，主要我们要掌握思路<br/>
+.<br/>
+├── BusinessWorker.php   用户事件处理<br/>
+├── Gateway.php           gateway<br/>
+├── Lib<br/>
+│   ├── Context.php        上下文管理<br/>
+│   ├── Db.php              db类<br/>
+│   ├── DbConnection.php    db连接，作池使用<br/>
+│   └── Gateway.php         gateway方法，主要学习这个类<br/>
+├── Protocols<br/>
+│   └── GatewayProtocol.php  通讯协议<br/>
+└── Register.php             Register类</p>
+
+<p>Protocols和Lib暂且可以不分析，除了Lib/Gateway.php文件</p>
+
+<h2 id="toc_2">Register</h2>
+
+<p><img src="media/16260545730464/16260552047947.jpg" alt=""/></p>
+
+<p>主要是管理gateway连接和worker连接, 然后广播一下地址broadcastAddresses</p>
+
+<h2 id="toc_3">BusinessWorker</h2>
+
+<p>BusinessWorker主要是调用用户Events.php的逻辑, 并向GateWay保持通讯<br/>
+<img src="media/16260545730464/16260554002541.jpg" alt=""/></p>
+
+<h2 id="toc_4">GatewayWorker</h2>
+
+<p>主要是入口，例如每个浏览器先访问GatewayWorker, GatewayWorker再到找Register进程，连接到用户逻辑模块。<br/>
+<img src="media/16260545730464/16260555234794.jpg" alt=""/></p>
+
+<h2 id="toc_5">Lib\Gateway</h2>
+
+<p>很多核心逻辑处理，主要看这个类<br/>
+<img src="media/16260545730464/16260557258793.jpg" alt=""/></p>
+
+<p>方法比较多<br/>
+sendToAll 广播信息<br/>
+sendToClient 发送给指定客户<br/>
+isUidOnline  判断某个客户端是否在线<br/>
+isOnline    是否在线<br/>
+getClientInfoByGroup    获取某个组信息<br/>
+getAllClientIdCount     获取所有在线client_id数<br/>
+getUidListByGroup   获取某个群组在线uid<br/>
+getAllUidList   获取全局在线uid<br/>
+等等<br/>
+方法比较多，需每个认真查看逻辑，分析作者设计思想</p>
+
+<h1 id="toc_6">总结</h1>
+
+<p>总的来说GatewayWorker的设计思想还是比较好的，可以横向扩展分布式的思路。如果不关心是怎么运作，倒是写好Events.php就够用，学习好Lib\Gateways的方法。</p>
+
+<h1 id="toc_7">附录</h1>
+
+<p><a href="http://doc2.workerman.net/">GatewayWorker手册</a></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[workerman源码分析_简略篇]]></title>
@@ -1174,22 +1260,6 @@ systemctl start filebeat
 <h1 id="toc_4">总结</h1>
 
 <p>使用云服务不用懂配置，直接就能使用了,相对监控来说，elk这块使用上更方便。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[php微服务的分享]]></title>
-    <link href="http://www.shengsheng.net/16002662215905.html"/>
-    <updated>2020-09-16T22:23:41+08:00</updated>
-    <id>http://www.shengsheng.net/16002662215905.html</id>
-    <content type="html"><![CDATA[
-<p>几分钟写的ppt，讲了一小时。<br/>
-<img src="media/16002662215905/16002662808301.jpg" alt=""/></p>
-
-<p><img src="media/16002662215905/16002663188569.jpg" alt=""/></p>
-
-<p>多交流交流！</p>
 
 ]]></content>
   </entry>
