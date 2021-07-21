@@ -4,13 +4,106 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2021-07-05T10:20:09+08:00</updated>
+  <updated>2021-07-12T10:14:08+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[ansible极速入门]]></title>
+    <link href="http://www.shengsheng.net/16268654750373.html"/>
+    <updated>2021-07-21T19:04:35+08:00</updated>
+    <id>http://www.shengsheng.net/16268654750373.html</id>
+    <content type="html"><![CDATA[
+<p>之前使用pssh来做快速管理，ansible会比pssh加强，所以用他一下</p>
+
+<h1 id="toc_0">安装</h1>
+
+<p>首先我们在主要的服务器上使用yum来安装一下</p>
+
+<pre><code class="language-text">yum -y install ansible
+</code></pre>
+
+<p>安装完之后，更新一下主机配置<br/>
+vim /etc/ansible/hosts</p>
+
+<p>例如我们配置一组ip</p>
+
+<pre><code class="language-text">[mg]
+1.55.239.140
+1.71.34.97
+1.75.220.150
+1.75.207.240
+</code></pre>
+
+<p>生成密钥（这个可以详看我写的openssh通讯）</p>
+
+<pre><code class="language-text">ssh-keygen -t rsa
+</code></pre>
+
+<p>将pub加到其它机器上，实现ssh通讯</p>
+
+<h1 id="toc_1">具体命令</h1>
+
+<p>Ansible的命令格式为， ansible 主机群组名 -m 命令模块名 -a &quot;批量执行的操作&quot;<br/>
+其中-m不是必须的，默认为command模块，-a也不是必须的，表示命令模块的参数，比如前面的ping模块就没有参数。<br/>
+可以使用 ansible-doc -l 列出所有可用的命令模块， ansible-doc -s 模块名 查看指定模块的参数信息</p>
+
+<pre><code class="language-text">ping # 主机连通性测试
+command # 在远程主机上执行命令,不支持管道
+shell # 在远程主机上调用shell解析器,支持管道命令个
+copy # 用于将文件复制到远程主机,支持设定内容和修改权限.
+file # 创建文件,创建连接文件,删除文件等
+fetch # 从远程复制文件到本地
+cron # 管理cron计划任务
+yum # 用于模块的安装
+service # 管理服务
+user # 管理用户账号
+group # 用户组管理
+script # 将本地的脚本在远端服务器运行
+setup # 该模块主要用于收集信息，是通过调用facts组件来实现的,以变量形式存储主机上的信息
+</code></pre>
+
+<p>暂时使用得最多的是command和shell</p>
+
+<h3 id="toc_2">检测指定ip</h3>
+
+<p><code><br/>
+ansible 127.0.0.1 -m ping<br/>
+</code></p>
+
+<h3 id="toc_3">特定组</h3>
+
+<p><code><br/>
+ansible mg -m ping<br/>
+</code></p>
+
+<h3 id="toc_4">所有配置</h3>
+
+<p><code><br/>
+ansible all -m ping<br/>
+</code></p>
+
+<h1 id="toc_5">批量操作示例</h1>
+
+<pre><code class="language-text">ansible mg -m shell -a &quot;yum install -y yum-utils device-mapper-persistent-data lvm2&quot;
+
+ansible mg -m shell -a &quot;yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo&quot;
+
+ansible mg -m shell -a &quot;yum -y install docker-ce docker-ce-cli containerd.io&quot;
+
+ansible mg -m shell -a &quot;systemctl start docker&quot;
+</code></pre>
+
+<h1 id="toc_6">总结</h1>
+
+<p>ansible更高级的功能暂时没用上，但批量处理命令的方式实在是方便！</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[GatewayWorker源码分析]]></title>
@@ -1195,71 +1288,6 @@ console.log(&#39;app started at port 3000...&#39;);
     <content type="html"><![CDATA[
 <p>h12-221,h12-222,h12-223,共三科。<br/>
 <img src="media/16073046089051/16073046741619.jpg" alt=""/></p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[ELK数据分析]]></title>
-    <link href="http://www.shengsheng.net/16045584516905.html"/>
-    <updated>2020-11-05T14:40:51+08:00</updated>
-    <id>http://www.shengsheng.net/16045584516905.html</id>
-    <content type="html"><![CDATA[
-<p>ELK（elasticsearch、logstash、kibana）,使用这个套件分析数据<br/>
-logstash占用比较大，实际只用了filebeat作为分析使用。</p>
-
-<h1 id="toc_0">搭建</h1>
-
-<p>自己可以根据docker来搭建，当然也可以直接使用腾讯云的elasticsearch service服务。</p>
-
-<h1 id="toc_1">客户端</h1>
-
-<p>在客户端装上filebeat</p>
-
-<pre><code class="language-text">curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.5.1-x86_64.rpm
-sudo rpm -vi filebeat-7.5.1-x86_64.rpm
-</code></pre>
-
-<p>编辑/etc/filebeat/filebeat.yml内容</p>
-
-<pre><code class="language-text">filebeat.config.modules:
-  path: ${path.config}/modules.d/*.yml
-  reload.enabled: true
-  reload.period: 10s
-setup.kibana:
-  host: &quot;xxxx.kibana.tencentelasticsearch.com:5601&quot;
-
-output.elasticsearch:
-      hosts: [&quot;172.16.16.8:9200&quot;]
-      protocol: &quot;http&quot;
-      username: &quot;elastic&quot;
-      password: &quot;xxx&quot;
-      
-</code></pre>
-
-<p>这里使用nginx module，上报一下nginx</p>
-
-<pre><code class="language-text">filebeat modules enable nginx
-filebeat modules list  # 查看启动之后的模块
-# /etc/filebeat/modules.d/nginx.yml 填写相关nginx日志文件
-filebeat setup
-systemctl start filebeat
-# 可使用filebeat -e 测试并打印一下
-</code></pre>
-
-<p>回到kibana查看dashboard与日志</p>
-
-<h3 id="toc_2">nginx数据</h3>
-
-<p><img src="media/16045584516905/16045588949397.jpg" alt=""/></p>
-
-<h3 id="toc_3">系统cpu</h3>
-
-<p><img src="media/16045584516905/16045589182355.jpg" alt=""/></p>
-
-<h1 id="toc_4">总结</h1>
-
-<p>使用云服务不用懂配置，直接就能使用了,相对监控来说，elk这块使用上更方便。</p>
 
 ]]></content>
   </entry>
