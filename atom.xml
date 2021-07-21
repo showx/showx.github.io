@@ -4,7 +4,7 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2021-07-12T10:14:08+08:00</updated>
+  <updated>2021-07-21T19:11:39+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -65,6 +65,24 @@ user # 管理用户账号
 group # 用户组管理
 script # 将本地的脚本在远端服务器运行
 setup # 该模块主要用于收集信息，是通过调用facts组件来实现的,以变量形式存储主机上的信息
+
+-------------------------------------------------------------------
+
+ansible mg -m command -a &quot;free -g&quot;
+ansible mg -m shell -a &quot;free -g|grep Mem&quot;
+ansible mg -m script -a &quot;/root/echo.sh&quot;
+ansible mg -m copy -a &quot;src=/root/echo.sh dest=/tmp/ owner=root group=root mode=0755&quot;
+ansible mg -m yum -a &quot;name=wget state=latest&quot;
+ansible mg -m service -a &quot;name=nginx state=stoped&quot;
+ansible mg -m get_url -a &quot;url=http://www.baidu.com dest=/tmp/index.html mode=0440 force=yes&quot;
+ansible mg -m setup
+ansible mg -m file -a &quot;dest=/opt/test state=touch&quot;
+directory：创建目录
+file：如果文件不存在，则创建
+link：创建symbolic link
+absent：删除文件或目录
+touch： 创建一个不存在的空文件
+ansible mg -m cron -a &quot;name=&#39;backup servcie&#39; minute=*/5 job=&#39;/usr/sbin/ntpdate  time.nist.gov &gt;/dev/null 2&gt;&amp;1&#39;&quot;
 </code></pre>
 
 <p>暂时使用得最多的是command和shell</p>
