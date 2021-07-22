@@ -4,13 +4,100 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2021-07-21T19:11:39+08:00</updated>
+  <updated>2021-07-21T19:13:29+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[ab测试php接口]]></title>
+    <link href="http://www.shengsheng.net/16269522469797.html"/>
+    <updated>2021-07-22T19:10:46+08:00</updated>
+    <id>http://www.shengsheng.net/16269522469797.html</id>
+    <content type="html"><![CDATA[
+<p>接口测试，我们一般会使用ab、wrk等工具。公司培训了一下php服务端人员，故记录一下。</p>
+
+<h2 id="toc_0">ab命令详解</h2>
+
+<pre><code class="language-text">-n 即requests，用于指定压力测试总共的执行次数。
+-c 即concurrency，用于指定的并发数。
+-t 即timelimit，等待响应的最大时间(单位：秒)。
+-b 即windowsize，TCP发送/接收的缓冲大小(单位：字节)。
+-p 即postfile，发送POST请求时需要上传的文件，此外还必须设置-T参数。
+-u 即putfile，发送PUT请求时需要上传的文件，此外还必须设置-T参数。
+-T 即content-type，用于设置Content-Type请求头信息，例如：application/x-www-form-urlencoded，默认值为text/plain。
+-v 即verbosity，指定打印帮助信息的冗余级别。
+-w 以HTML表格形式打印结果。
+-i 使用HEAD请求代替GET请求。
+-x 插入字符串作为table标签的属性。
+-y 插入字符串作为tr标签的属性。
+-z 插入字符串作为td标签的属性。
+-C 添加cookie信息，例如：&quot;Apache=1234&quot;(可以重复该参数选项以添加多个)。
+-H 添加任意的请求头，例如：&quot;Accept-Encoding: gzip&quot;，请求头将会添加在现有的多个请求头之后(可以重复该参数选项以添加多个)。
+-A 添加一个基本的网络认证信息，用户名和密码之间用英文冒号隔开。
+-P 添加一个基本的代理认证信息，用户名和密码之间用英文冒号隔开。
+-X 指定使用的和端口号，例如:&quot;126.10.10.3:88&quot;。
+-V 打印版本号并退出。
+-k 使用HTTP的KeepAlive特性。
+-d 不显示百分比。
+-S 不显示预估和警告信息。
+-g 输出结果信息到gnuplot格式的文件中。
+-e 输出结果信息到CSV格式的文件中。
+-r 指定接收到错误信息时不退出程序。
+-h 显示用法信息，其实就是ab -help。
+
+</code></pre>
+
+<p>模拟并发请求100次，总共请求10000次<br/>
+命令模板：<br/>
+ab -c 100 -n 10000 待测试网站（建议完整路径）<br/>
+内容解释：</p>
+
+<pre><code class="language-text">Server Software: nginx/1.10.2 (服务器软件名称及版本信息)
+Server Hostname: 192.168.1.106(服务器主机名)
+Server Port: 80 (服务器端口)
+Document Path: /index1.html. (供测试的URL路径)
+Document Length: 3721 bytes (供测试的URL返回的文档大小)
+Concurrency Level: 1000 (并发数)
+Time taken for tests: 2.327 seconds (压力测试消耗的总时间)
+Complete requests: 5000 (的总次数)
+Failed requests: 688 (失败的请求数)
+Write errors: 0 (网络连接写入错误数)
+Total transferred: 17402975 bytes (传输的总数据量)
+HTML transferred: 16275725 bytes (HTML文档的总数据量)
+Requests per second: 2148.98 [#/sec] (mean) (平均每秒的请求数) 这个是非常重要的参数数值，服务器的吞吐量
+Time per request: 465.338 [ms] (mean) (所有并发用户(这里是1000)都请求一次的平均时间)
+Time request: 0.247 [ms] (mean, across all concurrent requests) (单个用户请求一次的平均时间)
+Transfer rate: 7304.41 [Kbytes/sec] received 每秒获取的数据长度 (传输速率，单位：KB/s)
+</code></pre>
+
+<h1 id="toc_1">模式的测试</h1>
+
+<p><img src="media/16269522469797/16269529874477.jpg" alt=""/></p>
+
+<p>php-fpm、workerman http、swoole http、swoole协程http, 主要围绕这几种来展开</p>
+
+<h2 id="toc_2">swoole模式</h2>
+
+<p><img src="media/16269522469797/16269524233041.jpg" alt=""/></p>
+
+<h1 id="toc_3">workerman模式</h1>
+
+<p><img src="media/16269522469797/16269525030649.jpg" alt=""/></p>
+
+<h2 id="toc_4">php-fpm模式</h2>
+
+<p><img src="media/16269522469797/16269525696896.jpg" alt=""/></p>
+
+<h1 id="toc_5">总结</h1>
+
+<p>这里可以查看得知php-fpm进程每次要ast一下代码过程会减慢速度，简单业务的情况下，workerman会更快一些。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ansible极速入门]]></title>
@@ -1294,18 +1381,6 @@ console.log(&#39;app started at port 3000...&#39;);
 <h1 id="toc_4">总结</h1>
 
 <p>总的来说入门理解比较容易，能快速开发，基本完成这个项目只花了两天时间。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[华为hcip证书]]></title>
-    <link href="http://www.shengsheng.net/16073046089051.html"/>
-    <updated>2020-12-07T09:30:08+08:00</updated>
-    <id>http://www.shengsheng.net/16073046089051.html</id>
-    <content type="html"><![CDATA[
-<p>h12-221,h12-222,h12-223,共三科。<br/>
-<img src="media/16073046089051/16073046741619.jpg" alt=""/></p>
 
 ]]></content>
   </entry>
