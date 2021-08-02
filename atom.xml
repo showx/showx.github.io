@@ -4,13 +4,64 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2021-07-22T19:24:36+08:00</updated>
+  <updated>2021-07-26T17:13:58+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[服务器迁移注意事项]]></title>
+    <link href="http://www.shengsheng.net/16278746836691.html"/>
+    <updated>2021-08-02T11:24:43+08:00</updated>
+    <id>http://www.shengsheng.net/16278746836691.html</id>
+    <content type="html"><![CDATA[
+<p>迁移一般使用scp或rsync比较多，此文记录迁移遇到的坑。</p>
+
+<h1 id="toc_0">rsync的使用</h1>
+
+<p>因为不使用rsync://协议，不走配置文件。配置文件太麻烦了，我们直接使用ssh的22端口进行传输。<br/>
+首先要同步的机上都安装上rsync.<br/>
+<code><br/>
+yum install -y rsync<br/>
+</code><br/>
+同步命令</p>
+
+<pre><code class="language-text">rsync -av --progress --exclude=&quot;vendor/*&quot;  源目录/  目标目录/
+
+
+rsync -av --progress --exclude=&quot;vendor/*&quot; --exclude=&quot;Runtime/log/*&quot; root@163.163.163.163:/webwww/www/slplat /webwww/www/
+</code></pre>
+
+<h3 id="toc_1">参数解释</h3>
+
+<p>--exclude 排除要同步的目录<br/>
+-a 参数表示存档模式，保存所有的元数据，比如修改时间（modification time）、权限、所有者等，并且软链接也会同步过去。<br/>
+-v 输出细节<br/>
+--progress  输出同步信息</p>
+
+<p>每次运行即可同步信息</p>
+
+<h2 id="toc_2">同步好文件之后，一般要停掉源服务器的写入，因为要同步数据库迁移。</h2>
+
+<p>这里可以使用腾讯云的数据库迁移工具。</p>
+
+<p><img src="media/16278746836691/16278751728151.jpg" alt=""/><br/>
+或使用navicat mysql的迁移工具。<br/>
+这里要注意同步的话要同版本迁移，例如mysql5.7，目标数据库最好是5.7，如使用8.0.22可能有问题，因为mysql8.0.22去掉int类型的位长。</p>
+
+<h1 id="toc_3">dns与cdn的更新</h1>
+
+<p>因为dns可能存在缓存的问题，并不能及时更新到用户层，所以源来的服务器最好开启，把数据库等连接填写新外网的数据库。</p>
+
+<h1 id="toc_4">测试</h1>
+
+<p>最后一步测试流程，例如有些接口做了ip白名单的，要主动加上。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ab测试php接口]]></title>
@@ -1274,113 +1325,6 @@ $result = http::postjson($url,$param);
 </code></pre>
 
 <p>暂时觉得阿里云的最好用，镜像60秒同步一次。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[node.js web框架]]></title>
-    <link href="http://www.shengsheng.net/16081725657882.html"/>
-    <updated>2020-12-17T10:36:05+08:00</updated>
-    <id>http://www.shengsheng.net/16081725657882.html</id>
-    <content type="html"><![CDATA[
-<p>有个小服务，需要使用node.js运行，需要提供一个后台给运营人员使用，故使用node web框架来搭建。Egg.js是不错的选择，不过服务不需要那么大型，所以采用koa快速开发</p>
-
-<h1 id="toc_0">使用到的node.js扩展</h1>
-
-<pre><code class="language-text">// web框架
-const Koa = require(&#39;koa&#39;);
-// 路由
-const router = require(&#39;koa-router&#39;)();
-// 运行系统shell脚本
-const shelljs = require(&#39;shelljs&#39;);
-// http请求
-const koaBody = require(&#39;koa-body&#39;);
-// 文件操作
-const fs = require(&#39;fs&#39;);
-// 路径相关
-const path = require(&quot;path&quot;);
-// 静态资源服务器
-const static = require(&#39;koa-static&#39;);
-// zip压缩与解压
-// const AdmZip = require(&#39;adm-zip&#39;);
-// 支付中文版的adm-zip
-const AdmZip = require(&#39;adm-zip-iconv&#39;);
-</code></pre>
-
-<h1 id="toc_1">router路由</h1>
-
-<pre><code class="language-text">router.get(&#39;/test&#39;, async (ctx, next) =&gt; {
-    console.log(ctx.response);
-    ctx.response.body = &#39;&lt;h1&gt;test&lt;/h1&gt;&#39;;
-});
-
-// 导航
-router.post(&#39;/nav&#39;, async (ctx, next) =&gt; {
-    ctx.response.body = Nav;
-});
-</code></pre>
-
-<h1 id="toc_2">核心功能</h1>
-
-<pre><code class="language-text">function extractfile(filePath,filename)
-{
-    console.log(&#39;开始解压:&#39;+filePath);
-    // 停两秒才继续上传
-    sleep(2000);
-    // 要上传完才能进行处理
-    const filetmp = new AdmZip(filePath,&#39;GBK&#39;);
-    filetmp.extractAllTo(&#39;./js3/&#39;+filename,true);  // output | js3
-}
-
-router.post(&#39;/upload&#39;, async (ctx, next) =&gt; {
-    const file = ctx.request.files.gamezip; // 获取上传文件
-    console.log(file.name);
-    let filePath = path.join(__dirname, &#39;/zipupload/&#39;) + `${file.name}`;
-    // 这里设置了异步
-    console.log(&#39;开始上传&#39;);
-    const reader = fs.createReadStream(file.path);
-    const writer = fs.createWriteStream(filePath);
-    reader.pipe(writer);
-    reader.on(&#39;end&#39;, () =&gt; {
-        console.log(&#39;上传成功&#39;);
-        extractfile(filePath,file.name);
-        var p1 = new Promise((resolve, reject) =&gt; {
-            resolve(&#39;成功&#39;);
-        });
-        p1.then(function(){
-            console.log(&quot; 【执行】：zsh obf_terser_dir.sh &quot; + &quot; auto&quot;+ctx.request.body.mixtype + &quot; &quot;+ctx.request.body.gameid);
-            shelljs.exec( &quot; zsh obf_terser_dir.sh &quot; + &quot; auto&quot;+ctx.request.body.mixtype + &quot; &quot;+ctx.request.body.gameid, { async : true } ) ;
-        })
-        .then(
-            console.log(&quot;end!&quot;)
-        );
-    });
-    return ctx.body = Nav+&quot;&lt;p&gt;正在执行任务!&lt;/p&gt;&quot;;
-});
-</code></pre>
-
-<h1 id="toc_3">运行程序</h1>
-
-<pre><code class="language-text">const staticPath = &#39;/zip&#39;
-const main2 = static(path.join(__dirname,staticPath));
-
-// 查看静态文件
-app.use(main2);
-// 验证登录
-app.use(authlogin);
-// 操作相关
-app.use(router.routes());
-
-// app.use(main);
-// 监听3000端口
-app.listen(3000);
-console.log(&#39;app started at port 3000...&#39;);
-</code></pre>
-
-<h1 id="toc_4">总结</h1>
-
-<p>总的来说入门理解比较容易，能快速开发，基本完成这个项目只花了两天时间。</p>
 
 ]]></content>
   </entry>
