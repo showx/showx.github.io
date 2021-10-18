@@ -4,13 +4,31 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2021-07-26T17:13:58+08:00</updated>
+  <updated>2021-08-02T11:37:27+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[golang快速入门]]></title>
+    <link href="http://www.shengsheng.net/16345370325648.html"/>
+    <updated>2021-10-18T14:03:52+08:00</updated>
+    <id>http://www.shengsheng.net/16345370325648.html</id>
+    <content type="html"><![CDATA[
+<h2 id="toc_0">第一本go的书籍</h2>
+
+<p>2013年买的第一本go语言的书，至今还是比较好的入门书籍<br/>
+<img src="media/16345370325648/16345370946578.jpg" alt=""/></p>
+
+<p>距离现在好几年了，这两年go生态相对比较好，从而线上服务转去golang。</p>
+
+<h2 id="toc_1">数值型</h2>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[服务器迁移注意事项]]></title>
@@ -1283,48 +1301,6 @@ $result = http::postjson($url,$param);
 <h2 id="toc_4">参考链接</h2>
 
 <p><a href="https://blog.csdn.net/leedaning/article/details/51780511">https://blog.csdn.net/leedaning/article/details/51780511</a></p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[php composer加载过慢处理]]></title>
-    <link href="http://www.shengsheng.net/16118243270809.html"/>
-    <updated>2021-01-28T16:58:47+08:00</updated>
-    <id>http://www.shengsheng.net/16118243270809.html</id>
-    <content type="html"><![CDATA[
-<p>因为本地镜像切换了阿里镜像，但某些库加载特别慢，故排查一下</p>
-
-<p>composer install的时候，看到获取github.com过慢的库</p>
-
-<p>然后在composer.lock文件查看相关的配置<br/>
-<img src="media/16118243270809/16118244379356.jpg" alt=""/></p>
-
-<p>拼接之后得到镜像地址<br/>
-<a href="https://mirrors.aliyun.com/composer/dists/nesbot/carbon/930ae59aea86acd6abba2ab9c84bcfe41b1b7eec.zip">https://mirrors.aliyun.com/composer/dists/nesbot/carbon/930ae59aea86acd6abba2ab9c84bcfe41b1b7eec.zip</a><br/>
-点击确实下载不了，默认用回了github的源。</p>
-
-<p>因为composer.json默认使用最小等级为dev<br/>
-&quot;minimum-stability&quot;: &quot;dev&quot;<br/>
-<img src="media/16118243270809/16118245304391.jpg" alt=""/></p>
-
-<p>使用这个范围的时候会加载2-dev或dev-master版本，但国内的镜像源对dev版本并没有同步</p>
-
-<p>所以去掉&quot;minimum-stability&quot;: &quot;dev&quot;配置和输入指定版本即可。</p>
-
-<h1 id="toc_0">其它</h1>
-
-<p>查看配置 </p>
-
-<pre><code class="language-text">composer config -l -g 
-</code></pre>
-
-<p>如果不是使用阿里镜像源，可以切换一下</p>
-
-<pre><code class="language-text">composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
-</code></pre>
-
-<p>暂时觉得阿里云的最好用，镜像60秒同步一次。</p>
 
 ]]></content>
   </entry>
