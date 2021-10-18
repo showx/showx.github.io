@@ -4,7 +4,7 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2021-10-18T14:38:10+08:00</updated>
+  <updated>2021-10-18T14:55:18+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -393,13 +393,63 @@ func main() {
 }
 </code></pre>
 
-<h2 id="toc_17">通道</h2>
+<h3 id="toc_17">反射工具类</h3>
+
+<p>reflect</p>
+
+<h2 id="toc_18">通道</h2>
 
 <p>通道（channel）是用来传递数据的一个数据结构。</p>
 
+<pre><code class="language-go">//通道的声明
+var channel chan int
+//如果通道时nil 则要通过make创建通道
+channel= make(chan int)
+</code></pre>
+
 <p>通道可用于两个 goroutine 之间通过传递一个指定类型的值来同步运行和通讯。操作符 &lt;- 用于指定通道的方向，发送或接收。如果未指定方向，则为双向通道。</p>
 
-<h2 id="toc_18">延迟函数</h2>
+<p>在函数或者方法前面加上关键字go，就会同时运行一个新的goroutine。</p>
+
+<p>与函数不同的是goroutine调用之后会立即返回，不会等待goroutine的执行结果，所以goroutine不会接收返回值。 把封装main函数的goroutine叫做主goroutine，main函数作为主goroutine执行，如果main函数中goroutine终止了，程序也将终止，其他的goroutine都不会再执行。</p>
+
+<p>虽然说Go编译器将Go的代码编译成本地可执行代码。不需要像java或者.net那样的语言需要一个虚拟机来运行，但其实go是运行在runtime调度器上的，它主要负责内存管理、垃圾回收、栈处理等等。也包含了Go运行时系统交互的操作，控制goroutine的操作，Go程序的调度器可以很合理的分配CPU资源给每一个任务。</p>
+
+<p>Go1.5版本之前默认是单核执行的。从1.5之后使用可以通过runtime.GOMAXPROCS()来设置让程序并发执行，提高CPU的利用率。</p>
+
+<pre><code class="language-go">package main
+
+import (
+    &quot;fmt&quot;
+    &quot;runtime&quot;
+    &quot;time&quot;
+)
+
+func main() {
+    //获取当前GOROOT目录
+    fmt.Println(&quot;GOROOT:&quot;, runtime.GOROOT())
+    //获取当前操作系统
+    fmt.Println(&quot;操作系统:&quot;, runtime.GOOS)
+    //获取当前逻辑CPU数量
+    fmt.Println(&quot;逻辑CPU数量：&quot;, runtime.NumCPU())
+
+    //设置最大的可同时使用的CPU核数  取逻辑cpu数量
+    n := runtime.GOMAXPROCS(runtime.NumCPU())
+    fmt.Println(n) //一般在使用之前就将cpu数量设置好 所以最好放在init函数内执行
+
+    //goexit 终止当前goroutine
+    //创建一个goroutine
+    go func() {
+        fmt.Println(&quot;start...&quot;)
+        runtime.Goexit() //终止当前goroutine
+        fmt.Println(&quot;end...&quot;)
+    }()
+    time.Sleep(3 * time.Second) //主goroutine 休眠3秒 让子goroutine执行完
+    fmt.Println(&quot;main_end...&quot;)
+}
+</code></pre>
+
+<h2 id="toc_19">延迟函数</h2>
 
 <pre><code class="language-go">package main
 
@@ -423,7 +473,37 @@ func test(s int) {
 }
 </code></pre>
 
-<h2 id="toc_19">错误处理</h2>
+<h2 id="toc_20">错误处理</h2>
+
+<p>实际每个函数都可以定义二个参数的返回，error类型<br/>
+例如<br/>
+txt, err = test(&quot;test.txt&quot;);</p>
+
+<h3 id="toc_21">错误类型</h3>
+
+<pre><code class="language-go">package main
+
+import (
+    &quot;errors&quot;
+    &quot;fmt&quot;
+)
+
+func main() {
+    err := errors.New(&quot;错误信息...&quot;)
+    fmt.Println(err)
+
+    num, err2 := Calculation(0)
+    fmt.Println(num, err2)
+}
+
+//通过内置errors包创建错误对象来返回
+func Calculation(divisor int) (int, error) {
+    if divisor == 0 {
+        return 0, errors.New(&quot;错误:除数不能为零.&quot;)
+    }
+    return 100 / divisor, nil
+}
+</code></pre>
 
 <pre><code class="language-go">panic和recover
 中断信息，recover接收信息
@@ -456,12 +536,12 @@ func Test1() {
 }
 </code></pre>
 
-<h2 id="toc_20">常用工具包</h2>
+<h2 id="toc_22">常用工具包</h2>
 
 <p>官方常用工具包有如下<br/>
 fmt、strings、strconv、os、io、errors</p>
 
-<h1 id="toc_21">导入包</h1>
+<h1 id="toc_23">导入包</h1>
 
 <p>引入每个工具包，都先要先导入<br/>
 使用import 导入包。go自己会默认从GO的安装目录和GOPATH环境变量中的目录，检索src下的目录进行检索包是否存在。所以导入包的时候路径要从src目录下开始写。GOPATH 就是我们自己定义的包的目录。</p>
@@ -473,12 +553,13 @@ import (
     &quot;fmt&quot;
     &quot;sync&quot;
     &quot;os&quot; &quot;test&quot;
+    _ &quot;test.com/test&quot;  // 只调用里面的init，不调用里面的方法
 )
 </code></pre>
 
-<h2 id="toc_22">闭包</h2>
+<h2 id="toc_24">闭包</h2>
 
-<pre><code class="language-text">闭包：
+<pre><code class="language-go">闭包：
 package main
 import (
     &quot;fmt&quot;
@@ -511,6 +592,49 @@ func closure() func() int { //外层函数
     }
 }
 </code></pre>
+
+<h3 id="toc_25">sync工具</h3>
+
+<pre><code class="language-go">package main
+
+import (
+    &quot;fmt&quot;
+    &quot;sync&quot;
+)
+
+//创建一个同步等待组的对象
+var wg sync.WaitGroup
+
+func main() {
+    wg.Add(3) //设置同步等待组的数量
+    go Relief1()
+    go Relief2()
+    go Relief3()
+    wg.Wait() //主goroutine进入阻塞状态
+    fmt.Println(&quot;main end...&quot;)
+}
+
+func Relief1() {
+    fmt.Println(&quot;func1...&quot;)
+    wg.Done() //执行完成 同步等待数量减1
+}
+func Relief2() {
+    defer wg.Done()
+    fmt.Println(&quot;func2...&quot;)
+}
+func Relief3() {
+    defer wg.Done() //推荐使用延时执行的方法来减去执行组的数量
+    fmt.Println(&quot;func3...&quot;)
+}
+</code></pre>
+
+<h3 id="toc_26">互斥锁</h3>
+
+<p>互斥锁，当一个goroutine获得锁之后其他的就只能等待当前goroutine执行完成之后解锁后才能访问资源。对应的方法有上锁Lock()和解锁Unlock()。</p>
+
+<h3 id="toc_27">读写锁</h3>
+
+<p>互斥锁是用来控制多个协程在访问同一个资源的时候进行加锁控制,保证了数据安全，但同时也降低了性能，如果说多个goroutine同时访问一个数据，只是读取一下数据，并没有对数据进行任何修改操作，那么不管多少个goroutine来读取都应该是可以的。主要问题在于修改。修改的数据就需要加锁操作，来保证数据在多个goroutine读取的时候统一。 读取和读取之间是不需要互斥操作的，所以我们用读写锁专门针对读操作和写操作的互斥锁。</p>
 
 ]]></content>
   </entry>
