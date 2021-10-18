@@ -4,7 +4,7 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2021-10-18T14:06:26+08:00</updated>
+  <updated>2021-10-18T14:38:10+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -72,6 +72,8 @@ function        nil 函数</p>
 
 <h3 id="toc_8">数组</h3>
 
+<p>Don’t communicate by sharing memory; share memory by communicating.</p>
+
 <pre><code class="language-go">var arr0 [5]int = [5]int{1, 2, 3}
 var arr1 = [5]int{1, 2, 3, 4, 5}
 var arr2 = [...]int{1, 2, 3, 4, 5, 6}
@@ -96,6 +98,8 @@ copy(s3, s2)        //将s2拷贝到s3中
 fmt.Println(s2)     //结果 [1 2 3 4]
 fmt.Println(s3)     //结果 [1 2 3]
 </code></pre>
+
+<p>二维数据</p>
 
 <p>数组长度是固定的，如果要扩展数组，得使用切片</p>
 
@@ -153,15 +157,182 @@ m3:=map[string]int{&quot;语文&quot;:89,&quot;数学&quot;:23,&quot;英语&quot
 
 <h2 id="toc_11">结构体</h2>
 
-<p>基本上和C的struct一样</p>
+<p>基本上和C的struct一样<br/>
+在Go语言中，使用type关键字可以定义出新的自定义类型，有了自定义类型之后我们就可以为自定义类型添加各种方法了。</p>
 
 <pre><code class="language-go">type person1 struct {
         name, city string
         age        int8
 }
+
+package main
+
+import (
+    &quot;fmt&quot;
+)
+
+//定义结构体
+type Person struct {
+    name    string
+    age     int
+    sex     string
+    address string
+}
+
 </code></pre>
 
-<h2 id="toc_12">流程控件</h2>
+<p>实例：</p>
+
+<pre><code class="language-go">func main() {
+    //实例化后并使用结构体
+    p := Person{} //使用简短声明方式，后面加上{}代表这是结构体
+    
+    p.age = 2     //给结构体内成员变量赋值
+    p.address = &quot;陕西&quot;
+    p.name = &quot;好家伙&quot;
+    p.sex = &quot;女&quot;
+    
+    fmt.Println(p.age, p.address, p.name, p.sex)//使用点.来访问结构体内成员的变量的值。
+
+}
+
+</code></pre>
+
+<h2 id="toc_12">指针</h2>
+
+<p>基本上和C一致<br/>
+指针是存储另一个变量的内存地址的变量。 例如： 变量B的值为100， 地址为0x1122。变量A的值为变量B的地址0x1122，那么A就拥有了变量B的地址，则A就成为指针。Go语言中通过&amp;获取变量的地址。通过* 获取指针所对应的变量存储的数值。</p>
+
+<pre><code class="language-go">package main
+
+import (
+    &quot;fmt&quot;
+)
+
+func main() {
+
+    //定义一个变量
+    a := 2
+    fmt.Printf(&quot;变量A的地址为%p&quot;, &amp;a) //通过%p占位符, &amp;符号获取变量的内存地址。
+    //变量A的地址为0xc000072090
+    
+
+    //创建一个指针
+    // 指针的声明 通过 *T 表示T类型的指针
+    var i *int     //int类型的指针
+    var f *float64 //float64类型的指针
+    fmt.Println(i) // &lt; nil &gt;空指针
+    fmt.Println(f)
+
+    //因为指针存储的变量的地址 所以指针存储值
+    i = &amp;a
+    fmt.Println(i)  //i存储a的内存地址0xc000072090
+    fmt.Println(*i) //i存储这个指针存储的变量的数值2
+    *i = 100
+    fmt.Println(*i) //100
+    fmt.Println(a)  //100通过指针操作 直接操作的是指针所对应的数值
+
+}
+</code></pre>
+
+<p>指针的指针，也就是存储的不是具体的数值了，而是另一个指针的地址。</p>
+
+<pre><code class="language-go">func main(){
+    a := 2
+    var i *int         //声明一个int类型的指针
+    fmt.Println(&amp;a)    //0xc00000c1c8
+    i = &amp;a             //将a的地址取出来放到i里面
+    fmt.Println(&amp;i)    //0xc000006028
+    var a2 **int       //声明一个指针类型的指针
+    a2 = &amp;i            //再把i的地址放进a2里面
+    fmt.Println(a2)    //获取的是a2所对应的数值0xc000006028也就是i的地址
+}
+</code></pre>
+
+<p>指针属于引用类型的数据， 所以在传递过程中是将参数的地址传给函数，将指针作为参数传递时，只有值类型的数据，需要传递指针，而引用类型的数据本身就是传递的地址，所以数组传递可以使用指针，切片是引用类型数据，则不需要传递指针传递。</p>
+
+<pre><code class="language-go">package main
+
+import (
+    &quot;fmt&quot;
+)
+
+func main() {
+    s := 10
+    fmt.Println(s) //调用函数之前数值是10
+    fun1(&amp;s)
+    fmt.Println(s) //调用函数之后再访问则被修改成2
+}
+
+//接收一个int类型的指针作为参数
+func fun1(a *int) {
+    *a = 2
+}
+</code></pre>
+
+<h3 id="toc_13">使用结构体调用指针</h3>
+
+<pre><code class="language-go">//1 使用结构体指针
+var p *Person
+p = &amp;p2 //将p2 的地址赋给p
+import &quot;encoding/json&quot;
+package main
+
+import (
+    &quot;encoding/json&quot;
+    &quot;fmt&quot;
+)
+//结构体
+type Prescription struct {
+    Name     string        
+    Unit     string        
+    Additive *Prescription 
+}
+
+func main() {
+    p := Prescription{}
+    p.Name = &quot;鹤顶红&quot;
+    p.Unit = &quot;1.2kg&quot;
+    p.Additive = &amp;Prescription{
+        Name: &quot;砒霜&quot;,
+        Unit: &quot;0.5kg&quot;,
+    }
+
+    buf, err := json.Marshal(p) //转换为json返回两个结果
+    if err != nil {
+        fmt.Println(&quot;err = &quot;, err)
+        return
+    }
+
+    fmt.Println(&quot;json = &quot;, string(buf))
+}
+
+package main
+
+import (
+    &quot;encoding/json&quot;
+    &quot;fmt&quot;
+)
+
+//结构体
+type Prescription struct {
+    Name     string        `json:&quot;name&quot;` //重新指定json字段为小写输出
+    Unit     string        `json:&quot;unit&quot;`
+    Additive *Prescription `json:&quot;additive,omitempty&quot;`
+}
+
+func main() {
+    jsonstr := `{&quot;name&quot;:&quot;鹤顶红&quot;,&quot;unit&quot;:&quot;1.2kg&quot;,&quot;additive&quot;:{&quot;name&quot;:&quot;砒霜&quot;,&quot;unit&quot;:&quot;0.5kg&quot;}}`
+    var p Prescription
+    if err := json.Unmarshal([]byte(jsonstr), &amp;p); err != nil {
+        fmt.Println(err)
+    }
+    fmt.Println(p)
+}
+
+</code></pre>
+
+<h2 id="toc_14">流程控件</h2>
 
 <p>日常语言的if、for、range、switch不作具体描述，比较特殊的用法是select</p>
 
@@ -180,11 +351,11 @@ m3:=map[string]int{&quot;语文&quot;:89,&quot;数学&quot;:23,&quot;英语&quot
 }
 </code></pre>
 
-<h1 id="toc_13">函数与方法</h1>
+<h1 id="toc_15">函数与方法</h1>
 
 <p>如果你想让一个方法可以被别的包访问的话，你需要把这个方法的第一个字母大写。这是一种约定。</p>
 
-<h3 id="toc_14">面向对象</h3>
+<h3 id="toc_16">面向对象</h3>
 
 <pre><code class="language-go">package main
 
@@ -222,13 +393,37 @@ func main() {
 }
 </code></pre>
 
-<h2 id="toc_15">通道</h2>
+<h2 id="toc_17">通道</h2>
 
 <p>通道（channel）是用来传递数据的一个数据结构。</p>
 
 <p>通道可用于两个 goroutine 之间通过传递一个指定类型的值来同步运行和通讯。操作符 &lt;- 用于指定通道的方向，发送或接收。如果未指定方向，则为双向通道。</p>
 
-<h2 id="toc_16">错误处理</h2>
+<h2 id="toc_18">延迟函数</h2>
+
+<pre><code class="language-go">package main
+
+import (
+    &quot;fmt&quot;
+)
+
+func main() {
+    defer test(1) //第一个被defer的，函数后执行
+    defer test(2) //第二个被defer的，函数先执行
+    test(3)       //没有defer的函数，第一次执行
+    
+    //执行结果
+    //3
+    //2
+    //1
+}
+
+func test(s int) {
+    fmt.Println(s)
+}
+</code></pre>
+
+<h2 id="toc_19">错误处理</h2>
 
 <pre><code class="language-go">panic和recover
 中断信息，recover接收信息
@@ -258,6 +453,62 @@ func Test1() {
     }
     
     defer fmt.Println(&quot;第3个被defer执行&quot;) //恐慌之后的代码是不会被执行的
+}
+</code></pre>
+
+<h2 id="toc_20">常用工具包</h2>
+
+<p>官方常用工具包有如下<br/>
+fmt、strings、strconv、os、io、errors</p>
+
+<h1 id="toc_21">导入包</h1>
+
+<p>引入每个工具包，都先要先导入<br/>
+使用import 导入包。go自己会默认从GO的安装目录和GOPATH环境变量中的目录，检索src下的目录进行检索包是否存在。所以导入包的时候路径要从src目录下开始写。GOPATH 就是我们自己定义的包的目录。</p>
+
+<pre><code class="language-go">// 每行一个写法
+import fmt
+// 导入多个，还可以重命名
+import (
+    &quot;fmt&quot;
+    &quot;sync&quot;
+    &quot;os&quot; &quot;test&quot;
+)
+</code></pre>
+
+<h2 id="toc_22">闭包</h2>
+
+<pre><code class="language-text">闭包：
+package main
+import (
+    &quot;fmt&quot;
+)
+func main() {
+    res := closure()
+    fmt.Println(res) //0x49a880  返回内层函数函数体地址
+    r1 := res()      //执行closure函数返回的匿名函数
+    fmt.Println(r1)  //1
+    r2 := res()
+    fmt.Println(r2) //2 
+    //普通的函数应该返回1，而这里存在闭包结构所以返回2 。
+    //一个外层函数当中有内层函数，这个内层函数会操作外层函数的局部变量,并且外层函数把内层函数作为返回值,则这里内层函数和外层函数的局部变量,统称为闭包结构。这个外层函数的局部变量的生命周期会发生改变，不会随着外层函数的结束而销毁。
+    //所以上面打印的r2 是累计到2 。
+
+    res2 := closure() //再次调用则产生新的闭包结构 局部变量则新定义的
+    fmt.Println(res2)
+    r3 := res2()
+    fmt.Println(r3)
+}
+
+//定义一个闭包结构的函数 返回一个匿名函数
+func closure() func() int { //外层函数
+    //定义局部变量a
+    a := 0 //外层函数的局部变量
+    //定义内层匿名函数 并直接返回
+    return func() int { //内层函数
+        a++ //在匿名函数中将变量自增。内层函数用到了外层函数的局部变量，此变量不会随着外层函数的结束销毁
+        return a
+    }
 }
 </code></pre>
 
