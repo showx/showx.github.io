@@ -4,13 +4,38 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2021-10-18T14:55:18+08:00</updated>
+  <updated>2021-10-18T15:03:18+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[gin框架的使用]]></title>
+    <link href="http://www.shengsheng.net/16345450428439.html"/>
+    <updated>2021-10-18T16:17:22+08:00</updated>
+    <id>http://www.shengsheng.net/16345450428439.html</id>
+    <content type="html"><![CDATA[
+<p>项目使用gin框架作为项目开发，主要此框架特别精简，官方文档<a href="https://gin-gonic.com/zh-cn/docs/">https://gin-gonic.com/zh-cn/docs/</a><br/>
+最简单的go服务</p>
+
+<pre><code class="language-go">package main
+import (
+    &quot;github.com/gin-gonic/gin&quot;
+)
+func main() {
+    d := gin.Default()
+    d.GET(&quot;/index&quot;, func(c *gin.Context) {
+        c.JSON(200, gin.H{&quot;message&quot;:&quot;hello world&quot;,&quot;data&quot;:&quot;&quot;})
+    })
+    d.Run(&quot;127.0.0.1:8080&quot;)
+}
+</code></pre>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[golang快速上手]]></title>
@@ -1822,94 +1847,6 @@ Match Group sftp
 <img src="media/16140937756678/16140938268565.jpg" alt=""/></p>
 
 <p><img src="media/16140937756678/16140938347950.jpg" alt=""/></p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[处理caid启发的php-rsa]]></title>
-    <link href="http://www.shengsheng.net/16122577703139.html"/>
-    <updated>2021-02-02T17:22:50+08:00</updated>
-    <id>http://www.shengsheng.net/16122577703139.html</id>
-    <content type="html"><![CDATA[
-<p>一直觉得rsa无非就是私钥加解密，公钥加解密。<br/>
-过长的字符串公钥加解密是要做处理的</p>
-
-<h1 id="toc_0">加密</h1>
-
-<pre><code class="language-text">public function EncryptData($source)
-{
-    $pub_key_string = &#39;-----BEGIN PUBLIC KEY-----
-xx省略
------END PUBLIC KEY-----&#39;;
-    $t = openssl_get_publickey($pub_key_string);
-    $crypttext = &#39;&#39;;
-    foreach (str_split($source, 117) as $chunk) {
-        openssl_public_encrypt($chunk, $encryptData, $t);
-        $crypttext .= $encryptData;
-    }
-    return(base64_encode($crypttext));
-}
-</code></pre>
-
-<p>按117长度划分加密</p>
-
-<h1 id="toc_1">解密</h1>
-
-<pre><code class="language-text">public function decrypt($encryptData){
-
-        $pub_key_string = &#39;-----BEGIN PUBLIC KEY-----
-省略php-pcks公钥
------END PUBLIC KEY-----&#39;;
-$t = openssl_pkey_get_public($pub_key_string);
-        $crypttext = &#39;&#39;;
-        $source = base64_decode($encryptData);
-        foreach (str_split($source, 128) as $chunk) {
-            openssl_public_decrypt($chunk, $dd, $pub_key_string);
-            $crypttext .= $dd;
-        }
-        return trim($crypttext);
-    }
-</code></pre>
-
-<p>按128长度划分解密</p>
-
-<h1 id="toc_2">caid示例</h1>
-
-<pre><code class="language-text">$json = [
-    &#39;bootTimeInSec&#39; =&gt; &#39;1595643553&#39;,
-    &#39;countryCode&#39; =&gt; &#39;CN&#39;,
-    &#39;language&#39; =&gt; &#39;zh-Hans-CN&#39;,
-    &#39;deviceName&#39; =&gt; &#39;e910dddb2748c36b47fcde5dd720eec1&#39;,
-    &#39;systemVersion&#39; =&gt; &#39;14.0&#39;,
-    &#39;machine&#39; =&gt; &#39;iPhone10,3&#39;,
-    &#39;carrierInfo&#39; =&gt; &#39;中国移动&#39;,
-    &#39;memory&#39; =&gt; &#39;3955589120&#39;,
-    &#39;disk&#39; =&gt; &#39;63900340224&#39;,
-    &#39;sysFileTime&#39; =&gt; &#39;1595214620.383940&#39;,
-    &#39;model&#39; =&gt; &#39;D22AP&#39;,
-    &#39;timeZone&#39; =&gt; &#39;28800&#39;,
-];
-$json = json_encode($json,JSON_UNESCAPED_UNICODE);
-$result = $this-&gt;EncryptData($json);
-$param = [
-    &#39;dev_id&#39; =&gt; &#39;省略dev_id配置&#39;,
-    &#39;encrypted_device_info&#39; =&gt; $result
-];
-// caid测试地址
-$url = &quot;https://caid.china-caa.org/test/v1.0/get&quot;;
-$result = http::postjson($url,$param);
-</code></pre>
-
-<h1 id="toc_3">总结</h1>
-
-<p>值得注意的是，如果选择密钥是1024bit长的（openssl genrsa -out rsa_private_key.pem 1024），那么支持加密的明文长度字节最多只能是1024/8=128byte；<br/>
-如果加密的padding填充方式选择的是OPENSSL_PKCS1_PADDING（这个要占用11个字节），那么明文长度最多只能就是128-11=117字节。如果超出，那么这些openssl加解密函数会返回false。<br/>
-这时有个解决办法，把需要加密的源字符串按少于117个长度分开为几组，在解密的时候以172个字节分为几组。</p>
-
-<h2 id="toc_4">参考链接</h2>
-
-<p><a href="https://blog.csdn.net/leedaning/article/details/51780511">https://blog.csdn.net/leedaning/article/details/51780511</a></p>
 
 ]]></content>
   </entry>
