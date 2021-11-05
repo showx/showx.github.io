@@ -134,20 +134,31 @@
 
 <h3 id="toc_2">go get</h3>
 
-<p>获取组件</p>
+<p>go get <a href="http://github.com/123/abc">http://github.com/123/abc</a><br/>
+$GOPATH<br/>
+获取组件</p>
 
 <h3 id="toc_3">go build</h3>
+
+<p>bin/</p>
 
 <h3 id="toc_4">go run</h3>
 
 <h3 id="toc_5">go mod</h3>
 
-<p>如果Go的版本太低不能使用，建议将Go的版本升级到最新。<br/>
+<p>dep</p>
+
+<p>module<br/>
+如果Go的版本太低不能使用，建议将Go的版本升级到最新。<br/>
 环境变量中可以增加GOPROXY=<a href="https://goproxy.io">https://goproxy.io</a> 这样没有梯子的情况下可以正确的加载相应的包文件。<br/>
 环境变量GO111MODULE不要设置，如果已经增加了这个变量请务必设置为GO111MODULE=auto。<br/>
 在项目的根目录下使用命令go mod init projectName。</p>
 
-<h2 id="toc_6">基本类型</h2>
+<h3 id="toc_6">go tool</h3>
+
+<p>go tool nm ./example</p>
+
+<h2 id="toc_7">基本类型</h2>
 
 <p>类型  长度(字节)  默认值 说明<br/>
 bool    1   false<br/><br/>
@@ -172,9 +183,9 @@ channel     nil 引用类型<br/>
 interface       nil 接口<br/>
 function        nil 函数</p>
 
-<h2 id="toc_7">数组与切片</h2>
+<h2 id="toc_8">数组与切片</h2>
 
-<h3 id="toc_8">数组</h3>
+<h3 id="toc_9">数组</h3>
 
 <p>Don’t communicate by sharing memory; share memory by communicating.</p>
 
@@ -207,7 +218,7 @@ fmt.Println(s3)     //结果 [1 2 3]
 
 <p>数组长度是固定的，如果要扩展数组，得使用切片</p>
 
-<h3 id="toc_9">切片</h3>
+<h3 id="toc_10">切片</h3>
 
 <p>make()是Go语言中的内置函数，主要用于创建并初始化slice切片类型，或者map字典类型，或者channel通道类型数据。他与new方法的区别是。new用于各种数据类型的内存分配，在Go语言中认为他返回的是一个指针。指向的是一个某种类型的零值。make 返回的是一个有着初始值的非零值。</p>
 
@@ -220,6 +231,7 @@ fmt.Println(s3)     //结果 [1 2 3]
 
 <pre><code class="language-go">var arr = [...]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 var slice0 []int = arr[start:end] 
+1:3
 var slice1 []int = arr[:end]        
 var slice2 []int = arr[start:]        
 var slice3 []int = arr[:] 
@@ -230,7 +242,7 @@ var slice4 = arr[:len(arr)-1]
 切片提供了计算容量的方法 cap() 可以测量切片最长可以达到多少。<br/>
 切片是面向地址的，修改数值会影响相关变量。</p>
 
-<h3 id="toc_10">map</h3>
+<h3 id="toc_11">map</h3>
 
 <p>定义语法</p>
 
@@ -259,7 +271,7 @@ m3:=map[string]int{&quot;语文&quot;:89,&quot;数学&quot;:23,&quot;英语&quot
 
 </code></pre>
 
-<h2 id="toc_11">结构体</h2>
+<h2 id="toc_12">结构体</h2>
 
 <p>基本上和C的struct一样<br/>
 在Go语言中，使用type关键字可以定义出新的自定义类型，有了自定义类型之后我们就可以为自定义类型添加各种方法了。</p>
@@ -302,7 +314,7 @@ type Person struct {
 
 </code></pre>
 
-<h2 id="toc_12">指针</h2>
+<h2 id="toc_13">指针</h2>
 
 <p>基本上和C一致<br/>
 指针是存储另一个变量的内存地址的变量。 例如： 变量B的值为100， 地址为0x1122。变量A的值为变量B的地址0x1122，那么A就拥有了变量B的地址，则A就成为指针。Go语言中通过&amp;获取变量的地址。通过* 获取指针所对应的变量存储的数值。</p>
@@ -374,7 +386,7 @@ func fun1(a *int) {
 }
 </code></pre>
 
-<h3 id="toc_13">使用结构体调用指针</h3>
+<h3 id="toc_14">使用结构体调用指针</h3>
 
 <pre><code class="language-go">//1 使用结构体指针
 var p *Person
@@ -436,11 +448,14 @@ func main() {
 
 </code></pre>
 
-<h2 id="toc_14">流程控件</h2>
+<h2 id="toc_15">流程控件</h2>
 
-<p>日常语言的if、for、range、switch不作具体描述，比较特殊的用法是select</p>
+<p>日常语言的if、for range、switch不作具体描述，比较特殊的用法是select<br/>
+while(true)<br/>
+{</p>
 
-<p>select 语句类似于 switch 语句，但是select会随机执行一个可运行的case。如果没有case可运行，它将阻塞，直到有case可运行。</p>
+<p>}<br/>
+select 语句类似于 switch 语句，但是select会随机执行一个可运行的case。如果没有case可运行，它将阻塞，直到有case可运行。</p>
 
 <p>select 是Go中的一个控制结构，类似于用于通信的switch语句。每个case必须是一个通信操作，要么是发送要么是接收。 select 随机执行一个可运行的case。如果没有case可运行，它将阻塞，直到有case可运行。一个默认的子句应该总是可运行的。</p>
 
@@ -455,11 +470,11 @@ func main() {
 }
 </code></pre>
 
-<h1 id="toc_15">函数与方法</h1>
+<h1 id="toc_16">函数与方法</h1>
 
 <p>如果你想让一个方法可以被别的包访问的话，你需要把这个方法的第一个字母大写。这是一种约定。</p>
 
-<h3 id="toc_16">面向对象</h3>
+<h3 id="toc_17">面向对象</h3>
 
 <pre><code class="language-go">package main
 
@@ -497,11 +512,11 @@ func main() {
 }
 </code></pre>
 
-<h3 id="toc_17">反射工具类</h3>
+<h3 id="toc_18">反射工具类</h3>
 
 <p>reflect</p>
 
-<h2 id="toc_18">通道</h2>
+<h2 id="toc_19">通道</h2>
 
 <p>通道（channel）是用来传递数据的一个数据结构。</p>
 
@@ -553,7 +568,7 @@ func main() {
 }
 </code></pre>
 
-<h2 id="toc_19">延迟函数</h2>
+<h2 id="toc_20">延迟函数</h2>
 
 <pre><code class="language-go">package main
 
@@ -577,13 +592,13 @@ func test(s int) {
 }
 </code></pre>
 
-<h2 id="toc_20">错误处理</h2>
+<h2 id="toc_21">错误处理</h2>
 
 <p>实际每个函数都可以定义二个参数的返回，error类型<br/>
 例如<br/>
 txt, err = test(&quot;test.txt&quot;);</p>
 
-<h3 id="toc_21">错误类型</h3>
+<h3 id="toc_22">错误类型</h3>
 
 <pre><code class="language-go">package main
 
@@ -640,12 +655,12 @@ func Test1() {
 }
 </code></pre>
 
-<h2 id="toc_22">常用工具包</h2>
+<h2 id="toc_23">常用工具包</h2>
 
 <p>官方常用工具包有如下<br/>
 fmt、strings、strconv、os、io、errors</p>
 
-<h1 id="toc_23">导入包</h1>
+<h1 id="toc_24">导入包</h1>
 
 <p>引入每个工具包，都先要先导入<br/>
 使用import 导入包。go自己会默认从GO的安装目录和GOPATH环境变量中的目录，检索src下的目录进行检索包是否存在。所以导入包的时候路径要从src目录下开始写。GOPATH 就是我们自己定义的包的目录。</p>
@@ -661,7 +676,7 @@ import (
 )
 </code></pre>
 
-<h2 id="toc_24">闭包</h2>
+<h2 id="toc_25">闭包</h2>
 
 <pre><code class="language-go">闭包：
 package main
@@ -697,7 +712,7 @@ func closure() func() int { //外层函数
 }
 </code></pre>
 
-<h3 id="toc_25">sync工具</h3>
+<h3 id="toc_26">sync工具</h3>
 
 <pre><code class="language-go">package main
 
@@ -732,11 +747,11 @@ func Relief3() {
 }
 </code></pre>
 
-<h3 id="toc_26">互斥锁</h3>
+<h3 id="toc_27">互斥锁</h3>
 
 <p>互斥锁，当一个goroutine获得锁之后其他的就只能等待当前goroutine执行完成之后解锁后才能访问资源。对应的方法有上锁Lock()和解锁Unlock()。</p>
 
-<h3 id="toc_27">读写锁</h3>
+<h3 id="toc_28">读写锁</h3>
 
 <p>互斥锁是用来控制多个协程在访问同一个资源的时候进行加锁控制,保证了数据安全，但同时也降低了性能，如果说多个goroutine同时访问一个数据，只是读取一下数据，并没有对数据进行任何修改操作，那么不管多少个goroutine来读取都应该是可以的。主要问题在于修改。修改的数据就需要加锁操作，来保证数据在多个goroutine读取的时候统一。 读取和读取之间是不需要互斥操作的，所以我们用读写锁专门针对读操作和写操作的互斥锁。</p>
 
