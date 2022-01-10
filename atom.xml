@@ -4,13 +4,35 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2021-10-18T17:55:45+08:00</updated>
+  <updated>2021-11-05T19:27:54+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[超龙3080ti]]></title>
+    <link href="http://www.shengsheng.net/16417795468295.html"/>
+    <updated>2022-01-10T09:52:26+08:00</updated>
+    <id>http://www.shengsheng.net/16417795468295.html</id>
+    <content type="html"><![CDATA[
+<p>新入手玩具</p>
+
+<p><img src="media/16417795468295/16417796348965.jpg" alt=""/></p>
+
+<p>手掌那么大<br/>
+<img src="media/16417795468295/16417796432544.jpg" alt=""/></p>
+
+<h3 id="toc_0">主机效果图</h3>
+
+<p><img src="media/16417795468295/16417797006378.jpg" alt=""/></p>
+
+<p><img src="media/16417795468295/16417797115849.jpg" alt=""/></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[高端路由器]]></title>
@@ -1838,33 +1860,6 @@ Match Group sftp
 <p>配置也是没问题，翻阅资料之后，问题主要出在ChrootDirectory<br/>
 在ftp目前之前都要root权限，共享文件夹修改成chown root:sftp /webwww/ftpmwp即可访问<br/>
 <img src="media/16165973270206/16165976990376.jpg" alt=""/></p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[更改iview Select组件]]></title>
-    <link href="http://www.shengsheng.net/16165731476494.html"/>
-    <updated>2021-03-24T16:05:47+08:00</updated>
-    <id>http://www.shengsheng.net/16165731476494.html</id>
-    <content type="html"><![CDATA[
-<p>我们部门使用的统一后台框架是iview admin pro<br/>
-旧系统使用的Select<br/>
-<img src="media/16165731476494/16165733324633.jpg" alt=""/></p>
-
-<p>iview的select, 搜索关键词之后，点击会自动清空<br/>
-<img src="media/16165731476494/16165733621235.jpg" alt=""/></p>
-
-<p>为了解决这个尴尬现象，我们修改一下Select组件<br/>
-<img src="media/16165731476494/16165734399770.jpg" alt=""/><br/>
-把官方的Select组件，复制到我们的项目中，注意有些依赖的相应修改一下，如果可以就进行分割。</p>
-
-<p>分析代码之后<br/>
-<img src="media/16165731476494/16165735076650.jpg" alt=""/></p>
-
-<p>因为iview values发生变化的时候，会清后掉query的查询，我们把这行注释掉就ok。<br/>
-效果如下：<br/>
-<img src="media/16165731476494/16165735738942.jpg" alt=""/></p>
 
 ]]></content>
   </entry>
