@@ -4,13 +4,32 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2021-11-05T19:27:54+08:00</updated>
+  <updated>2022-01-10T09:55:23+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[diy之显示器]]></title>
+    <link href="http://www.shengsheng.net/16666613105868.html"/>
+    <updated>2022-10-25T09:28:30+08:00</updated>
+    <id>http://www.shengsheng.net/16666613105868.html</id>
+    <content type="html"><![CDATA[
+<p>在高sir购买之下，看了款参数比较高的显示器，正好老婆做设计可以用上</p>
+
+<p><img src="media/16666613105868/16666633853742.jpg" alt=""/></p>
+
+<p><img src="media/16666613105868/16666633936071.jpg" alt=""/></p>
+
+<p><img src="media/16666613105868/16666634030115.jpg" alt=""/></p>
+
+<p>LG-27EP950效果还不错，赞</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[超龙3080ti]]></title>
@@ -1824,42 +1843,6 @@ hh</p>
 
 <p><a href="https://blog.csdn.net/joeyon1985/article/details/50036095">https://blog.csdn.net/joeyon1985/article/details/50036095</a><br/>
 <a href="https://www.cnblogs.com/kevingrace/p/6093671.html">https://www.cnblogs.com/kevingrace/p/6093671.html</a></p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[sftp 连接不了]]></title>
-    <link href="http://www.shengsheng.net/16165973270206.html"/>
-    <updated>2021-03-24T22:48:47+08:00</updated>
-    <id>http://www.shengsheng.net/16165973270206.html</id>
-    <content type="html"><![CDATA[
-<p>给特定的人开通指定的sftp权限<br/>
-账号验证成功，但一直提示connection loast due to error 54</p>
-
-<p><img src="media/16165973270206/16165977578327.jpg" alt=""/></p>
-
-<p>使用命令行工具调试也是报连接不了<br/>
-<img src="media/16165973270206/16165976290823.jpg" alt=""/></p>
-
-<p>故查看/etc/ssh/sshd_config的配置</p>
-
-<pre><code class="language-text"># Subsystem sftp        /usr/libexec/openssh/sftp-server
-Subsystem sftp    internal-sftp
-# Match可User和Group
-Match Group sftp
-        ChrootDirectory /webwww/ftpmwp
-        X11Forwarding no
-        AllowTcpForwarding no
-        PasswordAuthentication yes
-#       PermitTTY no
-#       ForceCommand cvs server
-        ForceCommand internal-sftp
-</code></pre>
-
-<p>配置也是没问题，翻阅资料之后，问题主要出在ChrootDirectory<br/>
-在ftp目前之前都要root权限，共享文件夹修改成chown root:sftp /webwww/ftpmwp即可访问<br/>
-<img src="media/16165973270206/16165976990376.jpg" alt=""/></p>
 
 ]]></content>
   </entry>
