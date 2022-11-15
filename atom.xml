@@ -4,13 +4,28 @@
   <title><![CDATA[shengsheng的博客]]></title>
   <link href="http://www.shengsheng.net/atom.xml" rel="self"/>
   <link href="http://www.shengsheng.net/"/>
-  <updated>2022-01-10T09:55:23+08:00</updated>
+  <updated>2022-10-25T10:04:51+08:00</updated>
   <id>http://www.shengsheng.net/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[diy之cpu]]></title>
+    <link href="http://www.shengsheng.net/16684834710508.html"/>
+    <updated>2022-11-15T11:37:51+08:00</updated>
+    <id>http://www.shengsheng.net/16684834710508.html</id>
+    <content type="html"><![CDATA[
+<p>由于i5还是比较慢，主板只支持11代，刚好双11，入手I9</p>
+
+<p><img src="media/16684834710508/16684835239072.jpg" alt=""/></p>
+
+<p><img src="media/16684834710508/16684835369417.jpg" alt=""/></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[diy之显示器]]></title>
@@ -1775,74 +1790,6 @@ weixin://dl/business/?<br/>
 <p><img src="media/16172050445392/16172053877136.jpg" alt=""/></p>
 
 <p>使用应用的acess_token访问即可生成永久的openlink,可以跳转到指定path和query。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[上传大文件关键分析]]></title>
-    <link href="http://www.shengsheng.net/16170741748938.html"/>
-    <updated>2021-03-30T11:16:14+08:00</updated>
-    <id>http://www.shengsheng.net/16170741748938.html</id>
-    <content type="html"><![CDATA[
-<p>php写了个upload,在大文件的时候经常失败，某些项目还是nginx+fpm的通讯<br/>
-排查之后，几个关键点配置</p>
-
-<h2 id="toc_0">nginx相关</h2>
-
-<h3 id="toc_1">与php fpm相关</h3>
-
-<pre><code class="language-text">fastcgi_connect_timeout 6000;
-fastcgi_send_timeout 6000;
-fastcgi_read_timeout 6000;
-fastcgi_buffer_size 256k;
-fastcgi_buffers 8 256k;
-fastcgi_busy_buffers_size 256k;
-fastcgi_temp_file_write_size 256k;
-</code></pre>
-
-<h3 id="toc_2">非fpm相关</h3>
-
-<pre><code class="language-text">proxy_connect_timeout         60s;
-proxy_read_timeout            1m;
-proxy_send_timeout            1m;
-</code></pre>
-
-<h3 id="toc_3">客户端与nginx连通</h3>
-
-<pre><code class="language-text">keepalive_timeout  100;
-client_max_body_size    1000m;
-client_header_timeout         1m;
-client_body_timeout           1m;
-</code></pre>
-
-<h2 id="toc_4">php相关</h2>
-
-<p>配置</p>
-
-<pre><code class="language-text">cat  &gt;  docker-php-ext-php.ini  &lt;&lt;hh
-upload_max_filesize = 1000M
-post_max_size=1000M
-hh
-</code></pre>
-
-<h1 id="toc_5">附</h1>
-
-<p>cat写入方法方式<br/>
-cat向文件中写入内容<br/>
-写入：<br/>
-cat  &gt;  test.txt  &lt;<hh<br/>
-hello world<br/>
-hh<br/>
-追加：<br/>
-cat  >&gt;  test.txt  &lt;&lt;hh<br/>
-hello world<br/>
-hh</p>
-
-<h1 id="toc_6">参考链接</h1>
-
-<p><a href="https://blog.csdn.net/joeyon1985/article/details/50036095">https://blog.csdn.net/joeyon1985/article/details/50036095</a><br/>
-<a href="https://www.cnblogs.com/kevingrace/p/6093671.html">https://www.cnblogs.com/kevingrace/p/6093671.html</a></p>
 
 ]]></content>
   </entry>
